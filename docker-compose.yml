@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  practice_postgresql:
+    image: postgres:14.1
+    
+  practice_redis:
+    image: redis
+
+  practice_api:
+    image: ${DOCKER_REGISTRY-}practiceapi
+    build:
+      context: .
+      dockerfile: Systems/Api/Practice.Api/Dockerfile
+    depends_on:
+      - practice_postgresql
+      - practice_redis
