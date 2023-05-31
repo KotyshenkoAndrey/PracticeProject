@@ -17,15 +17,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{61
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Api", "Systems\Api\Practice.Api\Practice.Api.csproj", "{8DE82663-96FB-44A2-95DD-F9321F5FDD95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Practice.Common", "Shared\Practice.Common\Practice.Common.csproj", "{67651A4D-2D17-44EF-92F5-7737D354B714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Common", "Shared\Practice.Common\Practice.Common.csproj", "{67651A4D-2D17-44EF-92F5-7737D354B714}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Practice.Settings", "Shared\Practice.Settings\Practice.Settings.csproj", "{89568D4D-33C3-4863-8E87-E22CAB0C10C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Settings", "Shared\Practice.Settings\Practice.Settings.csproj", "{89568D4D-33C3-4863-8E87-E22CAB0C10C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Practice.Services.Settings", "Service\Practice.Services.Settings\Practice.Services.Settings.csproj", "{A2A567D3-1F44-42FC-A2CD-DE2044CB5BA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Services.Settings", "Service\Practice.Services.Settings\Practice.Services.Settings.csproj", "{A2A567D3-1F44-42FC-A2CD-DE2044CB5BA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Practice.Api.Settings", "Systems\Api\Practice.Api.Settings\Practice.Api.Settings.csproj", "{031AFB61-2A46-462A-8F93-2E726DDCECD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Api.Settings", "Systems\Api\Practice.Api.Settings\Practice.Api.Settings.csproj", "{031AFB61-2A46-462A-8F93-2E726DDCECD0}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{70595674-45A2-466C-9F9A-25F7BD1F7CBA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Context", "Data\Practice.Context\Practice.Context.csproj", "{EF6B52E3-8EF2-4C49-865B-64BEC5693E25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Context.Entities", "Data\Practice.Context.Entities\Practice.Context.Entities.csproj", "{BB3CAC55-2461-4EE1-B45D-B7FF350295E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{C6ED9081-5C3F-49F0-B5FB-48B8CE1325A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Context.MigrationsMSSQL", "Data\Migrations\Practice.Context.MigrationsMSSQL\Practice.Context.MigrationsMSSQL.csproj", "{11EAAA9A-D010-4EC7-A2EF-9E924BEA56D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Practice.Context.MigrationsPostgreSQL", "Data\Migrations\Practice.Migrations.PostgreSQL\Practice.Context.MigrationsPostgreSQL.csproj", "{B193D728-0EC7-486F-99CF-8E8443878AD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +67,22 @@ Global
 		{70595674-45A2-466C-9F9A-25F7BD1F7CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70595674-45A2-466C-9F9A-25F7BD1F7CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70595674-45A2-466C-9F9A-25F7BD1F7CBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF6B52E3-8EF2-4C49-865B-64BEC5693E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF6B52E3-8EF2-4C49-865B-64BEC5693E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF6B52E3-8EF2-4C49-865B-64BEC5693E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF6B52E3-8EF2-4C49-865B-64BEC5693E25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3CAC55-2461-4EE1-B45D-B7FF350295E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3CAC55-2461-4EE1-B45D-B7FF350295E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3CAC55-2461-4EE1-B45D-B7FF350295E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3CAC55-2461-4EE1-B45D-B7FF350295E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11EAAA9A-D010-4EC7-A2EF-9E924BEA56D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11EAAA9A-D010-4EC7-A2EF-9E924BEA56D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11EAAA9A-D010-4EC7-A2EF-9E924BEA56D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11EAAA9A-D010-4EC7-A2EF-9E924BEA56D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B193D728-0EC7-486F-99CF-8E8443878AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B193D728-0EC7-486F-99CF-8E8443878AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B193D728-0EC7-486F-99CF-8E8443878AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B193D728-0EC7-486F-99CF-8E8443878AD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +95,11 @@ Global
 		{89568D4D-33C3-4863-8E87-E22CAB0C10C7} = {D0BF84FE-7D6F-40B3-8081-524510EB4CFB}
 		{A2A567D3-1F44-42FC-A2CD-DE2044CB5BA3} = {FA769EB9-457F-4854-BFD5-218B52734CEE}
 		{031AFB61-2A46-462A-8F93-2E726DDCECD0} = {1FBA82A8-65E1-4D8D-B89E-FA47C515F7DE}
+		{EF6B52E3-8EF2-4C49-865B-64BEC5693E25} = {BBEC83B2-83AD-4B09-B073-F854B807BA6D}
+		{BB3CAC55-2461-4EE1-B45D-B7FF350295E5} = {BBEC83B2-83AD-4B09-B073-F854B807BA6D}
+		{C6ED9081-5C3F-49F0-B5FB-48B8CE1325A9} = {BBEC83B2-83AD-4B09-B073-F854B807BA6D}
+		{11EAAA9A-D010-4EC7-A2EF-9E924BEA56D6} = {C6ED9081-5C3F-49F0-B5FB-48B8CE1325A9}
+		{B193D728-0EC7-486F-99CF-8E8443878AD3} = {C6ED9081-5C3F-49F0-B5FB-48B8CE1325A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95A81A06-B2CF-431B-91D0-D8C0D1240D82}

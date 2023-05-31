@@ -2,6 +2,7 @@ using Practice.Api.Configuration;
 using Practice.Api;
 using Practice.Settings;
 using Practice.Services.Settings;
+using Practice.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,15 +14,13 @@ builder.AddAppLogger();
 var services = builder.Services;
 services.AddHttpContextAccessor();
 services.AddAppCors();
+services.AddAppDbContext();
 services.AddAppVersioning();
 services.RegisterAppServices();
 
 services.AddAppHealthChecks();
 services.AddAppSwagger(mainSettings, swaggerSettings);
 services.AddAppControllerAndViews();
-
-
-builder.Services.AddControllers();
 
 var app = builder.Build();
 

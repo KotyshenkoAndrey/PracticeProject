@@ -19,6 +19,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
@@ -30,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Data\Migrations\Practice.Context.MigrationsMSSQL\Practice.Context.MigrationsMSSQL.csproj" />
+    <ProjectReference Include="..\..\..\Data\Migrations\Practice.Migrations.PostgreSQL\Practice.Context.MigrationsPostgreSQL.csproj" />
+    <ProjectReference Include="..\..\..\Data\Practice.Context\Practice.Context.csproj" />
     <ProjectReference Include="..\..\..\Service\Practice.Services.Settings\Practice.Services.Settings.csproj" />
     <ProjectReference Include="..\..\..\Shared\Practice.Common\Practice.Common.csproj" />
     <ProjectReference Include="..\..\..\Shared\Practice.Settings\Practice.Settings.csproj" />
