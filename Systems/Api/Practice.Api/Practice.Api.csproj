@@ -13,11 +13,14 @@
 
   <ItemGroup>
     <Folder Include="Configuration\" />
+    <Folder Include="Controllers\Books\" />
     <Folder Include="wwwroot\" />
     <Folder Include="Pages\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.6.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -37,6 +40,7 @@
     <ProjectReference Include="..\..\..\Data\Migrations\Practice.Context.MigrationsMSSQL\Practice.Context.MigrationsMSSQL.csproj" />
     <ProjectReference Include="..\..\..\Data\Migrations\Practice.Migrations.PostgreSQL\Practice.Context.MigrationsPostgreSQL.csproj" />
     <ProjectReference Include="..\..\..\Data\Practice.Context\Practice.Context.csproj" />
+    <ProjectReference Include="..\..\..\Service\Practice.Services.Books\Practice.Services.Books.csproj" />
     <ProjectReference Include="..\..\..\Service\Practice.Services.Settings\Practice.Services.Settings.csproj" />
     <ProjectReference Include="..\..\..\Shared\Practice.Common\Practice.Common.csproj" />
     <ProjectReference Include="..\..\..\Shared\Practice.Settings\Practice.Settings.csproj" />

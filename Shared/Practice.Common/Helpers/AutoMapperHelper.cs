@@ -9,7 +9,8 @@ public static class AutoMappersRegisterHelper
     public static void Register(IServiceCollection services)
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-            .Where(s => s.FullName != null && s.FullName.ToLower().StartsWith("Practice."));
+                                                .Where(s => s.FullName != null && 
+                                                 s.FullName.StartsWith("Practice", StringComparison.OrdinalIgnoreCase));
 
         services.AddAutoMapper(assemblies);
     }

@@ -16,17 +16,19 @@ services.AddHttpContextAccessor();
 services.AddAppCors();
 services.AddAppDbContext();
 services.AddAppVersioning();
-services.RegisterAppServices();
 
 services.AddAppHealthChecks();
 services.AddAppSwagger(mainSettings, swaggerSettings);
+services.AddAppAutoMappers();
 services.AddAppControllerAndViews();
+services.RegisterAppServices();
 
 var app = builder.Build();
-
 app.UseAppHealthChecks();
 app.UseAppSwagger();
+DbInitializer.Execute(app.Services);
+DbSeeder.Execute(app.Services, true, true);
 
 app.UseAppControllerAndViews();
-
+app.UseAppMiddlewares();
 app.Run();

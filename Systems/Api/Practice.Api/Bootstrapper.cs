@@ -2,6 +2,7 @@
 
 using Practice.Api.Settings;
 using Practice.Services.Settings;
+using Practice.Services.Books;
 using Microsoft.Extensions.DependencyInjection;
 
     public static class Bootstrapper
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
                 .AddMainSettings()
                 .AddSwaggerSettings()
                 .AddApiSpecialSettings()
+                .AddBookService()
                 ;
 
             return services;
