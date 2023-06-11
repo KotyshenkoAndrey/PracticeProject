@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Practice.Context.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Practice.Context.Entities;
 using System;
@@ -6,11 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Practice.Context
 {
     
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, UserRole, Guid>
     {
         public AppDbContext(DbContextOptions options) : base(options){ }
 
@@ -22,6 +25,14 @@ namespace Practice.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>().ToTable("users");
+            modelBuilder.Entity<UserRole>().ToTable("user_roles");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("user_role_owners");
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("user_role_claims");
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
 
             modelBuilder.Entity<Author>().ToTable("authors");
             modelBuilder.Entity<Author>().Property(x => x.Name).IsRequired();

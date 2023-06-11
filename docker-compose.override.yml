@@ -29,6 +29,14 @@ services:
     env_file:
       - env.api
 
+  practice_identity:
+    ports:
+      - "10001:80"
+    networks:
+      - shared_practice
+    env_file:
+      - env.identity
+
 networks:
   shared_practice:
     name: practice

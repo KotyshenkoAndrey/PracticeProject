@@ -7,9 +7,14 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Systems/Api/Practice.Api/Practice.Api.csproj", "Systems/Api/Practice.Api/"]
-COPY ["Service/Practice.Services.Settings/Practice.Services.Settings.csproj", "Service/Practice.Services.Settings/"]
+COPY ["Data/Migrations/Practice.Context.MigrationsMSSQL/Practice.Context.MigrationsMSSQL.csproj", "Data/Migrations/Practice.Context.MigrationsMSSQL/"]
+COPY ["Data/Practice.Context.Entities/Practice.Context.Entities.csproj", "Data/Practice.Context.Entities/"]
+COPY ["Data/Practice.Context/Practice.Context.csproj", "Data/Practice.Context/"]
 COPY ["Shared/Practice.Settings/Practice.Settings.csproj", "Shared/Practice.Settings/"]
+COPY ["Data/Migrations/Practice.Migrations.PostgreSQL/Practice.Context.MigrationsPostgreSQL.csproj", "Data/Migrations/Practice.Migrations.PostgreSQL/"]
+COPY ["Service/Practice.Services.Books/Practice.Services.Books.csproj", "Service/Practice.Services.Books/"]
 COPY ["Shared/Practice.Common/Practice.Common.csproj", "Shared/Practice.Common/"]
+COPY ["Service/Practice.Services.Settings/Practice.Services.Settings.csproj", "Service/Practice.Services.Settings/"]
 COPY ["Systems/Api/Practice.Api.Settings/Practice.Api.Settings.csproj", "Systems/Api/Practice.Api.Settings/"]
 RUN dotnet restore "Systems/Api/Practice.Api/Practice.Api.csproj"
 COPY . .

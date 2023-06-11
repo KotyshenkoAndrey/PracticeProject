@@ -15,3 +15,13 @@ services:
     depends_on:
       - practice_postgresql
       - practice_redis
+
+  practice_identity:
+    image: ${DOCKER_REGISTRY-}practiceidentity
+    build:
+      context: .
+      dockerfile: Systems/Identity/Practice.Identity/Dockerfile
+    depends_on:
+      - practice_postgresql
+      - practice_redis
+      - practice_api
