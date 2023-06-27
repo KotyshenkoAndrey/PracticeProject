@@ -2,6 +2,7 @@
 
 using Practice.Api.Settings;
 using Practice.Services.Settings;
+using Practice.Services.UserAccount;
 using Practice.Services.Books;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,8 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
             services
                 .AddMainSettings()
                 .AddSwaggerSettings()
+                .AddIdentitySettings()
                 .AddApiSpecialSettings()
                 .AddBookService()
+                .AddUserAccountService()
                 ;
 
             return services;

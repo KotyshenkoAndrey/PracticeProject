@@ -15,6 +15,7 @@ COPY ["Data/Migrations/Practice.Migrations.PostgreSQL/Practice.Context.Migration
 COPY ["Service/Practice.Services.Books/Practice.Services.Books.csproj", "Service/Practice.Services.Books/"]
 COPY ["Shared/Practice.Common/Practice.Common.csproj", "Shared/Practice.Common/"]
 COPY ["Service/Practice.Services.Settings/Practice.Services.Settings.csproj", "Service/Practice.Services.Settings/"]
+COPY ["Service/Practice.Services.UserAccount/Practice.Services.UserAccount.csproj", "Service/Practice.Services.UserAccount/"]
 COPY ["Systems/Api/Practice.Api.Settings/Practice.Api.Settings.csproj", "Systems/Api/Practice.Api.Settings/"]
 RUN dotnet restore "Systems/Api/Practice.Api/Practice.Api.csproj"
 COPY . .

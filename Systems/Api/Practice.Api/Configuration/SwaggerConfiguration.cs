@@ -1,6 +1,7 @@
 ﻿namespace Practice.Api.Configuration;
 
 using Practice.Services.Settings;
+using Practice.Common.Security;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -21,7 +22,7 @@ public static class SwaggerConfiguration
     /// <param name="services">Services collection</param>
     /// <param name="mainSettings"></param>
     /// <param name="swaggerSettings"></param>
-    public static IServiceCollection AddAppSwagger(this IServiceCollection services, MainSettings mainSettings, SwaggerSettings swaggerSettings)
+    public static IServiceCollection AddAppSwagger(this IServiceCollection services, IdentitySettings identitySettings, SwaggerSettings swaggerSettings)
     {
         if (!swaggerSettings.Enabled)
             return services;
@@ -65,10 +66,11 @@ public static class SwaggerConfiguration
                 {
                     Password = new OpenApiOAuthFlow
                     {
-                        TokenUrl = new Uri($"{mainSettings.MainUrl}/connect/token"),
+                        TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
                         Scopes = new Dictionary<string, string>
                         {
-                            {"api", "Full API access"},
+                            {AppScopes.BooksRead, nameof(AppScopes.BooksRead)},
+                            {AppScopes.BooksWrite, nameof(AppScopes.BooksWrite)}
                         }
                     }
                 }

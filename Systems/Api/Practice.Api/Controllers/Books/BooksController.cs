@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 [ProducesResponseType(typeof(ErrorResponse), 400)]
 [Produces("application/json")]
 [Route("api/v{version:apiVersion}/books")]
+[Authorize]
 [ApiController]
 [ApiVersion("1.0")]
 public class BooksController : ControllerBase
@@ -43,6 +44,7 @@ public class BooksController : ControllerBase
     /// <response code="200">List of BookResponses</response>
     [ProducesResponseType(typeof(IEnumerable<BookResponse>), 200)]
     [HttpGet("")]
+    [Authorize(Policy =AppScopes.BooksRead)]
     public async Task<IEnumerable<BookResponse>> GetBooks([FromQuery] int offset = 0, [FromQuery] int limit = 10)
     {
         var books = await bookService.GetBooks(offset, limit);
@@ -57,6 +59,7 @@ public class BooksController : ControllerBase
     /// <response code="200">BookResponse></response>
     [ProducesResponseType(typeof(BookResponse), 200)]
     [HttpGet("{id}")]
+    [Authorize(Policy = AppScopes.BooksRead)]
     public async Task<BookResponse> GetBookById([FromRoute] int id)
     {
         var book = await bookService.GetBook(id);
@@ -66,6 +69,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost("")]
+    [Authorize(Policy = AppScopes.BooksWrite)]
     public async Task<BookResponse> AddBook([FromBody] AddBookRequest request)
     {
         var model = mapper.Map<AddBookModel>(request);
@@ -76,6 +80,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = AppScopes.BooksWrite)]
     public async Task<IActionResult> UpdateBook([FromRoute] int id, [FromBody] UpdateBookRequest request)
     {
         var model = mapper.Map<UpdateBookModel>(request);
@@ -85,6 +90,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = AppScopes.BooksWrite)]
     public async Task<IActionResult> DeleteBook([FromRoute] int id)
     {
         await bookService.DeleteBook(id);

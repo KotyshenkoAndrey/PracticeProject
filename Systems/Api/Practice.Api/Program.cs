@@ -6,7 +6,8 @@ using Practice.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var mainSettings = Settings.Load<MainSettings>("Main");
+var mainSettings = Settings.Load<IdentitySettings>("Main");
+var identitySettings = Settings.Load<IdentitySettings>("Identity");
 var swaggerSettings = Settings.Load<SwaggerSettings>("Swagger");
 builder.AddAppLogger();
 
@@ -18,8 +19,11 @@ services.AddAppDbContext();
 services.AddAppVersioning();
 
 services.AddAppHealthChecks();
-services.AddAppSwagger(mainSettings, swaggerSettings);
+services.AddAppSwagger(identitySettings, swaggerSettings);
 services.AddAppAutoMappers();
+
+services.AddAppAuth(identitySettings);
+
 services.AddAppControllerAndViews();
 services.RegisterAppServices();
 
@@ -28,7 +32,8 @@ app.UseAppHealthChecks();
 app.UseAppSwagger();
 DbInitializer.Execute(app.Services);
 DbSeeder.Execute(app.Services, true, true);
-
-app.UseAppControllerAndViews();
 app.UseAppMiddlewares();
+app.UseAppAuth();
+app.UseAppControllerAndViews();
+
 app.Run();

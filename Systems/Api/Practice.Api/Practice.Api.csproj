@@ -21,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -42,6 +43,7 @@
     <ProjectReference Include="..\..\..\Data\Practice.Context\Practice.Context.csproj" />
     <ProjectReference Include="..\..\..\Service\Practice.Services.Books\Practice.Services.Books.csproj" />
     <ProjectReference Include="..\..\..\Service\Practice.Services.Settings\Practice.Services.Settings.csproj" />
+    <ProjectReference Include="..\..\..\Service\Practice.Services.UserAccount\Practice.Services.UserAccount.csproj" />
     <ProjectReference Include="..\..\..\Shared\Practice.Common\Practice.Common.csproj" />
     <ProjectReference Include="..\..\..\Shared\Practice.Settings\Practice.Settings.csproj" />
     <ProjectReference Include="..\Practice.Api.Settings\Practice.Api.Settings.csproj" />

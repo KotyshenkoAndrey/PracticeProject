@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Practice.Context.Entities": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52795;http://localhost:52798"
+    }
+  }
+}

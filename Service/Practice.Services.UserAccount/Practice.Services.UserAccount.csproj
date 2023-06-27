@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Practice.Context.Entities\Practice.Context.Entities.csproj" />
+    <ProjectReference Include="..\..\Shared\Practice.Common\Practice.Common.csproj" />
+  </ItemGroup>
+
+</Project>
