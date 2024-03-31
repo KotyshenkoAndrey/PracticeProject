@@ -3,6 +3,8 @@ using PracticeProject.Api.Configuration;
 using PracticeProject.Services.Logger;
 using PracticeProject.Services.Settings;
 using PracticeProject.Settings;
+using PracticeProject.Context;
+using PracticeProject.Context.Seeder;
 
 var mainSettings = Settings.Load<MainSettings>("Main");
 var logSettings = Settings.Load<LogSettings>("Log");
@@ -14,8 +16,10 @@ builder.AddAppLogger(mainSettings, logSettings);
 
 var services = builder.Services;
 // Add services to the container.
-services.AddRazorPages();
 
+services.AddHttpContextAccessor();
+
+services.AddAppDbContext(builder.Configuration);
 
 services.AddAppAutoMappers();
 services.AddAppValidator();
@@ -40,5 +44,8 @@ app.UseAppHealthChecks();
 app.UseAppCors();
 app.UseAppControllerAndViews();
 app.UseAppSwagger();
+
+DbInitializer.Execute(app.Services);
+DbSeeder.Execute(app.Services);
 
 app.Run();

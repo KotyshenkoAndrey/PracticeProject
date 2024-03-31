@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  practiceproject.postgresql:
+     environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Passw0rd
+     ports:
+      - "5432:5432"
+     networks:
+      - shared_practice
+     volumes:      
+      - ~/.docker-conf/postgresql/data/:/var/lib/postgresql/data
+
+
+  practiceproject.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+    ports:
+      - "10000:80"
+    networks:
+      - shared_practice
+
+
+
+networks:
+  shared_practice:
+    name: practice
+    driver: bridge
