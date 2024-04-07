@@ -21,16 +21,21 @@ services.AddHttpContextAccessor();
 
 services.AddAppDbContext(builder.Configuration);
 
-services.AddAppAutoMappers();
-services.AddAppValidator();
+services.AddAppCors();
+
 services.AddAppHealthChecks();
+
 services.AddAppVersioning();
 
-services.AddAppCors();
-services.AddAppControllerAndViews();
 services.AddAppSwagger(mainSettings, swaggerSetting);
 
-services.RegisterServices();
+services.AddAppAutoMappers();
+
+services.AddAppValidator();
+
+services.AddAppControllerAndViews();
+
+services.RegisterServices(builder.Configuration);
 
 
 var app = builder.Build();

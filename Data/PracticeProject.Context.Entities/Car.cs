@@ -10,9 +10,6 @@ namespace PracticeProject.Context.Entities
 {
     public class Car : BaseEntity
     {
-//        [Key]
-        public int CarId { get; set; }
-
         [Required]
         [MaxLength(50)]
         public string Model { get; set; }
@@ -29,8 +26,9 @@ namespace PracticeProject.Context.Entities
 
         [MaxLength(20)]
         public string? Color { get; set; }
-
-        public int? SellerId { get; set; }
+        
+        [Required]
+        public int SellerId { get; set; }
         public virtual User Seller { get; set; }
 
         [Required]

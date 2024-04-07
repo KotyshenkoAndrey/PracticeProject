@@ -10,9 +10,6 @@ namespace PracticeProject.Context.Entities
 {
     public class ViewingRequest : BaseEntity
     {
-//        [Key]
-        public int ViewingRequestId { get; set; }
-
         [Required]
         public int CarId { get; set; }
         public virtual Car Car { get; set; }

@@ -17,9 +17,9 @@ namespace PracticeProject.Context.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
+        [Required]
         [MaxLength(100)]
-        public string? FullName { get; set; }
+        public string FullName { get; set; }
 
         [Phone]
         public string? PhoneNumber { get; set; }
