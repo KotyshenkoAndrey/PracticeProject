@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PracticeProject.Services.Actions;
 using PracticeProject.Common.Exceptions;
 using PracticeProject.Common.Validator;
 using PracticeProject.Context;
@@ -15,15 +16,19 @@ public class CarService : ICarService
     private readonly IMapper mapper;
     private readonly IModelValidator<CreateCarViewModel> createCarModelValidator;
     private readonly IModelValidator<UpdateCarViewModel> updateCarModelValidator;
+    private readonly IAction action;
 
-    public CarService(IDbContextFactory<MainDbContext> dbContextFactory, IMapper mapper,
-        IModelValidator<CreateCarViewModel> createCarModelValidator,
-        IModelValidator<UpdateCarViewModel> updateCarModelValidator)
+    public CarService(IDbContextFactory<MainDbContext> dbContextFactory, IMapper mapper
+        ,IModelValidator<CreateCarViewModel> createCarModelValidator
+        ,IModelValidator<UpdateCarViewModel> updateCarModelValidator
+        ,IAction action
+        )
     {
         this.dbContextFactory = dbContextFactory;
         this.mapper = mapper;
         this.createCarModelValidator = createCarModelValidator;
         this.updateCarModelValidator = updateCarModelValidator;
+        this.action = action;
     }
    public async Task<IEnumerable<CarViewModel>> GetAll()
     {
@@ -61,6 +66,12 @@ public class CarService : ICarService
         await context.Cars.AddAsync(car);
 
         await context.SaveChangesAsync();
+
+        await action.PublicateNewCar(new CarSendModel()
+        {
+            Id = car.Id,
+            Model = car.Model
+        });
 
         return mapper.Map<CarViewModel>(car);
     }

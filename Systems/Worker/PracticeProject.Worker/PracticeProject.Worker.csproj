@@ -4,6 +4,23 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+	  <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+	  <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+	  <PackageReference Include="Serilog.Expressions" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Services\Practice.Services.Actions\PracticeProject.Services.Actions.csproj" />
+    <ProjectReference Include="..\..\..\Services\Practice.Services.RabbitMq\PracticeProject.Services.RabbitMq.csproj" />
+    <ProjectReference Include="..\..\..\Services\PracticeProject.Service.Settings\PracticeProject.Service.Settings.csproj" />
+    <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Logger\PracticeProject.Services.Logger.csproj" />
+    <ProjectReference Include="..\..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
+  </ItemGroup>
 
 </Project>

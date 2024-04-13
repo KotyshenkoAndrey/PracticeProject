@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\..\Data\PracticeProject.Context.Seeder\PracticeProject.Context.Seeder.csproj" />
     <ProjectReference Include="..\..\..\Data\PracticeProject.Context\PracticeProject.Context.csproj" />
     <ProjectReference Include="..\..\..\Data\PracticeProject.Migrations\PracticeProject.Migrations.MSSQL\PracticeProject.Context.Migrations.MSSQL\PracticeProject.Context.Migrations.MSSQL.csproj" />
+    <ProjectReference Include="..\..\..\Services\Practice.Services.RabbitMq\PracticeProject.Services.RabbitMq.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Service.Settings\PracticeProject.Service.Settings.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Cars\PracticeProject.Services.Cars.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Logger\PracticeProject.Services.Logger.csproj" />

@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  practiceproject.postgresql:
+  practiceproject_postgresql:
      environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
@@ -14,16 +14,42 @@ services:
       - ~/.docker-conf/postgresql/data/:/var/lib/postgresql/data
 
 
-  practiceproject.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
+  practiceproject_api:
+    # environment:
+    #   - ASPNETCORE_ENVIRONMENT=Development
+    #   - ASPNETCORE_HTTP_PORTS=8080
     ports:
-      - "10000:80"
+      - "10000:8080"
     networks:
       - shared_practice
+    env_file:
+      - env.api
 
+  practiceproject_rabbitMQ:
+    ports:
+      - "5672:5672"
+      - "5673:5673"
+      - "15672:15672" 
+    networks:
+      - shared_practice
+    volumes:      
+      - ./rabbitmq:/var/lib/rabbitmq
 
+  practiceproject_worker:
+    networks:
+      - shared_practice
+    ports:
+      - "10001:8080"
+    env_file:
+      - env.worker
+
+  practiceproject_worker_1:
+    networks:
+      - shared_practice
+    ports:
+      - "10002:8080"
+    env_file:
+      - env.worker
 
 networks:
   shared_practice:

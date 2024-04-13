@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\PracticeProject.Context\PracticeProject.Context.csproj" />
+    <ProjectReference Include="..\Practice.Services.Actions\PracticeProject.Services.Actions.csproj" />
   </ItemGroup>
 
 </Project>

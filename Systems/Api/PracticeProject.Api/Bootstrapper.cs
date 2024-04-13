@@ -4,6 +4,8 @@ using PracticeProject.Services.Logger;
 using PracticeProject.Api.Settings;
 using PracticeProject.Services.Cars;
 using PracticeProject.Context.Seeder;
+using PracticeProject.Services.RabbitMq;
+using PracticeProject.Services.Actions;
 
 public static class Bootstrapper
 {
@@ -18,6 +20,8 @@ public static class Bootstrapper
             .AddDbSeeder()
             .AddApiSpecialSettings()
             .AddCarService()
+            .AddRabbitMq()
+            .AddActions()
             ;
 
         return services;
