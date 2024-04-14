@@ -16,7 +16,7 @@ namespace PracticeProject.Context.Entities
 
         [Required]
         public int SellerId { get; set; }
-        public virtual User Seller { get; set; }
+        public virtual Seller Seller { get; set; }
 
         public bool IsConfirmed { get; set; }
 

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace PracticeProject.Context.Entities
 {
-    public static class UserContextConfiguration
+    public static class SellerContextConfiguration
     {
-        public static void ConfigureUser(this ModelBuilder modelBuilder)
+        public static void ConfigureSeller(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().ToTable("user");           
+            modelBuilder.Entity<Seller>().ToTable("seller");           
         }
     }
 }

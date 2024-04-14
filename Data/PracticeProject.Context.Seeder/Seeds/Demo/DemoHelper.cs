@@ -12,7 +12,7 @@ public class DemoHelper
             Model = "Volkswagen Polo",
             Price = 1000000,
             DatePosted = DateTime.Now,
-            Seller = new User()
+            Seller = new Seller()
             {
                 Uid = Guid.NewGuid(),
                 Username = "Andrey",  
@@ -26,7 +26,7 @@ public class DemoHelper
             Model = "Volkswagen Passat",
             Price = 1000000,
             DatePosted = DateTime.Now,
-            Seller = new User()
+            Seller = new Seller()
             {
                 Uid = Guid.NewGuid(),
                 Username = "Victor",

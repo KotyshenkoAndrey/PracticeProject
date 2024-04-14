@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 public class MainDbContext : DbContext
 {
     public DbSet<Car> Cars { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<Seller> Sellers { get; set; }
     public DbSet<ViewingRequest> ViewingRequests { get; set; }
 
     public MainDbContext(DbContextOptions<MainDbContext> options) : base(options) { }
@@ -15,7 +15,7 @@ public class MainDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigureCar();
-        modelBuilder.ConfigureUser();
+        modelBuilder.ConfigureSeller();
         modelBuilder.ConfigureViewingRequest();                  
     }
 }

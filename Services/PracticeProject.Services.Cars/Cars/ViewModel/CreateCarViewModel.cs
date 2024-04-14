@@ -40,7 +40,7 @@ public class CreateCarViewModelProfile : Profile
         {
             using var db = contextFactory.CreateDbContext();
 
-            var seller = db.Users.FirstOrDefault(x => x.Uid == source.SellerId);
+            var seller = db.Sellers.FirstOrDefault(x => x.Uid == source.SellerId);
 
             destination.SellerId = seller.Id;
             destination.DatePosted = DateTime.Now;
@@ -57,7 +57,7 @@ public class CreateCarModelValidator : AbstractValidator<CreateCarViewModel>
             .Must((id) =>
             {
                 using var context = contextFactory.CreateDbContext();
-                var found = context.Users.Any(a => a.Uid == id);
+                var found = context.Sellers.Any(a => a.Uid == id);
                 return found;
             }).WithMessage("Seller not found");
 

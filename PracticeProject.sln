@@ -49,9 +49,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Api.Setting
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.Cars", "Services\PracticeProject.Services.Cars\PracticeProject.Services.Cars.csproj", "{1AA743C4-A4FD-4A0E-97C0-BDA14DEC1642}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeProject.Services.Actions", "Services\Practice.Services.Actions\PracticeProject.Services.Actions.csproj", "{00BB9A0E-82FA-472A-A256-773FB9271CE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.Actions", "Services\Practice.Services.Actions\PracticeProject.Services.Actions.csproj", "{00BB9A0E-82FA-472A-A256-773FB9271CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeProject.Services.RabbitMq", "Services\Practice.Services.RabbitMq\PracticeProject.Services.RabbitMq.csproj", "{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.RabbitMq", "Services\Practice.Services.RabbitMq\PracticeProject.Services.RabbitMq.csproj", "{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{BCB5181C-67A7-4D02-AA51-26AC44513B69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +149,7 @@ Global
 		{1AA743C4-A4FD-4A0E-97C0-BDA14DEC1642} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{00BB9A0E-82FA-472A-A256-773FB9271CE3} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
+		{BCB5181C-67A7-4D02-AA51-26AC44513B69} = {35DF2800-BD78-4CC5-B843-9AF20879C948}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C23B43B4-0755-4456-86E9-CCE397812FB7}
