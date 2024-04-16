@@ -35,21 +35,29 @@ services:
     volumes:      
       - ./rabbitmq:/var/lib/rabbitmq
 
-  practiceproject_worker:
-    networks:
-      - shared_practice
-    ports:
-      - "10001:8080"
-    env_file:
-      - env.worker
+  # practiceproject_worker:
+  #   networks:
+  #     - shared_practice
+  #   ports:
+  #     - "10001:8080"
+  #   env_file:
+  #     - env.worker
 
-  practiceproject_worker_1:
+  # practiceproject_worker_1:
+  #   networks:
+  #     - shared_practice
+  #   ports:
+  #     - "10002:8080"
+  #   env_file:
+  #     - env.worker
+
+  practiceproject_identity:
     networks:
       - shared_practice
     ports:
-      - "10002:8080"
+      - "10003:8080"
     env_file:
-      - env.worker
+      - env.identity
 
 networks:
   shared_practice:

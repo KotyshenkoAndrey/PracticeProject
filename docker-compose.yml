@@ -15,22 +15,32 @@ services:
 
   practiceproject_rabbitMQ:
     image: rabbitmq:management
-  practiceproject_worker:
-    image: ${DOCKER_REGISTRY-}practiceprojectworker
-    build:
-      context: .
-      dockerfile: Systems/Worker/PracticeProject.Worker/Dockerfile
-    depends_on:
-      - practiceproject_postgresql
-      - practiceproject_rabbitMQ
-      - practiceproject_api
   
-  practiceproject_worker_1:
-    image: ${DOCKER_REGISTRY-}practiceprojectworker
+  # practiceproject_worker:
+  #   image: ${DOCKER_REGISTRY-}practiceprojectworker
+  #   build:
+  #     context: .
+  #     dockerfile: Systems/Worker/PracticeProject.Worker/Dockerfile
+  #   depends_on:
+  #     - practiceproject_postgresql
+  #     - practiceproject_rabbitMQ
+  #     - practiceproject_api
+  
+  # practiceproject_worker_1:
+  #   image: ${DOCKER_REGISTRY-}practiceprojectworker
+  #   build:
+  #     context: .
+  #     dockerfile: Systems/Worker/PracticeProject.Worker/Dockerfile
+  #   depends_on:
+  #     - practiceproject_postgresql
+  #     - practiceproject_rabbitMQ
+  #     - practiceproject_api
+  
+  practiceproject_identity:
+    image: ${DOCKER_REGISTRY-}practiceprojectidentity
     build:
       context: .
-      dockerfile: Systems/Worker/PracticeProject.Worker/Dockerfile
+      dockerfile: Systems/Identity/PracticeProject.Identity/Dockerfile
     depends_on:
       - practiceproject_postgresql
-      - practiceproject_rabbitMQ
       - practiceproject_api

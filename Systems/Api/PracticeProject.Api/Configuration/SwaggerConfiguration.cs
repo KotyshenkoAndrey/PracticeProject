@@ -7,6 +7,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Reflection;
 using Asp.Versioning.ApiExplorer;
+using PracticeProject.Common.Security;
 
 /// <summary>
 /// Swagger configuration
@@ -21,7 +22,10 @@ public static class SwaggerConfiguration
     /// <param name="services">Services collection</param>
     /// <param name="mainSettings"></param>
     /// <param name="swaggerSettings"></param>
-    public static IServiceCollection AddAppSwagger(this IServiceCollection services, MainSettings mainSettings, SwaggerSettings swaggerSettings)
+    public static IServiceCollection AddAppSwagger(this IServiceCollection services,
+        MainSettings mainSettings,
+        SwaggerSettings swaggerSettings
+        ,IdentitySettings identitySettings)
     {
         if (!swaggerSettings.Enabled)
             return services;
@@ -63,14 +67,24 @@ public static class SwaggerConfiguration
                 In = ParameterLocation.Header,
                 Flows = new OpenApiOAuthFlows
                 {
+                    ClientCredentials = new OpenApiOAuthFlow
+                    {
+                        TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            { AppScopes.AccessWrite, "Write" },
+                            { AppScopes.AccessRead, "Read" }
+                        }
+                    },
+
                     Password = new OpenApiOAuthFlow
                     {
-                        TokenUrl = new Uri($"{mainSettings.PublicUrl}/connect/token"),
-                        //Scopes = new Dictionary<string, string>
-                        //{
-                        //    { "Admin", "Admin scope" },
-                        //    { "User", "User scope" }
-                        //}
+                        TokenUrl = new Uri($"{identitySettings.Url}/connect/token"),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            { AppScopes.AccessWrite, "Write" },
+                            { AppScopes.AccessRead, "Read" }
+                        }
                     }
                 }
             });

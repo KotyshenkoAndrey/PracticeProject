@@ -9,6 +9,7 @@ using PracticeProject.Context.Seeder;
 var mainSettings = Settings.Load<MainSettings>("Main");
 var logSettings = Settings.Load<LogSettings>("Log");
 var swaggerSetting = Settings.Load<SwaggerSettings>("Swagger");
+var identitySetting = Settings.Load<IdentitySettings>("Identity");
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,11 +28,13 @@ services.AddAppHealthChecks();
 
 services.AddAppVersioning();
 
-services.AddAppSwagger(mainSettings, swaggerSetting);
+services.AddAppSwagger(mainSettings, swaggerSetting, identitySetting);
 
 services.AddAppAutoMappers();
 
 services.AddAppValidator();
+
+services.AddAppAuth(identitySetting);
 
 services.AddAppControllerAndViews();
 
@@ -49,6 +52,7 @@ app.UseAppHealthChecks();
 app.UseAppCors();
 app.UseAppControllerAndViews();
 app.UseAppSwagger();
+app.UseAppAuth();
 
 DbInitializer.Execute(app.Services);
 DbSeeder.Execute(app.Services);

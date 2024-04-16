@@ -2,8 +2,11 @@
 
 using PracticeProject.Context.Entities;
 using Microsoft.EntityFrameworkCore;
+using PracticeProject.Context.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-public class MainDbContext : DbContext
+public class MainDbContext : IdentityDbContext<AuthorizedUsers, IdentityRole<Guid>, Guid>
 {
     public DbSet<Car> Cars { get; set; }
     public DbSet<Seller> Sellers { get; set; }
@@ -16,6 +19,7 @@ public class MainDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigureCar();
         modelBuilder.ConfigureSeller();
-        modelBuilder.ConfigureViewingRequest();                  
+        modelBuilder.ConfigureViewingRequest();
+        modelBuilder.ConfigureAuthorizedUsers();
     }
 }

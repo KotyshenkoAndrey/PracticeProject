@@ -2,6 +2,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using PracticeProject.Context.Entities.Identity;
+using PracticeProject.Services.AuthorizedUsersAccount;
 using System;
 
 public static class DbSeeder
@@ -22,6 +24,7 @@ public static class DbSeeder
         Task.Run(async () =>
             {
                 await AddDemoData(serviceProvider);
+                await AddAdministrator(serviceProvider);
             })
             .GetAwaiter()
             .GetResult();
@@ -36,6 +39,34 @@ public static class DbSeeder
         var settings = scope.ServiceProvider.GetService<DbSettings>();
         if (!(settings.Init?.AddDemoData ?? false))
             return;
+
+        await using var context = DbContext(serviceProvider);
+
+        if (await context.Cars.AnyAsync())
+            return;
+
+        await context.Cars.AddRangeAsync(new DemoHelper().GetCars);
+
+        await context.SaveChangesAsync();
+    }
+    private static async Task AddAdministrator(IServiceProvider serviceProvider)
+    {
+        using var scope = ServiceScope(serviceProvider);
+        if (scope == null)
+            return;
+
+        var settings = scope.ServiceProvider.GetService<DbSettings>();
+        if (!(settings.Init?.AddDemoData ?? false))
+            return;
+
+        var userAccountService = scope.ServiceProvider.GetService<IAuthorizedUsersAccountService>();
+        if (!(await userAccountService.IsEmpty())) return;
+        await userAccountService.Create(new RegisterAuthorizedUsersAccountModel()
+        {
+            Name = settings.Init.Administrator.Name,
+            Email = settings.Init.Administrator.Email,
+            Password = settings.Init.Administrator.Password,
+        });
 
         await using var context = DbContext(serviceProvider);
 

@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Services\PracticeProject.Services.AuthorizedUsersAccount\PracticeProject.Services.AuthorizedUsersAccount.csproj" />
       <ProjectReference Include="..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
       <ProjectReference Include="..\PracticeProject.Context.Entities\PracticeProject.Context.Entities.csproj" />
       <ProjectReference Include="..\PracticeProject.Context\PracticeProject.Context.csproj" />

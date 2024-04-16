@@ -41,8 +41,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Context.Mig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Context.Migrations.MySql", "Data\PracticeProject.Context.Migrations\PracticeProject.Context.Migrations.MySql\PracticeProject.Context.Migrations.MySql.csproj", "{3E288626-82A5-47D6-82D3-7CB554AF2182}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Context.Migrations.MSSQL", "Data\PracticeProject.Migrations\PracticeProject.Migrations.MSSQL\PracticeProject.Context.Migrations.MSSQL\PracticeProject.Context.Migrations.MSSQL.csproj", "{EEE98307-EE82-4F78-BDD1-E7036EF0843F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Context.Seeder", "Data\PracticeProject.Context.Seeder\PracticeProject.Context.Seeder.csproj", "{C3FECEB1-16B1-44CD-91F7-C3EFBF973A35}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Api.Settings", "Systems\Api\PracticeProject.Api.Settings\PracticeProject.Api.Settings.csproj", "{BF6B27DF-9BBE-43A2-AE77-0F80CC072241}"
@@ -54,6 +52,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.RabbitMq", "Services\Practice.Services.RabbitMq\PracticeProject.Services.RabbitMq.csproj", "{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{BCB5181C-67A7-4D02-AA51-26AC44513B69}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Identity", "Systems\Identity\PracticeProject.Identity\PracticeProject.Identity.csproj", "{6EBA9098-18B2-400D-BC19-F3630B6A25F7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.AuthorizedUsersAccount", "Services\PracticeProject.Services.AuthorizedUsersAccount\PracticeProject.Services.AuthorizedUsersAccount.csproj", "{1D3962E7-57A5-4194-92D7-573BEB094791}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeProject.Context.Migrations.MSSQL", "Data\PracticeProject.Context.Migrations\PracticeProject.Context.Migrations.MSSQL\PracticeProject.Context.Migrations.MSSQL.csproj", "{6DDD4DF9-ABC4-4F1A-AE7A-AB23E9DB8E51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,10 +105,6 @@ Global
 		{3E288626-82A5-47D6-82D3-7CB554AF2182}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E288626-82A5-47D6-82D3-7CB554AF2182}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E288626-82A5-47D6-82D3-7CB554AF2182}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EEE98307-EE82-4F78-BDD1-E7036EF0843F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEE98307-EE82-4F78-BDD1-E7036EF0843F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEE98307-EE82-4F78-BDD1-E7036EF0843F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEE98307-EE82-4F78-BDD1-E7036EF0843F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3FECEB1-16B1-44CD-91F7-C3EFBF973A35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3FECEB1-16B1-44CD-91F7-C3EFBF973A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3FECEB1-16B1-44CD-91F7-C3EFBF973A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -125,6 +125,18 @@ Global
 		{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EBA9098-18B2-400D-BC19-F3630B6A25F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EBA9098-18B2-400D-BC19-F3630B6A25F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EBA9098-18B2-400D-BC19-F3630B6A25F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EBA9098-18B2-400D-BC19-F3630B6A25F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D3962E7-57A5-4194-92D7-573BEB094791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D3962E7-57A5-4194-92D7-573BEB094791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D3962E7-57A5-4194-92D7-573BEB094791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D3962E7-57A5-4194-92D7-573BEB094791}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DDD4DF9-ABC4-4F1A-AE7A-AB23E9DB8E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DDD4DF9-ABC4-4F1A-AE7A-AB23E9DB8E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DDD4DF9-ABC4-4F1A-AE7A-AB23E9DB8E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DDD4DF9-ABC4-4F1A-AE7A-AB23E9DB8E51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,13 +155,15 @@ Global
 		{2FAA4BA3-29A5-4291-A547-32FB675713E3} = {9E64181F-27F0-4488-8A76-5FDBBFE214C8}
 		{25EDCF0A-6148-4767-B46E-77F68CB2BB99} = {2FAA4BA3-29A5-4291-A547-32FB675713E3}
 		{3E288626-82A5-47D6-82D3-7CB554AF2182} = {2FAA4BA3-29A5-4291-A547-32FB675713E3}
-		{EEE98307-EE82-4F78-BDD1-E7036EF0843F} = {2FAA4BA3-29A5-4291-A547-32FB675713E3}
-		{C3FECEB1-16B1-44CD-91F7-C3EFBF973A35} = {2FAA4BA3-29A5-4291-A547-32FB675713E3}
+		{C3FECEB1-16B1-44CD-91F7-C3EFBF973A35} = {9E64181F-27F0-4488-8A76-5FDBBFE214C8}
 		{BF6B27DF-9BBE-43A2-AE77-0F80CC072241} = {25562056-698C-48B0-8926-0916F5A02E56}
 		{1AA743C4-A4FD-4A0E-97C0-BDA14DEC1642} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{00BB9A0E-82FA-472A-A256-773FB9271CE3} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{F4E7F54A-5BC5-4E2A-B91E-ADD979F6AAF1} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{BCB5181C-67A7-4D02-AA51-26AC44513B69} = {35DF2800-BD78-4CC5-B843-9AF20879C948}
+		{6EBA9098-18B2-400D-BC19-F3630B6A25F7} = {BCB5181C-67A7-4D02-AA51-26AC44513B69}
+		{1D3962E7-57A5-4194-92D7-573BEB094791} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
+		{6DDD4DF9-ABC4-4F1A-AE7A-AB23E9DB8E51} = {2FAA4BA3-29A5-4291-A547-32FB675713E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C23B43B4-0755-4456-86E9-CCE397812FB7}

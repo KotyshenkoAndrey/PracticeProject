@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PracticeProject.Context\PracticeProject.Context.csproj" />
+    <ProjectReference Include="..\..\PracticeProject.Context\PracticeProject.Context.csproj" />
   </ItemGroup>
 
 </Project>

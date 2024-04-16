@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PracticeProject.Common.Security;
 using PracticeProject.Services.Cars;
 using PracticeProject.Services.Logger;
 
 namespace PracticeProject.Api.App
 {
+    [Authorize]
     [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Car")]
     [ApiController]
     public class CarController : ControllerBase
     {
@@ -17,6 +23,7 @@ namespace PracticeProject.Api.App
             this.logger = logger;
             this.carService = carService;
         }
+        [Authorize(AppScopes.AccessRead)]
         [HttpGet("")]
         public async Task<IEnumerable<CarViewModel>> GetAll()
         {
@@ -36,6 +43,7 @@ namespace PracticeProject.Api.App
             return Ok(result);
         }
 
+        [Authorize(AppScopes.AccessWrite)]
         [HttpPost("")]
         public async Task<CarViewModel> Create(CreateCarViewModel request)
         {

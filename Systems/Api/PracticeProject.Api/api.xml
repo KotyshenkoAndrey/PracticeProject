@@ -47,7 +47,7 @@
             Swagger configuration
             </summary>
         </member>
-        <member name="M:PracticeProject.Api.Configuration.SwaggerConfiguration.AddAppSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection,PracticeProject.Services.Settings.MainSettings,PracticeProject.Services.Settings.SwaggerSettings)">
+        <member name="M:PracticeProject.Api.Configuration.SwaggerConfiguration.AddAppSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection,PracticeProject.Services.Settings.MainSettings,PracticeProject.Services.Settings.SwaggerSettings,PracticeProject.Services.Settings.IdentitySettings)">
             <summary>
             Add OpenAPI to API
             </summary>
