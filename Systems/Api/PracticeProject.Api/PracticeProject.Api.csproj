@@ -38,6 +38,7 @@
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.AuthorizedUsersAccount\PracticeProject.Services.AuthorizedUsersAccount.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Cars\PracticeProject.Services.Cars.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Logger\PracticeProject.Services.Logger.csproj" />
+    <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Seller\PracticeProject.Services.Seller.csproj" />
     <ProjectReference Include="..\..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
     <ProjectReference Include="..\PracticeProject.Api.Settings\PracticeProject.Api.Settings.csproj" />
   </ItemGroup>

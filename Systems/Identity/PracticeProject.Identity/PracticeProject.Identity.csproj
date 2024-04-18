@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\..\Services\PracticeProject.Service.Settings\PracticeProject.Service.Settings.csproj" />
     <ProjectReference Include="..\..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
 </Project>

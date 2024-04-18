@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+namespace PracticeProject.Context.Entities;
 
-namespace PracticeProject.Context.Entities
-{
     public class Seller : BaseEntity
     {
         
@@ -24,4 +23,3 @@ namespace PracticeProject.Context.Entities
 
         public virtual ICollection<ViewingRequest>? ViewingRequestsUser { get; set; }
     }
-}
