@@ -1,0 +1,24 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+@layout MainLayout
+@attribute [Authorize]
+
+<style>
+    .centered-content {
+        text-align: center;
+    }
+</style>
+
+<PageTitle>Home</PageTitle>
+
+<div class="centered-content">
+    <h1>Car sales</h1>
+
+    <MudNavLink Href="/mycar" Match="NavLinkMatch.Prefix" Class="centered-content">My car</MudNavLink>
+
+    <MudNavLink Href="/allcar" Match="NavLinkMatch.Prefix" Class="centered-content">All car</MudNavLink>
+
+    <MudNavLink Href="/myrequest" Match="NavLinkMatch.Prefix" Class="centered-content">My request to view</MudNavLink>
+
+    <MudNavLink Href="/viewcar" Match="NavLinkMatch.Prefix" Class="centered-content">Viewing car</MudNavLink>
+</div>
