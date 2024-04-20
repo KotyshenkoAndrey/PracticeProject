@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
   	<PackageReference Include="Duende.IdentityServer" Version="6.3.6" />
   	<PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.3.6" />
   	<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
@@ -24,9 +31,5 @@
     <ProjectReference Include="..\..\..\Data\PracticeProject.Context\PracticeProject.Context.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Service.Settings\PracticeProject.Service.Settings.csproj" />
     <ProjectReference Include="..\..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 </Project>

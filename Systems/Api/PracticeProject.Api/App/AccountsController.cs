@@ -1,10 +1,11 @@
 ﻿namespace PracticeProject.API.Controllers;
 
 using AutoMapper;
-using  PracticeProject.Services.AuthorizedUsersAccount;
+using PracticeProject.Services.AuthorizedUsersAccount;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
-using PracticeProject.Services.AuthorizedUsersAccount;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -29,5 +30,17 @@ public class AccountsController : ControllerBase
         var user = await userAccountService.Create(request);
         return user;
     }
+    [ApiVersion("1.0")]
+    [ApiExplorerSettings(GroupName = "Identity")]
+    [HttpGet("/getCurrentUser")]
+    public async Task<string> GetCurrentUserName()
+    {
+        ClaimsPrincipal currentUser = User;
+        if (currentUser != null)
+        {
+            var username = await userAccountService.GetUser(currentUser);
+            return username;
+        }
+        return string.Empty;
+    }
 }
-    
