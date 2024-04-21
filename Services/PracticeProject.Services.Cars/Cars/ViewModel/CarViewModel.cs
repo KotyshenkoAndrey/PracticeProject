@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using PracticeProject.Context.Entities;
 using PracticeProject.Context;
-using System;
-using System.Collections.Generic;
-namespace PracticeProject.Services.Cars;
+
+
+namespace PracticeProject.Services.Cars.Models;
 
     public class CarViewModel
     {
+        public Guid CarId { get; set; }
         public string Model { get; set; }
         public int? Year { get; set; }
         public decimal Price { get; set; }
@@ -42,6 +43,7 @@ public class CarViewModelProfile : Profile
             using var db = contextFactory.CreateDbContext();
 
             var car = db.Cars.Include(x => x.Seller).ThenInclude(x => x.ViewingRequestsUser).FirstOrDefault(x => x.Id == source.Id);
+            destination.CarId = car.Uid;
             destination.SellerId = car.Seller.Uid;
             destination.SellerFullName = car.Seller.FullName;
             destination.Model = car.Model;

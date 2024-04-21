@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PracticeProject.Context;
 using PracticeProject.Context.Entities;
 
-namespace PracticeProject.Services.Cars;
+namespace PracticeProject.Services.Cars.Models;
 
 
 

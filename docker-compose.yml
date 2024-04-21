@@ -11,10 +11,10 @@ services:
       dockerfile: Systems/Api/PracticeProject.Api/Dockerfile
     depends_on:
       - practiceproject_postgresql
-      - practiceproject_rabbitMQ
+#      - practiceproject_rabbitMQ
 
-  practiceproject_rabbitMQ:
-    image: rabbitmq:management
+  # practiceproject_rabbitMQ:
+  #   image: rabbitmq:management
   
   # practiceproject_worker:
   #   image: ${DOCKER_REGISTRY-}practiceprojectworker

@@ -2,7 +2,7 @@
 using FluentValidation;
 using PracticeProject.Context.Entities;
 
-namespace PracticeProject.Services.Cars;
+namespace PracticeProject.Services.Cars.Models;
 
 public class UpdateCarViewModel
 {

@@ -1,4 +1,4 @@
-﻿namespace PracticeProject.Services.Cars;
+﻿namespace PracticeProject.Services.Cars.Models;
 
 public class UpdateBusinessModel
 {

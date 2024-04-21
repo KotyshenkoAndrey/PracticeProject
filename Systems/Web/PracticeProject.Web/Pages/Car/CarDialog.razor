@@ -1,0 +1,99 @@
+﻿@using PracticeProject.Web.Cars.Models
+@using PracticeProject.Web.Pages.Car.Services
+@inherits MudComponentBase
+
+@inject ICarService CarService
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="Model" @bind-Value="Model.Model"
+                                  For="@(() => Model.Model)"
+                                  Required="true"
+                                  RequiredError="Model is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect @ref="selectSeller" T="Guid" Label="Seller" @bind-Value="Model.SellerId" For="@(() => Model.SellerId)" Required="true" RequiredError="Seller is required!">
+                        <MudSelectItem T="Guid" Value="Guid.Empty">&nbsp;</MudSelectItem>
+                        @foreach (var seller in Sellers)
+                        {
+                            <MudSelectItem T="Guid" Value="@seller.Id">@seller.FullName</MudSelectItem>
+                        }                        
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Price" @bind-Value="Model.Price"
+                                  For="@(() => Model.Price)"
+                                  Required="true"
+                                  RequiredError="Price is required!">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Year" @bind-Value="Model.Year"
+                                  For="@(() => Model.Year)">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Color" @bind-Value="Model.Color"
+                                  For="@(() => Model.Color)">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Description"
+                                  Lines="5"
+                                  For="@(() => Model.Description)"
+                                  @bind-Value="Model.Description">
+                    </MudTextField>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public Guid? carId { get; set; }
+
+    [Parameter] public CarViewModel Model { get; set; } = new();
+
+    private MudForm form = default!;
+
+    MudSelect<Guid> selectSeller = default!;
+    private List<SellerViewModel> Sellers { get; set; } = new List<SellerViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var sellers = await CarService.GetSellers();
+        Sellers.AddRange(sellers);
+
+        if (carId != null)
+        {
+            var car = await CarService.GetCarById(carId.Value);
+
+            Model.Model = car.Model;
+            Model.Year = car.Year;
+            Model.Price = car.Price;
+            Model.Description = car.Description;
+            Model.Color = car.Color;
+        }
+    }
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

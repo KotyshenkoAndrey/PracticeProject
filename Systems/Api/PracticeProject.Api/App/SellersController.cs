@@ -25,8 +25,8 @@ namespace PracticeProject.Api.App
             this.sellerService = sellerService;
         }
 //        [Authorize(AppScopes.AccessRead)]
-        [HttpGet("")]
-        public async Task<IEnumerable<SellerViewModel>> GetAll()
+        [HttpGet("/getsellers")]
+        public async Task<IEnumerable<SellerViewModel>> GetAllSellers()
         {
             var result = await sellerService.GetAll();
 

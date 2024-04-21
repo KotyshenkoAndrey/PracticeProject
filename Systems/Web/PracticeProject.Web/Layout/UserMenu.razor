@@ -1,14 +1,15 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using PracticeProject.Context.Entities.Identity
+﻿@using PracticeProject.Web.Pages.Auth.Services
+@layout SimpleLayout
 
-@* @inject SignInManager<AuthorizedUsers> SignInManager
-@inject UserManager<AuthorizedUsers> UserManager
-
-@{
-    var user = await UserManager.GetUserAsync(User);
-    var fullName = user.FullName;
-} *@
-
+@inject IAuthService AuthService
+@code {
+    string userName = string.Empty;
+        protected override async Task OnInitializedAsync()   
+    {
+        //userName = await AuthService.GetUserName();
+    }
+}
 <MudMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight" >
-    <MudMenuItem Link="/logout">Logout</MudMenuItem>
+     <MudMenuItem >@userName</MudMenuItem>
+     <MudMenuItem Link="/logout">Logout</MudMenuItem>
 </MudMenu>

@@ -5,6 +5,7 @@ using PracticeProject.Common.Exceptions;
 using PracticeProject.Common.Validator;
 using PracticeProject.Context;
 using PracticeProject.Context.Entities;
+using PracticeProject.Services.Cars.Models;
 
 namespace PracticeProject.Services.Cars;
 
@@ -56,7 +57,8 @@ public class CarService : ICarService
     }
     public async Task<CarViewModel> Create(CreateCarViewModel model)
     {
-        
+        var sf =model.SellerId;
+        var gg = model.Model;
         await createCarModelValidator.CheckAsync(model);
 
         using var context = await dbContextFactory.CreateDbContextAsync();
@@ -67,11 +69,11 @@ public class CarService : ICarService
 
         await context.SaveChangesAsync();
 
-        await action.PublicateNewCar(new CarSendModel()
-        {
-            Id = car.Id,
-            Model = car.Model
-        });
+        //await action.PublicateNewCar(new CarSendModel()
+        //{
+        //    Id = car.Id,
+        //    Model = car.Model
+        //});
 
         return mapper.Map<CarViewModel>(car);
     }

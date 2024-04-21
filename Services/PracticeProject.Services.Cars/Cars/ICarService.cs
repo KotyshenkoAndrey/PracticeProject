@@ -1,6 +1,6 @@
-﻿namespace PracticeProject.Services.Cars;
+﻿using PracticeProject.Services.Cars.Models;
 
-
+namespace PracticeProject.Services.Cars;
 
 public interface ICarService
 {

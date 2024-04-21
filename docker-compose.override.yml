@@ -25,15 +25,15 @@ services:
     env_file:
       - env.api
 
-  practiceproject_rabbitMQ:
-    ports:
-      - "5672:5672"
-      - "5673:5673"
-      - "15672:15672" 
-    networks:
-      - shared_practice
-    volumes:      
-      - ./rabbitmq:/var/lib/rabbitmq
+  # practiceproject_rabbitMQ:
+  #   ports:
+  #     - "5672:5672"
+  #     - "5673:5673"
+  #     - "15672:15672" 
+  #   networks:
+  #     - shared_practice
+  #   volumes:      
+  #     - ./rabbitmq:/var/lib/rabbitmq
 
   # practiceproject_worker:
   #   networks:

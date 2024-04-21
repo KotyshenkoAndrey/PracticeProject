@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using PracticeProject.Web;
 using PracticeProject.Web.Pages.Auth.Services;
+using PracticeProject.Web.Pages.Car.Services;
 using PracticeProject.Web.Providers;
 using PracticeProject.Web.Services;
 
@@ -19,6 +20,7 @@ builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+builder.Services.AddScoped<ICarService, CarService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();

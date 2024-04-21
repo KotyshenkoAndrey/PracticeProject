@@ -36,7 +36,7 @@ public class AccountsController : ControllerBase
     public async Task<string> GetCurrentUserName()
     {
         ClaimsPrincipal currentUser = User;
-        if (currentUser != null)
+        if (currentUser != null && currentUser.Identity.IsAuthenticated)
         {
             var username = await userAccountService.GetUser(currentUser);
             return username;

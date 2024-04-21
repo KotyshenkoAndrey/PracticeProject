@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PracticeProject.Common.Security;
 using PracticeProject.Services.Cars;
+using PracticeProject.Services.Cars.Models;
 using PracticeProject.Services.Logger;
 
 namespace PracticeProject.Api.App
 {
-    [Authorize]
+//    [Authorize]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Car")]
@@ -23,8 +24,8 @@ namespace PracticeProject.Api.App
             this.logger = logger;
             this.carService = carService;
         }
-        [Authorize(AppScopes.AccessRead)]
-        [HttpGet("")]
+        [AllowAnonymous]
+        [HttpGet("/getallcars")]
         public async Task<IEnumerable<CarViewModel>> GetAll()
         {
             var result = await carService.GetAll();
@@ -32,7 +33,7 @@ namespace PracticeProject.Api.App
             return result;
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet("/getcarbyid/{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
             var result = await carService.GetById(id);
@@ -43,8 +44,8 @@ namespace PracticeProject.Api.App
             return Ok(result);
         }
 
-        [Authorize(AppScopes.AccessWrite)]
-        [HttpPost("")]
+        [AllowAnonymous]
+        [HttpPost("/addcar/")]
         public async Task<CarViewModel> Create(CreateCarViewModel request)
         {
             var result = await carService.Create(request);
@@ -52,13 +53,13 @@ namespace PracticeProject.Api.App
             return result;
         }
 
-        [HttpPut("{id:Guid}")]
+        [HttpPut("/editcar/{id:Guid}")]
         public async Task Update([FromRoute] Guid id, UpdateCarViewModel request)
         {
             await carService.Update(id, request);
         }
 
-        [HttpDelete("{id:Guid}")]
+        [HttpDelete("/deletecar/{id:Guid}")]
         public async Task Delete([FromRoute] Guid id)
         {
             await carService.Delete(id);

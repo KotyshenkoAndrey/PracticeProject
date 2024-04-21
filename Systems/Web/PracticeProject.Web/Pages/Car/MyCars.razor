@@ -1,0 +1,68 @@
+﻿@page "/allcar"
+@using PracticeProject.Web.Pages.Car.Services
+@using PracticeProject.Web.Cars.Models
+@using PracticeProject.Web.Components
+@using Microsoft.AspNetCore.Authorization
+
+@inject ICarService CarService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>All cars for sale</PageTitle>
+
+<MudText Typo="Typo.h4" Class="ma-8">AllCars</MudText>
+
+<MudTable Items="@AllCars" Class="ma-8">
+    <ColGroup>
+        <col style="width:190px;" />
+        <col />
+        <col />
+        <col />
+        <col style="width:150px;" />
+    </ColGroup>
+    <ToolBarContent>        
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Model</MudTh>
+        <MudTh>Year</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>Color</MudTh>
+        <MudTh>DatePosted</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>@context.Model</MudTd>
+        <MudTd>@context.Year</MudTd>
+        <MudTd>@context.Price</MudTd>
+        <MudTd>@context.Description</MudTd>
+        <MudTd>@context.Color</MudTd>
+        <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private IEnumerable<CarViewModel> AllCars = new List<CarViewModel>();
+    private string searchString = string.Empty;
+
+    private async Task ReloadData()
+    {
+        AllCars = await CarService.GetAllCars();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+    }
+   
+}
