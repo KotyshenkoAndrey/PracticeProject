@@ -13,9 +13,9 @@
 
 <PageTitle>All cars for sale</PageTitle>
 
-<MudText Typo="Typo.h4" Class="ma-8">AllCars</MudText>
+<MudText Typo="Typo.h4" Class="ma-8">All cars</MudText>
 
-<MudTable Items="@AllCars" Class="ma-8">
+<MudTable Items="@allCars" Class="ma-8">
     <ColGroup>
         <col style="width:190px;" />
         <col />
@@ -45,12 +45,12 @@
 </MudTable>
 
 @code {
-    private IEnumerable<CarViewModel> AllCars = new List<CarViewModel>();
+    private IEnumerable<CarViewModel> allCars = new List<CarViewModel>();
     private string searchString = string.Empty;
 
     private async Task ReloadData()
     {
-        AllCars = await CarService.GetAllCars();
+        allCars = await CarService.GetAllCars();
     }
 
     protected override async Task OnInitializedAsync()
