@@ -30,6 +30,7 @@ public class AccountsController : ControllerBase
         var user = await userAccountService.Create(request);
         return user;
     }
+    [Authorize]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "Identity")]
     [HttpGet("/getCurrentUser")]

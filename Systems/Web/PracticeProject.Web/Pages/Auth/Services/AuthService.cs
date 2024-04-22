@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -52,12 +51,13 @@ public class AuthService : IAuthService
         {
             return loginResult;
         }
+
         if (loginModel.RememberMe)
         {
             await _localStorage.SetItemAsync(LocalStorageAuthTokenKey, loginResult.AccessToken);
             await _localStorage.SetItemAsync(LocalStorageRefreshTokenKey, loginResult.RefreshToken);
-        }    
-        
+        }
+
         ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginModel.Email!);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.AccessToken);
@@ -74,9 +74,11 @@ public class AuthService : IAuthService
 
         _httpClient.DefaultRequestHeaders.Authorization = null;
     }
-
     public async Task<string> GetUserName()
     {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var userName = authState.User.Identity.Name != null ? user.Identity.Name : string.Empty;
         var response = await _httpClient.GetAsync("/getCurrentUser/");
         if (!response.IsSuccessStatusCode)
         {
@@ -84,6 +86,6 @@ public class AuthService : IAuthService
             throw new Exception(content);
         }
 
-        return await response.Content.ReadFromJsonAsync<string>() ?? string.Empty;
+        return userName;
     }
 }

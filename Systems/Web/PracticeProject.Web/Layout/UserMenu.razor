@@ -1,15 +1,15 @@
 ﻿@using PracticeProject.Web.Pages.Auth.Services
-@layout SimpleLayout
 
 @inject IAuthService AuthService
 @code {
     string userName = string.Empty;
-        protected override async Task OnInitializedAsync()   
+    protected override async Task OnInitializedAsync()
     {
-        //userName = await AuthService.GetUserName();
+        userName = await AuthService.GetUserName();
     }
 }
+
 <MudMenu Color="Color.Inherit" Icon="@Icons.Material.Filled.Face" AnchorOrigin="Origin.BottomRight" >
-     <MudMenuItem >@userName</MudMenuItem>
-     <MudMenuItem Link="/logout">Logout</MudMenuItem>
+    <MudMenuItem>@userName</MudMenuItem>
+    <MudMenuItem Link="/logout">Logout</MudMenuItem>
 </MudMenu>
