@@ -1,4 +1,4 @@
-﻿@page "/allcar"
+﻿@page "/mycar"
 @using PracticeProject.Web.Pages.Car.Services
 @using PracticeProject.Web.Cars.Models
 @using PracticeProject.Web.Components
@@ -11,11 +11,11 @@
 @attribute [Authorize]
 @layout MainLayout
 
-<PageTitle>All cars for sale</PageTitle>
+<PageTitle>My cars for sale</PageTitle>
 
-<MudText Typo="Typo.h4" Class="ma-8">AllCars</MudText>
+<MudText Typo="Typo.h4" Class="ma-8">MyCars</MudText>
 
-<MudTable Items="@AllCars" Class="ma-8">
+<MudTable Items="@MyCars" Class="ma-8">
     <ColGroup>
         <col style="width:190px;" />
         <col />
@@ -23,7 +23,9 @@
         <col />
         <col style="width:150px;" />
     </ColGroup>
-    <ToolBarContent>        
+    <ToolBarContent>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCar">Add</MudButton>
+        <MudSpacer />
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
@@ -33,6 +35,8 @@
         <MudTh>Description</MudTh>
         <MudTh>Color</MudTh>
         <MudTh>DatePosted</MudTh>
+        <MudTh></MudTh>
+        <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>@context.Model</MudTd>
@@ -41,16 +45,20 @@
         <MudTd>@context.Description</MudTd>
         <MudTd>@context.Color</MudTd>
         <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => EditCar(context.CarId)"></MudIconButton>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => DeleteCar(context.CarId)"></MudIconButton>
+        </MudTd>
     </RowTemplate>
 </MudTable>
 
 @code {
-    private IEnumerable<CarViewModel> AllCars = new List<CarViewModel>();
+    private IEnumerable<CarViewModel> MyCars = new List<CarViewModel>();
     private string searchString = string.Empty;
 
     private async Task ReloadData()
     {
-        AllCars = await CarService.GetAllCars();
+        MyCars = await CarService.GetAllCars();
     }
 
     protected override async Task OnInitializedAsync()
@@ -64,5 +72,84 @@
             Snackbar.Add(ex.Message, Severity.Error);
         }
     }
-   
+
+    private async Task AddCar()
+    {       
+        var parameters = new DialogParameters { };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+
+        var dialog = await DialogService.ShowAsync<CarDialog>("Add car", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        try
+        {
+            var carModel = ((CarDialog)dialog.Dialog).Model;
+            var createModel = new CreateCarViewModel()
+                {
+                    Model = carModel.Model,
+                    SellerId = carModel.SellerId,
+                    Year = carModel.Year,
+                    Price = carModel.Price,
+                    Description = carModel.Description,
+                    Color = carModel.Color
+                };
+            await CarService.AddCar(createModel);            
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+        finally
+        {
+            await ReloadData();
+        }
+    }
+
+    private async Task EditCar(Guid carId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("carId", carId);
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = DialogService.Show<CarDialog>("Edit car", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        var model = ((CarDialog)dialog.Dialog).Model;
+        var updateModel = new UpdateCarViewModel()
+        {
+            Model = model.Model,
+            Year = model.Year,
+            Price = model.Price,
+            Description = model.Description,
+            Color = model.Color
+        };
+
+        await CarService.EditCar(carId, updateModel);
+        await ReloadData();
+    }
+
+    private async Task DeleteCar(Guid carId)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you really want to delete this car?");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete car", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+
+        await CarService.DeleteCar(carId);
+        await ReloadData();
+    }
 }
