@@ -12,8 +12,8 @@ public class Action : IAction
         this.rabbitMq = rabbitMq;
     }
 
-    public async Task PublicateNewCar(CarSendModel model)
+    public async Task SendMail(EmailSendModel model)
     {
-        await rabbitMq.PushAsync(QueueNames.PUBLICATE_NEW_CAR, model);
+        await rabbitMq.PushAsync(QueueNames.SEND_MAIL, model);
     }
 }

@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\Data\PracticeProject.Context.Entities\PracticeProject.Context.Entities.csproj" />
     <ProjectReference Include="..\..\Data\PracticeProject.Context\PracticeProject.Context.csproj" />
     <ProjectReference Include="..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
+    <ProjectReference Include="..\Practice.Services.Actions\PracticeProject.Services.Actions.csproj" />
   </ItemGroup>
 
 </Project>

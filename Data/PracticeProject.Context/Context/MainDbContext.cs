@@ -11,6 +11,7 @@ public class MainDbContext : IdentityDbContext<AuthorizedUsers, IdentityRole<Gui
     public DbSet<Car> Cars { get; set; }
     public DbSet<Seller> Sellers { get; set; }
     public DbSet<ViewingRequest> ViewingRequests { get; set; }
+    public DbSet<AuthorizedUsers> AuthorizedUsers { get; set; }
 
     public MainDbContext(DbContextOptions<MainDbContext> options) : base(options) { }
 

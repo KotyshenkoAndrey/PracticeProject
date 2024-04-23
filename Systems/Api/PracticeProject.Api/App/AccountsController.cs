@@ -25,10 +25,10 @@ public class AccountsController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<AuthorizedUsersAccountModel> Register([FromQuery] RegisterAuthorizedUsersAccountModel request)
+    public async Task<IActionResult> Register([FromQuery] RegisterAuthorizedUsersAccountModel request)
     {
-        var user = await userAccountService.Create(request);
-        return user;
+        var result = await userAccountService.Create(request);
+        return result;
     }
     [Authorize]
     [ApiVersion("1.0")]
@@ -43,5 +43,11 @@ public class AccountsController : ControllerBase
             return username;
         }
         return string.Empty;
+    }
+    [HttpGet("/confirmemail/{id:int}")]
+    public async Task<IActionResult> ConfirmEmail([FromRoute] int id)
+    {
+        var result = await userAccountService.ConfirmEmail(id);
+        return result;
     }
 }

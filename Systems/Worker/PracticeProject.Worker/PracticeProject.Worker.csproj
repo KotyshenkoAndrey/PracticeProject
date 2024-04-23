@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\..\Services\PracticeProject.Service.Settings\PracticeProject.Service.Settings.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Logger\PracticeProject.Services.Logger.csproj" />
     <ProjectReference Include="..\..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
+    <ProjectReference Include="..\PracticeProject.Worker.Settings\PracticeProject.Worker.Settings.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,6 @@
 {
     public static class QueueNames
     {
-        public const string PUBLICATE_NEW_CAR = "PUBLICATE_NEW_CAR";
+        public const string SEND_MAIL = "SEND_MAIL";
     }
 }

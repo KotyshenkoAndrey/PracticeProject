@@ -5,6 +5,7 @@ namespace PracticeProject.Context.Entities.Identity
     public class AuthorizedUsers : IdentityUser<Guid>
     {
         public string FullName { get; set; }
+        public int? idConfrirmEmail {  get; set; }
         public AuthorizedUsersStatus Status { get; set; }
     }
 }

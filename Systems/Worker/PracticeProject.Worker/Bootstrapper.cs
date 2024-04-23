@@ -3,6 +3,7 @@
 using PracticeProject.Services.RabbitMq;
 using Microsoft.Extensions.DependencyInjection;
 using PracticeProject.Services.Logger;
+using PracticeProject.Worker.Settings;
 
 public static class Bootstrapper
 {
@@ -10,7 +11,8 @@ public static class Bootstrapper
     {
         services
             .AddAppLogger()
-            .AddRabbitMq()            
+            .AddRabbitMq()
+            .AddMailSettings()
             ;
 
         services.AddSingleton<ITaskExecutor, TaskExecutor>();

@@ -21,12 +21,11 @@
                 </MudAlert>
 
                 <MudTextField T="string"
-                                @bind-Value="model.Email" For="@(() => model.Email)"
-                                Label="Email" 
-                                Required="true" 
-                                RequiredError="Email is required!"
-                                HelperText="Input your username"
-                                Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
+                              @bind-Value="model.UserName" For="@(() => model.UserName)"
+                                Label="UserName"
+                                Required="true"
+                                RequiredError="UserName is required!"
+                                HelperText="Input your username"/>
                 <MudTextField @bind-Value="model.Password" For="@(() => model.Password)"
                                 Label="Password" 
                                 HelperText="Input your password"
@@ -46,6 +45,7 @@
                            Color="Color.Primary"
                            Size="Size.Large"
                            ButtonType="ButtonType.Submit">Sign In</MudButton>
+                <MudLink Href="/registration">&nbsp;&nbsp;Register</MudLink>
             </EditForm>
         </MudPaper>
     </MudItem>
@@ -57,8 +57,8 @@
 
     private LoginModel model = new LoginModel()
     {
-        Email = "admin@test.ru",
-        Password = "Passw0rd"
+        UserName = "andrey",
+        Password = "1234"
     };
 
     bool PasswordVisibility;
@@ -90,7 +90,7 @@
         ShowErrors = false;
         Error = "";
         ErrorDetail = "";
-
+        
         var result = await AuthService.Login(model);
 
         if (result.Successful)

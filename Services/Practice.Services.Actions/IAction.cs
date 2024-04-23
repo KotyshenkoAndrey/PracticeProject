@@ -4,5 +4,5 @@ using System.Threading.Tasks;
 
 public interface IAction
 {
-    Task PublicateNewCar(CarSendModel model);
+    Task SendMail(EmailSendModel model);
 }
