@@ -77,15 +77,13 @@ public class AuthService : IAuthService
     public async Task<string> GetUserName()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        var userName = authState.User.Identity.Name != null ? user.Identity.Name : string.Empty;
         var response = await _httpClient.GetAsync("/getCurrentUser/");
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();
             throw new Exception(content);
         }
-
-        return userName;
+        var contents = await response.Content.ReadAsStringAsync();
+        return contents;
     }
 }
