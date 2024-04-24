@@ -88,8 +88,16 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
 
     public async Task<string> GetUser(ClaimsPrincipal claimsPrincipal)
     {
-        var ss = await userManager.GetUserAsync(claimsPrincipal);
-        return ss.UserName;
+        var user = await userManager.GetUserAsync(claimsPrincipal);
+        return user.UserName;
+    }
+
+    public async Task<bool> IsConfirmMail(string username)
+    {
+        var user = await userManager.FindByNameAsync(username);
+        if (user != null) return user.EmailConfirmed;
+        
+        return false;
     }
     public async Task<IActionResult> ConfirmEmail(int id)
     {

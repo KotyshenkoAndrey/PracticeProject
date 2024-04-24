@@ -51,7 +51,13 @@ public class AuthService : IAuthService
         {
             return loginResult;
         }
-
+        var confirmResult = await IsConfirmMail(loginModel.UserName);
+        if (!confirmResult)
+        {
+            loginResult.Successful = false;
+            loginResult.Error = "The mail has not been confirmed";
+            return loginResult;
+        }
         if (loginModel.RememberMe)
         {
             await _localStorage.SetItemAsync(LocalStorageAuthTokenKey, loginResult.AccessToken);
@@ -85,5 +91,26 @@ public class AuthService : IAuthService
         }
         var contents = await response.Content.ReadAsStringAsync();
         return contents;
+    }
+
+    public async Task<bool> IsConfirmMail(string username)
+    {
+        var response = await _httpClient.GetAsync($"/isconfirmmail/?username={username}");
+        if (!response.IsSuccessStatusCode)
+        {
+            var contents = await response.Content.ReadAsStringAsync();
+            throw new Exception(contents);
+        }
+        var content = await response.Content.ReadAsStringAsync();
+        bool result;
+        if (bool.TryParse(content, out result))
+        {
+            return result;
+        }
+        else
+        {
+            throw new Exception("Некорректный формат ответа");
+        }
+
     }
 }

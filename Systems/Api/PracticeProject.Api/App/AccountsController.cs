@@ -50,4 +50,11 @@ public class AccountsController : ControllerBase
         var result = await userAccountService.ConfirmEmail(id);
         return result;
     }
+
+    [HttpGet("/isconfirmmail/")]
+    public async Task<bool> IsConfirmEmail(string username)
+    {
+        var result = await userAccountService.IsConfirmMail(username);
+        return result;
+    }
 }

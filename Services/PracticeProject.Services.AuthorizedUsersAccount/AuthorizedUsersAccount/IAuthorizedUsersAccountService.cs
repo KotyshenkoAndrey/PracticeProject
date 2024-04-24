@@ -10,4 +10,5 @@ public interface IAuthorizedUsersAccountService
     Task<IActionResult> Create(RegisterAuthorizedUsersAccountModel model);
     Task<string> GetUser(ClaimsPrincipal claimsPrincipal);
     Task<IActionResult> ConfirmEmail(int id);
+    Task<bool> IsConfirmMail(string username);
 }
