@@ -7,6 +7,7 @@ public class RegisterAuthorizedUsersAccountModel
     public string Name { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
+    public string? PhoneNumber { get; set; }
 }
 
 public class RegisterUserAccountModelValidator : AbstractValidator<RegisterAuthorizedUsersAccountModel>
@@ -22,5 +23,7 @@ public class RegisterUserAccountModelValidator : AbstractValidator<RegisterAutho
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
             .MaximumLength(50).WithMessage("Password is long.");
+        RuleFor(x => x.PhoneNumber)
+            .MaximumLength(13).WithMessage("Phone number is long.");
     }
 }

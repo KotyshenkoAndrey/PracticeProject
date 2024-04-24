@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -113,4 +114,12 @@ public class AuthService : IAuthService
         }
 
     }
+
+    public async Task<bool> Registration(RegisterAuthorizedUsersAccountModel registrationModel)
+    {
+        var requestContent = JsonContent.Create(registrationModel);
+        var response = await _httpClient.PostAsync("/createaccount/", requestContent);    
+        return response.IsSuccessStatusCode;
+    }
+
 }

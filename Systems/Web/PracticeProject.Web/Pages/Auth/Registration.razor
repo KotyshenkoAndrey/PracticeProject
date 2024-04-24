@@ -1,0 +1,96 @@
+﻿@page "/registration"
+@using PracticeProject.Web.Pages.Auth.Models
+@using PracticeProject.Web.Pages.Auth.Services
+@using System.ComponentModel.DataAnnotations
+@using PracticeProject.Web.Components
+
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+<MudGrid Justify="Justify.Center" Class="pa-10">
+    <MudItem xs="7" sm="4">
+        <MudPaper Class="pa-4">
+            <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+
+                <MudText Typo="Typo.h4" GutterBottom="true" Class="mb-3">Create account</MudText>
+
+                <MudAlert Severity="Severity.Error" Class="@(ShowErrors ? "mb-3 d-block" : "d-none")">
+                    @Error
+                    <br />
+                    @ErrorDetail
+                </MudAlert>
+
+                <MudTextField T="string"
+                              @bind-Value="model.Email" For="@(() => model.Email)"
+                              Label="Email"
+                              Required="true"
+                              RequiredError="Email is required!"
+                              HelperText="Input your email" />
+                <MudTextField @bind-Value="model.Password" For="@(() => model.Password)"
+                              Label="Password"
+                              HelperText="Input your password"
+                              Adornment="Adornment.End"
+                              Required="true"
+                              RequiredError="Password is required!"/>
+                <MudTextField @bind-Value="model.Name" For="@(() => model.Name)"
+                              Label="Full name"
+                              HelperText="Input your full name"
+                              Adornment="Adornment.End"
+                              Required="true"
+                              RequiredError="Full name is required!" />
+                <MudTextField @bind-Value="model.PhoneNumber" For="@(() => model.PhoneNumber)"
+                              Label="Phone number"
+                              HelperText="Input your phone number"
+                              Adornment="Adornment.End"
+                              Required="true"
+                              RequiredError="Phone number is required!" />
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           ButtonType="ButtonType.Submit">Registration</MudButton>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    bool success;
+    MudForm form;
+
+    private bool ShowErrors;
+    private string Error;
+    private string ErrorDetail;
+    private RegisterAuthorizedUsersAccountModel model = new RegisterAuthorizedUsersAccountModel();
+
+    private async Task OnValidSubmit()
+    {
+        var result = await AuthService.Registration(model);
+        //string message = result ? "Registration successful. Confirm your email" : "Registration failed";
+        //await ShowMessageDialog("message");
+        NavigationManager.NavigateTo("/login");
+    }
+
+    // private async Task ShowMessageDialog(string message)
+    // {
+    //     var options = new DialogOptions { CloseOnEscapeKey = true };
+    //     var dialog = DialogService.Show<InformationDialog>("Adding new application", options);
+    //     var result = await dialog.Result;
+    //     var isCancelled = result.Cancelled;
+
+    /// /////////////////Второй пример, не отображаются оба
+    // var parameters = new DialogParameters();
+    // parameters.Add("ContentText", "Do you really want to delete this car?");
+    // parameters.Add("ButtonText", "Delete");
+    // parameters.Add("Color", Color.Error);
+
+    // var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+    // var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete car", parameters, options);
+    // var result = await dialog.Result;
+
+    // if (result.Canceled)
+    //     return;
+    // }
+}

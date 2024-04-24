@@ -24,8 +24,8 @@ public class AccountsController : ControllerBase
         this.userAccountService = userAccountService;
     }
 
-    [HttpPost("")]
-    public async Task<IActionResult> Register([FromQuery] RegisterAuthorizedUsersAccountModel request)
+    [HttpPost("/createaccount")]
+    public async Task<IActionResult> Register(RegisterAuthorizedUsersAccountModel request)
     {
         var result = await userAccountService.Create(request);
         return result;

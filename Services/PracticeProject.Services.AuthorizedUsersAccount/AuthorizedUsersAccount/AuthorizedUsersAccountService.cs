@@ -79,8 +79,17 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
         {
             Receiver = model.Email,
             Subject = "Confirm email",
-            Body = "To confirm registration, follow the link: " +
-                   settings.PublicUrl + "/confirmemail/" + idConfirmEmail
+            Body = $"Dear {registrationUser.FullName}, welcome to the service!" +
+                   $"\r\nYou have registered with the car sales service." +
+                   $" To activate your account, you need to confirm your email address." +
+                   $" After confirmation, you will be able to log in to the site using your personal username and password." +
+                   $"\r\n" +
+                   $"\r\nYour login details:"+
+                   $"\r\nYour username: {registrationUser.UserName}" +
+                   $"\r\nYour password: {model.Password}" +
+                   $"\r\nThe link to confirm the mail: {settings.PublicUrl}/confirmemail/{idConfirmEmail}" +
+                   $"\r\n" +
+                   $"\r\nIf you have not registered with the service, just ignore this email."
         });
 
         return new OkObjectResult("Email confirmation request created");
