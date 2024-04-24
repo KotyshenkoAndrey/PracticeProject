@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PracticeProject.Common.Security;
+using PracticeProject.Services.AuthorizedUsersAccount;
 using PracticeProject.Services.Cars;
 using PracticeProject.Services.Cars.Models;
 using PracticeProject.Services.Logger;
+using System.Security.Claims;
 
 namespace PracticeProject.Api.App
 {
@@ -18,11 +20,15 @@ namespace PracticeProject.Api.App
     {
         private readonly IAppLogger logger;
         private readonly ICarService carService;
+        private readonly IAuthorizedUsersAccountService userAccountService;
 
-        public CarController(IAppLogger logger, ICarService carService)
+        public CarController(IAppLogger logger
+            , ICarService carService
+            , IAuthorizedUsersAccountService userAccountService)
         {
             this.logger = logger;
             this.carService = carService;
+            this.userAccountService = userAccountService;
         }
         [AllowAnonymous]
         [HttpGet("/getallcars")]
@@ -63,6 +69,19 @@ namespace PracticeProject.Api.App
         public async Task Delete([FromRoute] Guid id)
         {
             await carService.Delete(id);
+        }
+
+        [HttpGet("/getmycars/")]
+        public async Task<IEnumerable<CarViewModel>> GetMyCars()
+        {
+            ClaimsPrincipal currentUser = User;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                var username = await userAccountService.GetUser(currentUser);
+                var result = await carService.GetMyCars(username);
+                return result;
+            }
+            return Enumerable.Empty<CarViewModel>();                    
         }
     }
 }

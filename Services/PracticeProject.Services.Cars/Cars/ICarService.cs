@@ -9,6 +9,7 @@ public interface ICarService
     Task<CarViewModel> Create(CreateCarViewModel model);
     Task Update(Guid id, UpdateCarViewModel model);
     Task Delete(Guid id);
+    Task<IEnumerable<CarViewModel>> GetMyCars(string username);
 
 }
 

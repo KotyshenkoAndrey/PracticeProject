@@ -10,4 +10,5 @@ public interface ICarService
     Task EditCar(Guid carId, UpdateCarViewModel model);
     Task DeleteCar(Guid carId);
     Task<IEnumerable<SellerViewModel>> GetSellers();
+    Task<IEnumerable<CarViewModel>> GetMyCars();
 }

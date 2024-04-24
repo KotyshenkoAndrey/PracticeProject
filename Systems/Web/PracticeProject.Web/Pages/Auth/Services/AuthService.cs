@@ -112,7 +112,6 @@ public class AuthService : IAuthService
         {
             throw new Exception("Некорректный формат ответа");
         }
-
     }
 
     public async Task<bool> Registration(RegisterAuthorizedUsersAccountModel registrationModel)

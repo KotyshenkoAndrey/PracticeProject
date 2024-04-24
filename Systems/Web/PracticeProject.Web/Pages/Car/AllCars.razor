@@ -13,44 +13,75 @@
 
 <PageTitle>All cars for sale</PageTitle>
 
-<MudText Typo="Typo.h4" Class="ma-8">All cars</MudText>
+<div class="text-center">
+    <MudText Typo="Typo.h4" Class="ma-8">All cars</MudText>
+</div>
 
-<MudTable Items="@allCars" Class="ma-8">
-    <ColGroup>
-        <col style="width:190px;" />
-        <col />
-        <col />
-        <col />
-        <col style="width:150px;" />
-    </ColGroup>
-    <ToolBarContent>        
-        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
-    </ToolBarContent>
-    <HeaderContent>
-        <MudTh>Model</MudTh>
-        <MudTh>Year</MudTh>
-        <MudTh>Price</MudTh>
-        <MudTh>Description</MudTh>
-        <MudTh>Color</MudTh>
-        <MudTh>DatePosted</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd>@context.Model</MudTd>
-        <MudTd>@context.Year</MudTd>
-        <MudTd>@context.Price</MudTd>
-        <MudTd>@context.Description</MudTd>
-        <MudTd>@context.Color</MudTd>
-        <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
-    </RowTemplate>
-</MudTable>
+<MudGrid Justify="Justify.Center" Class="mr-50" >
+    <MudItem xs="2" sm="3" Class="mr-50">
+        <hr style="height: 15px; border: none; background-color: transparent; margin: 0px 0;" />
+        <MudDateRangePicker Label="Start and end date" DateRange="dateRange" DateRangeChanged="@(value => { dateRange = value;})" DateFormat="yyyy-MM-dd" Class="mr-2" />
+
+
+        <MudTextField T="string" @bind-Value="minPrice" Label="Min price" Class="mr-2"></MudTextField>
+        <MudTextField T="string" @bind-Value="maxPrice" Label="Max price" Class="mr-2"></MudTextField>
+        <MudTextField T="string" @bind-Value="color" Label="Color" Class="mr-2"></MudTextField>
+
+        <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="ApplyFilter">Apply filter</MudButton>
+        <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Large" OnClick="ResetFilter">Clear filter</MudButton>
+    </MudItem>
+    <MudItem xs="5" sm="9">
+        <MudTable Items="@filteredCars" Class="ma-2">
+            <ColGroup>
+                <col style="width:200px;" />
+                <col style="width:70px;" />
+                <col style="width:110px;" />
+                <col />
+                <col style="width:60px;" />
+                <col style="width:5px;" />
+            </ColGroup>
+            <ToolBarContent>
+                <MudTextField @bind-Value="searchString" Placeholder="Search by model" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" OnKeyUp="HandleSearchInput" OnBlur="HandleBlur"></MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Model</MudTh>
+                <MudTh>Year</MudTh>
+                <MudTh>Price</MudTh>
+                <MudTh>Description</MudTh>
+                <MudTh>Color</MudTh>
+                <MudTh>DatePosted</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Model</MudTd>
+                <MudTd>@context.Year</MudTd>
+                <MudTd>@context.Price</MudTd>
+                <MudTd>@context.Description</MudTd>
+                <MudTd>@context.Color</MudTd>
+                <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => ApplyFilter()"></MudIconButton>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>
 
 @code {
+    private DateRange dateRange = new DateRange();
+    private string minPrice = "";
+    private string maxPrice = "";
+    private string color = "";
     private IEnumerable<CarViewModel> allCars = new List<CarViewModel>();
+    private IEnumerable<CarViewModel> filteredCars = new List<CarViewModel>();
     private string searchString = string.Empty;
 
     private async Task ReloadData()
     {
         allCars = await CarService.GetAllCars();
+        ApplyFilter();
     }
 
     protected override async Task OnInitializedAsync()
@@ -63,6 +94,65 @@
         {
             Snackbar.Add(ex.Message, Severity.Error);
         }
+    }
+    private async Task HandleSearchInput(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            ApplyFilter();
+        }        
+    }
+
+    private void HandleBlur(FocusEventArgs e)
+    {
+        ApplyFilter();
+    }
+    private void ApplyFilter()
+    {
+        filteredCars = allCars;
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            filteredCars = filteredCars.Where(c => c.Model.Contains(searchString)).ToList();
+        }
+        if (dateRange.Start != null)
+        {
+            filteredCars = filteredCars.Where(c => c.DatePosted >= dateRange.Start).ToList();
+        }
+        if (dateRange.End != null)
+        {
+            filteredCars = filteredCars.Where(c => c.DatePosted <= dateRange.End).ToList();
+        }
+        if (!string.IsNullOrEmpty(minPrice))
+        {
+            decimal minPriceValue;
+            if (decimal.TryParse(minPrice, out minPriceValue))
+            {
+                filteredCars = filteredCars.Where(c => c.Price >= minPriceValue).ToList();
+            }
+        }
+        if (!string.IsNullOrEmpty(maxPrice))
+        {
+            decimal maxPriceValue;
+            if (decimal.TryParse(maxPrice, out maxPriceValue))
+            {
+                filteredCars = filteredCars.Where(c => c.Price <= maxPriceValue).ToList();
+            }
+
+        }
+        if (!string.IsNullOrEmpty(color))
+        {
+            filteredCars = filteredCars.Where(c => c.Color.ToLower().Contains(color.ToLower())).ToList();
+        }
+    }
+
+    private void ResetFilter()
+    {
+        dateRange = new DateRange();
+        minPrice = "";
+        maxPrice = "";
+        color = "";
+        filteredCars = allCars;
+        ApplyFilter();
     }
    
 }

@@ -96,5 +96,19 @@ public class CarService : ICarService
 
         await context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<CarViewModel>> GetMyCars(string username)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        var cars = await context.Cars
+            .Include(s => s.Seller)
+            .Include(s => s.ViewingRequestsCar)
+            .Where(s => s.Seller.Username == username)
+            .ToListAsync();
+
+        var res = mapper.Map<IEnumerable<CarViewModel>>(cars);
+        return res;
+    }
 }
 

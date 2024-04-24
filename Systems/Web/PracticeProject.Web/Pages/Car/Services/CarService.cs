@@ -1,10 +1,18 @@
 ﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components.Authorization;
 using PracticeProject.Web.Cars.Models;
-
 namespace PracticeProject.Web.Pages.Car.Services;
 
-public class CarService(HttpClient httpClient) : ICarService
+public class CarService : ICarService
 {
+    private readonly HttpClient httpClient;
+    private readonly AuthenticationStateProvider authenticationStateProvider;
+
+    public CarService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider)
+    {
+        this.httpClient = httpClient;
+        this.authenticationStateProvider = authenticationStateProvider;
+    }
     public async Task<IEnumerable<CarViewModel>> GetAllCars()
     {
         var response = await httpClient.GetAsync("/getallcars");
@@ -27,6 +35,19 @@ public class CarService(HttpClient httpClient) : ICarService
         }
 
         return await response.Content.ReadFromJsonAsync<CarViewModel>() ?? new();
+    }
+
+    public async Task<IEnumerable<CarViewModel>> GetMyCars()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var response = await httpClient.GetAsync("/getmycars");
+        if (!response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            throw new Exception(content);
+        }
+
+        return await response.Content.ReadFromJsonAsync<IEnumerable<CarViewModel>>() ?? new List<CarViewModel>();
     }
 
     public async Task AddCar(CreateCarViewModel model)
