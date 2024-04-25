@@ -75,9 +75,11 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
             throw new ProcessException($"Creating user account is wrong. {string.Join(", ", result.Errors.Select(s => s.Description))}");
         
         var registrationUser = await userManager.FindByEmailAsync(model.Email);
+        List<string> email = new List<string>();
+        email.Add(model.Email);
         await action.SendMail(new EmailSendModel()
         {
-            Receiver = model.Email,
+            Receiver = email,
             Subject = "Confirm email",
             Body = $"Dear {registrationUser.FullName}, welcome to the service!" +
                    $"\r\nYou have registered with the car sales service." +
@@ -99,6 +101,14 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
     {
         var user = await userManager.GetUserAsync(claimsPrincipal);
         return user.UserName;
+    }
+
+    public async Task<Guid> GetGuidUser(ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await userManager.GetUserAsync(claimsPrincipal);
+        using var context = await dbContextFactory.CreateDbContextAsync();
+        var userGuid = context.Sellers.Where(c=> c.Username == user.UserName).Select(s=>s.Uid).FirstOrDefault();
+        return userGuid;
     }
 
     public async Task<bool> IsConfirmMail(string username)
@@ -124,9 +134,10 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
                 FullName = userToConfirm.FullName
             });
             await context.SaveChangesAsync();
+            List<string> email = [userToConfirm.Email];
             await action.SendMail(new EmailSendModel()
             {
-                Receiver = userToConfirm.Email,
+                Receiver = email,
                 Subject = "Email confirmation",
                 Body = "Email was confirmed successfully"
             });

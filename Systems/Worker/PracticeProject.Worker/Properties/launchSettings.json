@@ -2,17 +2,17 @@
   "profiles": {
     "http": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchBrowser": false,
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5258"
+      "applicationUrl": "http://localhost:10001"
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

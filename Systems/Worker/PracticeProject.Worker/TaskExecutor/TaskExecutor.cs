@@ -29,11 +29,15 @@ public class TaskExecutor : ITaskExecutor
     {
         rabbitMq.Subscribe<EmailSendModel>(QueueNames.SEND_MAIL, async data =>
         {
-            logger.Information($"Send mail::: {data.Receiver}");
+            logger.Information($"Send mail::: {data.Receiver.Count}    {data.Receiver.ToString}");
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress(mailSettings.From);
-            mail.To.Add(new MailAddress(data.Receiver));
+            mail.To.Add(new MailAddress(data.Receiver[0]));
+            for (int i = 1; i < data.Receiver.Count; ++i)
+            {
+                mail.CC.Add(new MailAddress(data.Receiver[i]));
+            }
             mail.Subject = data.Subject;
             mail.Body = data.Body;
 

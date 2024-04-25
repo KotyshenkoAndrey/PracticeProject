@@ -54,6 +54,13 @@ namespace PracticeProject.Api.App
         [HttpPost("/addcar/")]
         public async Task<CarViewModel> Create(CreateCarViewModel request)
         {
+            ClaimsPrincipal currentUser = User;
+            Guid sellerId = Guid.Empty;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                sellerId = await userAccountService.GetGuidUser(currentUser);
+            }
+            request.SellerId = sellerId;
             var result = await carService.Create(request);
 
             return result;

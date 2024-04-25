@@ -47,6 +47,8 @@
         <col style="width:5px;" />
     </ColGroup>
     <ToolBarContent>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCar">Add</MudButton>
+        <MudSpacer />
         <MudTextField @bind-Value="searchString" Placeholder="Search by model" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" OnKeyUp="HandleSearchInput" OnBlur="HandleBlur"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
@@ -85,7 +87,7 @@
 
     private async Task ReloadData()
     {
-        allMyCars = await CarService.GetAllCars();
+        allMyCars = await CarService.GetMyCars();
         ApplyFilter();
     }
 

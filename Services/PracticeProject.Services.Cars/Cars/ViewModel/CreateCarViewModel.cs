@@ -51,15 +51,6 @@ public class CreateCarModelValidator : AbstractValidator<CreateCarViewModel>
     public CreateCarModelValidator(IDbContextFactory<MainDbContext> contextFactory)
     {
 
-        RuleFor(x => x.SellerId)
-            .NotEmpty().WithMessage("Seller is required")
-            .Must((id) =>
-            {
-                using var context = contextFactory.CreateDbContext();
-                var found = context.Sellers.Any(a => a.Uid == id);
-                return found;
-            }).WithMessage("Seller not found");
-
         RuleFor(x => x.Model)
             .NotEmpty().WithMessage("Model is required")
             .MinimumLength(1).WithMessage("Minimum length: 1")

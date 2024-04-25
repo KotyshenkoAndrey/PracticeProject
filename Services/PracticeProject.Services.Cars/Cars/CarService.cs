@@ -20,11 +20,13 @@ public class CarService : ICarService
     private readonly IModelValidator<CreateCarViewModel> createCarModelValidator;
     private readonly IModelValidator<UpdateCarViewModel> updateCarModelValidator;
     private readonly IHubContext<CarHub> hubContext;
+    private readonly IAction action;
 
     public CarService(IDbContextFactory<MainDbContext> dbContextFactory, IMapper mapper
         ,IModelValidator<CreateCarViewModel> createCarModelValidator
         ,IModelValidator<UpdateCarViewModel> updateCarModelValidator
         ,IHubContext<CarHub> hubContext
+        ,IAction action
         )
     {
         this.dbContextFactory = dbContextFactory;
@@ -32,6 +34,7 @@ public class CarService : ICarService
         this.createCarModelValidator = createCarModelValidator;
         this.updateCarModelValidator = updateCarModelValidator;
         this.hubContext = hubContext;
+        this.action = action;
     }
    public async Task<IEnumerable<CarViewModel>> GetAll()
     {
@@ -59,8 +62,6 @@ public class CarService : ICarService
     }
     public async Task<CarViewModel> Create(CreateCarViewModel model)
     {
-        var sf =model.SellerId;
-        var gg = model.Model;
         await createCarModelValidator.CheckAsync(model);
 
         using var context = await dbContextFactory.CreateDbContextAsync();
@@ -73,6 +74,19 @@ public class CarService : ICarService
         if (savedChanges > 0)
         {
             await SendCommandForUpdateData();
+            var sellersEmail = context.Sellers.Select(s => s.Email).ToList();
+            var sellerFullName = context.Sellers.Where(x => x.Id == car.SellerId).Select(s => s.FullName).FirstOrDefault();
+            await action.SendMail(new EmailSendModel()
+            {
+                Receiver = sellersEmail,
+                Subject = "A new car sale announcement has been published",
+                Body = $"A new car has been published on the service. Its characteristics:" +
+                $"\r\nModel:" + (string.IsNullOrEmpty(car.Model) ? "Not specified" : car.Model) +
+                $"\r\nYear:" + (string.IsNullOrEmpty(car.Year.ToString()) ? "Not specified" : car.Year.ToString()) +
+                $"\r\nColor:" + (string.IsNullOrEmpty(car.Color) ? "Not specified" : car.Color) +
+                $"\r\nFull name of the seller:" + (string.IsNullOrEmpty(sellerFullName) ? "Not specified" : sellerFullName)
+            });
+
         }
         return mapper.Map<CarViewModel>(car);
     }
