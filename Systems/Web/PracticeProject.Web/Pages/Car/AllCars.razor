@@ -3,10 +3,13 @@
 @using PracticeProject.Web.Cars.Models
 @using PracticeProject.Web.Components
 @using Microsoft.AspNetCore.Authorization
+@using PracticeProject.Web.Pages.Hub
 
 @inject ICarService CarService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject SignalRService signalRService
+@inject AppState appState
 
 @attribute [Authorize]
 @layout MainLayout
@@ -26,6 +29,7 @@
         <MudTextField T="string" @bind-Value="minPrice" Label="Min price" Class="mr-2"></MudTextField>
         <MudTextField T="string" @bind-Value="maxPrice" Label="Max price" Class="mr-2"></MudTextField>
         <MudTextField T="string" @bind-Value="color" Label="Color" Class="mr-2"></MudTextField>
+        <MudTextField T="string" @bind-Value="sellerFullName" Label="Seller full name" Class="mr-2"></MudTextField>
 
         <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
         <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="ApplyFilter">Apply filter</MudButton>
@@ -35,12 +39,14 @@
     <MudItem xs="5" sm="9">
         <MudTable Items="@filteredCars" Class="ma-2">
             <ColGroup>
-                <col style="width:200px;" />
-                <col style="width:70px;" />
-                <col style="width:110px;" />
-                <col />
-                <col style="width:60px;" />
-                <col style="width:5px;" />
+                <col style="width:50px;" />  @* Model *@
+                <col style="width:70px;" />  @* year *@
+                <col style="width:110px;" /> @* price *@
+                <col />                      @* description *@
+                <col style="width:150px;" />  @* fullname *@
+                <col style="width:5px;" />   @* Color *@
+                <col style="width:5px;" />   @* DatePosted *@
+                <col style="width:5px;" />   @* Button *@
             </ColGroup>
             <ToolBarContent>
                 <MudTextField @bind-Value="searchString" Placeholder="Search by model" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" OnKeyUp="HandleSearchInput" OnBlur="HandleBlur"></MudTextField>
@@ -50,6 +56,7 @@
                 <MudTh>Year</MudTh>
                 <MudTh>Price</MudTh>
                 <MudTh>Description</MudTh>
+                <MudTh>Seller full name</MudTh>
                 <MudTh>Color</MudTh>
                 <MudTh>DatePosted</MudTh>
                 <MudTh></MudTh>
@@ -59,6 +66,7 @@
                 <MudTd>@context.Year</MudTd>
                 <MudTd>@context.Price</MudTd>
                 <MudTd>@context.Description</MudTd>
+                <MudTd>@context.SellerFullName</MudTd>
                 <MudTd>@context.Color</MudTd>
                 <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
                 <MudTd>
@@ -74,6 +82,7 @@
     private string minPrice = "";
     private string maxPrice = "";
     private string color = "";
+    private string sellerFullName = "";
     private IEnumerable<CarViewModel> allCars = new List<CarViewModel>();
     private IEnumerable<CarViewModel> filteredCars = new List<CarViewModel>();
     private string searchString = string.Empty;
@@ -94,7 +103,21 @@
         {
             Snackbar.Add(ex.Message, Severity.Error);
         }
+
+        appState.OnChange += NeedUpdate;
+
+        if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+        { 
+            await signalRService.StartConnection();
+        }        
     }
+
+    private async void NeedUpdate()
+    {
+        await ReloadData();
+        StateHasChanged();
+    }
+
     private async Task HandleSearchInput(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
@@ -143,6 +166,10 @@
         {
             filteredCars = filteredCars.Where(c => c.Color.ToLower().Contains(color.ToLower())).ToList();
         }
+        if (!string.IsNullOrEmpty(sellerFullName))
+        {
+            filteredCars = filteredCars.Where(c => c.SellerFullName.ToLower().Contains(sellerFullName.ToLower())).ToList();
+        }
     }
 
     private void ResetFilter()
@@ -151,6 +178,7 @@
         minPrice = "";
         maxPrice = "";
         color = "";
+        sellerFullName = "";
         filteredCars = allCars;
         ApplyFilter();
     }

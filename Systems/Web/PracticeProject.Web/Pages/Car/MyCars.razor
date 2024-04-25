@@ -3,10 +3,13 @@
 @using PracticeProject.Web.Cars.Models
 @using PracticeProject.Web.Components
 @using Microsoft.AspNetCore.Authorization
+@using PracticeProject.Web.Pages.Hub
 
 @inject ICarService CarService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject SignalRService signalRService
+@inject AppState appState
 
 @attribute [Authorize]
 @layout MainLayout
@@ -96,6 +99,18 @@
         {
             Snackbar.Add(ex.Message, Severity.Error);
         }
+        appState.OnChange += NeedUpdate;
+
+        if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+        {
+            await signalRService.StartConnection();
+        }
+    }
+
+    private async void NeedUpdate()
+    {
+        await ReloadData();
+        StateHasChanged();
     }
     private async Task HandleSearchInput(KeyboardEventArgs e)
     {

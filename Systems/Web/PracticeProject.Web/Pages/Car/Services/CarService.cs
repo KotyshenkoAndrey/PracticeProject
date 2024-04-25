@@ -16,6 +16,7 @@ public class CarService : ICarService
     public async Task<IEnumerable<CarViewModel>> GetAllCars()
     {
         var response = await httpClient.GetAsync("/getallcars");
+
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();

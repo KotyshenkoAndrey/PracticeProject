@@ -6,6 +6,8 @@ using PracticeProject.Common.Validator;
 using PracticeProject.Context;
 using PracticeProject.Context.Entities;
 using PracticeProject.Services.Cars.Models;
+using Microsoft.AspNetCore.SignalR;
+using PracticeProject.Services.AppCarHub;
 
 namespace PracticeProject.Services.Cars;
 
@@ -17,16 +19,19 @@ public class CarService : ICarService
     private readonly IMapper mapper;
     private readonly IModelValidator<CreateCarViewModel> createCarModelValidator;
     private readonly IModelValidator<UpdateCarViewModel> updateCarModelValidator;
+    private readonly IHubContext<CarHub> hubContext;
 
     public CarService(IDbContextFactory<MainDbContext> dbContextFactory, IMapper mapper
         ,IModelValidator<CreateCarViewModel> createCarModelValidator
         ,IModelValidator<UpdateCarViewModel> updateCarModelValidator
+        ,IHubContext<CarHub> hubContext
         )
     {
         this.dbContextFactory = dbContextFactory;
         this.mapper = mapper;
         this.createCarModelValidator = createCarModelValidator;
         this.updateCarModelValidator = updateCarModelValidator;
+        this.hubContext = hubContext;
     }
    public async Task<IEnumerable<CarViewModel>> GetAll()
     {
@@ -64,8 +69,11 @@ public class CarService : ICarService
 
         await context.Cars.AddAsync(car);
 
-        await context.SaveChangesAsync();
-
+        int savedChanges = await context.SaveChangesAsync();
+        if (savedChanges > 0)
+        {
+            await SendCommandForUpdateData();
+        }
         return mapper.Map<CarViewModel>(car);
     }
     public async Task Update(Guid id, UpdateCarViewModel model)
@@ -81,7 +89,11 @@ public class CarService : ICarService
 
         context.Cars.Update(car);
 
-        await context.SaveChangesAsync();
+        int savedChanges = await context.SaveChangesAsync();
+        if (savedChanges > 0)
+        {
+            await SendCommandForUpdateData();
+        }
     }
     public async Task Delete(Guid id)
     {
@@ -94,7 +106,11 @@ public class CarService : ICarService
 
         context.Cars.Remove(car);
 
-        await context.SaveChangesAsync();
+        int savedChanges = await context.SaveChangesAsync();
+        if (savedChanges > 0)
+        {
+            await SendCommandForUpdateData();
+        }
     }
 
     public async Task<IEnumerable<CarViewModel>> GetMyCars(string username)
@@ -109,6 +125,11 @@ public class CarService : ICarService
 
         var res = mapper.Map<IEnumerable<CarViewModel>>(cars);
         return res;
+    }
+
+    public async Task SendCommandForUpdateData()
+    {
+        await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","555");
     }
 }
 

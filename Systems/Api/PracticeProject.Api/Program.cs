@@ -5,6 +5,7 @@ using PracticeProject.Services.Settings;
 using PracticeProject.Settings;
 using PracticeProject.Context;
 using PracticeProject.Context.Seeder;
+using PracticeProject.Services.AppCarHub;
 
 var mainSettings = Settings.Load<MainSettings>("Main");
 var logSettings = Settings.Load<LogSettings>("Log");
@@ -23,6 +24,7 @@ services.AddHttpContextAccessor();
 services.AddAppDbContext(builder.Configuration);
 
 services.AddAppCors();
+services.AddSignalR();
 
 services.AddAppHealthChecks();
 
@@ -56,5 +58,7 @@ app.UseAppAuth();
 
 DbInitializer.Execute(app.Services);
 DbSeeder.Execute(app.Services);
+
+app.MapHub<CarHub>("/carHub");
 
 app.Run();
