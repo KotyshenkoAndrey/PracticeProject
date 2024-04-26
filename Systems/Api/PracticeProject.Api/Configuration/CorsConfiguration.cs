@@ -16,8 +16,15 @@ public static class CorsConfiguration
     /// <param name="services">Services collection</param>
     public static IServiceCollection AddAppCors(this IServiceCollection services)
     {
-        services.AddCors();
-
+        services.AddCors(builder =>
+        {
+            builder.AddDefaultPolicy(pol =>
+            {
+                pol.AllowAnyHeader();
+                pol.AllowAnyMethod();
+                pol.AllowAnyOrigin();
+            });
+        });
         return services;
     }
 
@@ -27,22 +34,6 @@ public static class CorsConfiguration
     /// <param name="app">Application</param>
     public static void UseAppCors(this WebApplication app)
     {
-        var mainSettings = app.Services.GetService<MainSettings>();
-
-        var origins = mainSettings.AllowedOrigins.Split(',', ';').Select(x => x.Trim())
-            .Where(x => !string.IsNullOrEmpty(x)).ToArray();
-
-        app.UseCors(pol =>
-        {
-            pol.AllowAnyHeader();
-            pol.AllowAnyMethod();
-            pol.AllowCredentials();
-            if (origins.Length > 0)
-                pol.WithOrigins(origins);
-            else
-                pol.SetIsOriginAllowed(origin => true);
-
-            pol.WithExposedHeaders("Content-Disposition");
-        });
+        app.UseCors();
     }
 }

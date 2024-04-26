@@ -1,4 +1,6 @@
-﻿namespace PracticeProject.Web;
+﻿using static System.Net.WebRequestMethods;
+
+namespace PracticeProject.Web;
 
 public class Settings
 {

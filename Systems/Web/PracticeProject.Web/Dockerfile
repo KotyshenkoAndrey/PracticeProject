@@ -16,4 +16,4 @@ WORKDIR /var/www/web
 
 COPY --from=publish /app/publish/wwwroot .
 COPY Systems/Web/PracticeProject.Web/nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
+EXPOSE 8080

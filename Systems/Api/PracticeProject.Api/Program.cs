@@ -18,12 +18,12 @@ builder.AddAppLogger(mainSettings, logSettings);
 
 var services = builder.Services;
 // Add services to the container.
-
+services.AddAppCors();
 services.AddHttpContextAccessor();
 
 services.AddAppDbContext(builder.Configuration);
 
-services.AddAppCors();
+
 services.AddSignalR();
 
 services.AddAppHealthChecks();
@@ -44,6 +44,7 @@ services.RegisterServices(builder.Configuration);
 
 
 var app = builder.Build();
+app.UseAppCors();
 var logger = app.Services.GetRequiredService<IAppLogger>();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -51,7 +52,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 app.UseAppHealthChecks();
-app.UseAppCors();
+
 app.UseAppControllerAndViews();
 app.UseAppSwagger();
 app.UseAppAuth();
