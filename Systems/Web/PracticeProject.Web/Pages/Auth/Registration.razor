@@ -45,7 +45,7 @@
                               Adornment="Adornment.End"
                               Required="true"
                               RequiredError="Phone number is required!" />
-
+                <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Primary"
                            Size="Size.Large"
@@ -67,30 +67,21 @@
     private async Task OnValidSubmit()
     {
         var result = await AuthService.Registration(model);
-        //string message = result ? "Registration successful. Confirm your email" : "Registration failed";
-        //await ShowMessageDialog("message");
+        string message = result ? "Registration successful. Confirm your email" : "Registration failed";
+        await ShowMessageDialog(message);
         NavigationManager.NavigateTo("/login");
     }
 
-    // private async Task ShowMessageDialog(string message)
-    // {
-    //     var options = new DialogOptions { CloseOnEscapeKey = true };
-    //     var dialog = DialogService.Show<InformationDialog>("Adding new application", options);
-    //     var result = await dialog.Result;
-    //     var isCancelled = result.Cancelled;
+    private async Task ShowMessageDialog(string message)
+    {
+        var parametersInfo = new DialogParameters();
+        parametersInfo.Add("ContentText", message);
+        parametersInfo.Add("Color", Color.Info);
 
-    /// /////////////////Второй пример, не отображаются оба
-    // var parameters = new DialogParameters();
-    // parameters.Add("ContentText", "Do you really want to delete this car?");
-    // parameters.Add("ButtonText", "Delete");
-    // parameters.Add("Color", Color.Error);
+        var optionsInfo = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-    // var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+        var dialogInfo = await DialogService.ShowAsync<InformationDialog>("Information", parametersInfo, optionsInfo);
+        var resultInfo = await dialogInfo.Result;
 
-    // var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Delete car", parameters, options);
-    // var result = await dialog.Result;
-
-    // if (result.Canceled)
-    //     return;
-    // }
+    }
 }

@@ -70,7 +70,7 @@
                 <MudTd>@context.Color</MudTd>
                 <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
                 <MudTd>
-                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => ApplyFilter()"></MudIconButton>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => SendViewRequest()"></MudIconButton>
                 </MudTd>
             </RowTemplate>
         </MudTable>
@@ -182,5 +182,28 @@
         filteredCars = allCars;
         ApplyFilter();
     }
-   
+    private async void SendViewRequest()
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Do you want to send a request to view the car?");
+        parameters.Add("ButtonText", "OK");
+        parameters.Add("Color", Color.Info);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = await DialogService.ShowAsync<ConfirmationDialog>("Send view request", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
+        var parametersInfo = new DialogParameters();
+        parameters.Add("ContentText", "Request to view the car has been successful");
+        parameters.Add("Color", Color.Info);
+
+        var optionsInfo = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialogInfo = await DialogService.ShowAsync<InformationDialog>("Information", parameters, options);
+        var resultInfo = await dialog.Result;
+//        await CarService.DeleteCar(carId);
+    }
 }
