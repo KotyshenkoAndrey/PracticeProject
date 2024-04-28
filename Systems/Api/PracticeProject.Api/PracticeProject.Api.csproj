@@ -40,6 +40,7 @@
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Hub\PracticeProject.Services.Hub.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Logger\PracticeProject.Services.Logger.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Seller\PracticeProject.Services.Seller.csproj" />
+    <ProjectReference Include="..\..\..\Services\PracticeProject.Services.ViewRequest\PracticeProject.Services.ViewRequest.csproj" />
     <ProjectReference Include="..\..\..\Shared\PracticeProject.Common\PracticeProject.Common.csproj" />
     <ProjectReference Include="..\PracticeProject.Api.Settings\PracticeProject.Api.Settings.csproj" />
   </ItemGroup>

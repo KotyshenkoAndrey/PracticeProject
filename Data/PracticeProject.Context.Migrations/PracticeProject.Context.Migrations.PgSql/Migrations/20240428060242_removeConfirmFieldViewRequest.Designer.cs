@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PracticeProject.Context;
@@ -11,9 +12,11 @@ using PracticeProject.Context;
 namespace PracticeProject.Context.Migrations.PgSql.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240428060242_removeConfirmFieldViewRequest")]
+    partial class removeConfirmFieldViewRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,16 +326,13 @@ namespace PracticeProject.Context.Migrations.PgSql.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("LastModifedDate")
+                    b.Property<DateTime>("LastModifedDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("RequestDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SenderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StateConfirmed")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("Uid")
@@ -420,7 +420,7 @@ namespace PracticeProject.Context.Migrations.PgSql.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PracticeProject.Context.Entities.Seller", "Sender")
+                    b.HasOne("PracticeProject.Context.Entities.Seller", "Seller")
                         .WithMany("ViewingRequestsUser")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -428,7 +428,7 @@ namespace PracticeProject.Context.Migrations.PgSql.Migrations
 
                     b.Navigation("Car");
 
-                    b.Navigation("Sender");
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("PracticeProject.Context.Entities.Car", b =>

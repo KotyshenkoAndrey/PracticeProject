@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using PracticeProject.Web;
-using System.Net.NetworkInformation;
 
 
 namespace PracticeProject.Web.Pages.Hub;

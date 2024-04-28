@@ -9,12 +9,14 @@ namespace PracticeProject.Context.Entities
         public virtual Car Car { get; set; }
 
         [Required]
-        public int SellerId { get; set; }
-        public virtual Seller Seller { get; set; }
+        public int SenderId { get; set; }
+        public virtual Seller Sender { get; set; }
 
-        public bool IsConfirmed { get; set; }
+        public StatusConfirm StateConfirmed { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime RequestDate { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime? LastModifedDate { get; set; }
     }
 }

@@ -197,13 +197,13 @@
         if (result.Canceled)
             return;
         var parametersInfo = new DialogParameters();
-        parameters.Add("ContentText", "Request to view the car has been successful");
-        parameters.Add("Color", Color.Info);
+        parametersInfo.Add("ContentText", "Request to view the car has been successful");
+        parametersInfo.Add("Color", Color.Info);
 
         var optionsInfo = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        var dialogInfo = await DialogService.ShowAsync<InformationDialog>("Information", parameters, options);
-        var resultInfo = await dialog.Result;
+        var dialogInfo = await DialogService.ShowAsync<InformationDialog>("Information", parametersInfo, optionsInfo);
+        var resultInfo = await dialogInfo.Result;
 //        await CarService.DeleteCar(carId);
     }
 }

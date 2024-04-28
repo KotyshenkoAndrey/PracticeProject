@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\PracticeProject.Context\PracticeProject.Context.csproj" />
+    <ProjectReference Include="..\Practice.Services.Actions\PracticeProject.Services.Actions.csproj" />
+    <ProjectReference Include="..\PracticeProject.Services.Hub\PracticeProject.Services.Hub.csproj" />
+  </ItemGroup>
+
+</Project>

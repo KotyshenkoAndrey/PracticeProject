@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PracticeProject.Context.Entities
 {
@@ -17,7 +12,7 @@ namespace PracticeProject.Context.Entities
                         .Property(e => e.RequestDate)
                         .HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
             modelBuilder.Entity<ViewingRequest>().HasOne(x => x.Car).WithMany(s => s.ViewingRequestsCar).HasForeignKey(x => x.CarId).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ViewingRequest>().HasOne(x => x.Seller).WithMany(s => s.ViewingRequestsUser).HasForeignKey(x => x.SellerId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ViewingRequest>().HasOne(x => x.Sender).WithMany(s => s.ViewingRequestsUser).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -8,6 +8,7 @@ using PracticeProject.Context.Seeder;
 using PracticeProject.Services.RabbitMq;
 using PracticeProject.Services.Actions;
 using PracticeProject.Services.AuthorizedUsers;
+using PracticeProject.Services.ViewingRequests;
 
 public static class Bootstrapper
 {
@@ -24,6 +25,7 @@ public static class Bootstrapper
             .AddApiSpecialSettings()
             .AddCarService()
             .AddSellerService()
+            .AddViewRequstService()
             .AddRabbitMq()
             .AddActions()
             .AddAuthorizedUsersAccountService()

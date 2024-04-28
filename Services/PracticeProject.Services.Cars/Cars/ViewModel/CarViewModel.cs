@@ -52,7 +52,7 @@ public class CarViewModelProfile : Profile
             destination.Description = car.Description;
             destination.Color = car.Color;
             destination.DatePosted = car.DatePosted;
-            destination.ViewingRequestsCar = car.ViewingRequestsCar?.Select(x => x.Seller.FullName).ToList();
+            destination.ViewingRequestsCar = car.ViewingRequestsCar?.Select(x => x.Sender.FullName).ToList();
         }
     }
 }

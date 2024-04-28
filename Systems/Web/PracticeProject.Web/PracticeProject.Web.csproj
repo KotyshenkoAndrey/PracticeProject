@@ -26,4 +26,8 @@
       <None Include="Pages\Car\MyCars.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Pages\ViewRequest\" />
+    </ItemGroup>
+
 </Project>
