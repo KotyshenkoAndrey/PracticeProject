@@ -10,6 +10,6 @@ public interface IViewRequest
     Task<IEnumerable<ViewingRequestViewModel>> GetIncomingRequests(Guid sellerId);
     Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests(Guid sellerId);
     Task ChangeStatusRequest(Guid idRequest, StatusConfirm state);
-    Task<int> getCountNewRequest(Guid sellerUid);
+    Task<int> getCountNewRequest(Guid sellerUid); 
 }
 

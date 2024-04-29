@@ -1,4 +1,4 @@
-﻿@page "/incomingrequest"
+﻿@page "/outgoingrequests"
 @using PracticeProject.Web.Pages.Car.Services
 @using PracticeProject.Web.Cars.Models
 @using PracticeProject.Web.Components
@@ -17,20 +17,20 @@
 @attribute [Authorize]
 @layout MainLayout
 
-<PageTitle>Incoming request</PageTitle>
+<PageTitle>Outgoing request</PageTitle>
 
 <div class="text-center">
-    <MudText Typo="Typo.h4" Class="ma-8">Incoming request</MudText>
+    <MudText Typo="Typo.h4" Class="ma-8">Outgoing request</MudText>
 </div>
 
-<MudGrid Justify="Justify.Center" Class="mr-50" >
+<MudGrid Justify="Justify.Center" Class="mr-50">
     <MudItem xs="2" sm="3" Class="mr-50">
         <hr style="height: 35px; border: none; background-color: transparent; margin: 0px 0;" />
         <MudText Typo="Typo.h5">Filter by status</MudText>
         <hr style="height: 15px; border: none; background-color: transparent; margin: 0px 0;" />
         <MudCheckBox @bind-Checked="isWaitSelected" Label="Wait" Color="Color.Primary" />
-        <MudCheckBox @bind-Checked="isApproveSelected" Label="Approve" Color="Color.Primary"/>
-        <MudCheckBox @bind-Checked="isRejectedSelected" Label="Rejected" Color="Color.Primary"/>
+        <MudCheckBox @bind-Checked="isApproveSelected" Label="Approve" Color="Color.Primary" />
+        <MudCheckBox @bind-Checked="isRejectedSelected" Label="Rejected" Color="Color.Primary" />
         <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="ApplyFilter">Apply filter</MudButton>
         <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Large" OnClick="ResetFilter">Clear filter</MudButton>
@@ -43,22 +43,21 @@
             <HeaderContent>
                 <MudTh>CarModel</MudTh>
                 <MudTh>Year</MudTh>
-                <MudTh>Sender fullname</MudTh>
+                <MudTh>Seller fullname</MudTh>
                 <MudTh>RequestDate</MudTh>
                 <MudTh>State request</MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>@context.Model</MudTd>
-                <MudTd>@(context.Year == 0 ? "Не указан" : context.Year.ToString())</MudTd>
-                <MudTd>@context.SenderFullName</MudTd>
+                <MudTd>@(context.Year == 0 ? "Not specified" : context.Year.ToString())</MudTd>
+                <MudTd>@context.SellerFullName</MudTd>
                 <MudTd>@context.RequestDate.ToShortDateString()</MudTd>
                 <MudTd>@context.StateConfirmed</MudTd>
                 <MudTd>
-                    @if (context.StateConfirmed == StatusConfirm.Wait)
+                    @if (context.StateConfirmed == StatusConfirm.Approve)
                     {
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ChangeStatusRequest(context.RequestId, true))">Approve</MudButton>
-                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(() => ChangeStatusRequest(context.RequestId, false))">Reject</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ViewSellerContact(context.RequestId))">Viewing contact information</MudButton>
                     }
                 </MudTd>
             </RowTemplate>
@@ -77,7 +76,7 @@
 
     private async Task ReloadData()
     {
-        allRequest = await ViewRequestService.GetIncomingRequests();
+        allRequest = await ViewRequestService.GetOutgoingRequests();
         ApplyFilter();
     }
 
@@ -95,9 +94,9 @@
         incomingViewState.OnChange += NeedUpdate;
 
         if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
-        { 
+        {
             await signalRService.StartConnection();
-        }        
+        }
     }
 
     private async void NeedUpdate()
@@ -111,7 +110,7 @@
         if (e.Key == "Enter")
         {
             ApplyFilter();
-        }        
+        }
     }
 
     private void HandleBlur(FocusEventArgs e)
@@ -143,17 +142,16 @@
         ApplyFilter();
     }
 
-    private async Task ChangeStatusRequest(Guid requestId, bool status)
-    {
-        StatusConfirm state;
-        state = status ? StatusConfirm.Approve : StatusConfirm.Rejected;
+    private async Task ViewSellerContact(Guid requestId)
+    {        
+        var parameters = new DialogParameters();
+        parameters.Add("requestId", requestId);
 
-        var sendModel = new SendEditStateModel()
-        {
-            idRequest = requestId,
-            state = state
-        };
-        bool result = await ViewRequestService.ChangeStatusRequest(sendModel);
-        ReloadData();
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Large, FullWidth = true };
+        var dialog = DialogService.Show<SellerInfo>("Seller info", parameters, options);
+        var result = await dialog.Result;
+
+        if (result.Canceled)
+            return;
     }
 }

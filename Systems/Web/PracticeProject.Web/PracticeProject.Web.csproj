@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Pages\ViewRequest\IncomingRequest.razor" />
+      <None Include="Pages\ViewRequest\IncomingRequests.razor" />
       <None Include="Pages\Car\CarDialog.razor" />
       <None Include="Pages\Car\MyCars.razor" />
     </ItemGroup>

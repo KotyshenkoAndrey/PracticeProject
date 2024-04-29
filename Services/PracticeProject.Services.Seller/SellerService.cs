@@ -5,6 +5,8 @@ using PracticeProject.Common.Exceptions;
 using PracticeProject.Common.Validator;
 using PracticeProject.Context;
 using PracticeProject.Context.Entities;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace PracticeProject.Services.Sellers;
 
@@ -93,6 +95,26 @@ public class SellerService : ISellerService
         context.Sellers.Remove(seller);
 
         await context.SaveChangesAsync();
+    }
+
+    public async Task<SellerProfileModel> GetUserProfile(Guid userUid)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+
+        var seller = await context.Sellers.Where(x => x.Uid == userUid).FirstOrDefaultAsync();
+        var sellerModel = mapper.Map<SellerProfileModel>(seller);
+        return sellerModel;
+    }
+    public async Task<SellerProfileModel> GetSellerContact(Guid requestId)//Guid for compatibility with swagger
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+        var viewingRequest = await context.ViewingRequests
+            .Include(vr => vr.Car) 
+            .ThenInclude(c => c.Seller) 
+            .FirstOrDefaultAsync(vr => vr.Uid == requestId);
+        var seller = viewingRequest.Car.Seller;
+        var sellerModel = mapper.Map<SellerProfileModel>(seller);
+        return sellerModel;
     }
 }
 

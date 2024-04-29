@@ -1,0 +1,58 @@
+﻿@using PracticeProject.Web.Cars.Models
+@using PracticeProject.Web.Pages.Car.Services
+@using PracticeProject.Web.Pages.ViewRequest.Services
+@inherits MudComponentBase
+
+@inject IViewRequestService ViewRequestService
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="Model" @ref="form">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField Label="Email" @bind-Value="Model.Email" ReadOnly="true" For="@(() => Model.Email)" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Full Name" @bind-Value="Model.FullName" ReadOnly="true" For="@(() => Model.FullName)" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="Phone Number" @bind-Value="Model.PhoneNumber" ReadOnly="true" For="@(() => Model.PhoneNumber)" />
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public Guid requestId { get; set; }
+
+    [Parameter] public SellerProfileModel Model { get; set; } = new();
+
+    private MudForm form = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (requestId != null)
+        {
+            var seller = await ViewRequestService.GetSellerContact(requestId);
+
+            Model.FullName = seller.FullName;
+            Model.Email = seller.Email;
+            Model.PhoneNumber = seller.PhoneNumber;
+        }
+    }
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+    }
+}

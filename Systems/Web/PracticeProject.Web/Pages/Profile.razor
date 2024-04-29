@@ -1,0 +1,39 @@
+﻿@page "/profile/"
+@using PracticeProject.Web.Cars.Models
+@using PracticeProject.Web.Pages.ViewRequest.Services
+@using Microsoft.AspNetCore.Authorization
+
+
+@attribute [Authorize]
+@layout MainLayout
+@inject IViewRequestService ViewRequestService
+
+<h3>User Profile</h3>
+
+@if (seller != null)
+{
+    <dl>
+        <dt>Email:</dt>
+        <dd>@seller.Email</dd>
+        <dt>Full Name:</dt>
+        <dd>@seller.FullName</dd>
+        @if (!string.IsNullOrEmpty(seller.PhoneNumber))
+        {
+            <dt>Phone Number:</dt>
+            <dd>@seller.PhoneNumber</dd>
+        }
+    </dl>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private SellerProfileModel seller;
+
+    protected override async Task OnInitializedAsync()
+    {
+        seller = await ViewRequestService.GetUserProfile();
+    }
+}

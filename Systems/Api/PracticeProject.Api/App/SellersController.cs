@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PracticeProject.Common.Security;
+using PracticeProject.Services.AuthorizedUsersAccount;
 using PracticeProject.Services.Cars;
 using PracticeProject.Services.Logger;
 using PracticeProject.Services.Sellers;
+using System.Security.Claims;
 
 namespace PracticeProject.Api.App
 {
@@ -18,11 +20,14 @@ namespace PracticeProject.Api.App
     {
         private readonly IAppLogger logger;
         private readonly ISellerService sellerService;
+        private IAuthorizedUsersAccountService userAccountService;
 
-        public SellerController(IAppLogger logger, ISellerService sellerService)
+        public SellerController(IAppLogger logger, ISellerService sellerService
+            , IAuthorizedUsersAccountService userAccountService)
         {
             this.logger = logger;
             this.sellerService = sellerService;
+            this.userAccountService = userAccountService;
         }
 //        [Authorize(AppScopes.AccessRead)]
         [HttpGet("/getsellers")]
@@ -63,6 +68,25 @@ namespace PracticeProject.Api.App
         public async Task Delete([FromRoute] Guid id)
         {
             await sellerService.Delete(id);
+        }
+
+        [HttpGet("/getuserprofile/")]
+        public async Task<SellerProfileModel> GetUserProfile()
+        {
+            ClaimsPrincipal currentUser = User;
+            Guid userUid = Guid.Empty;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                userUid = await userAccountService.GetGuidUser(currentUser);
+            }
+            return await sellerService.GetUserProfile(userUid);
+        }
+
+        [HttpGet("/getsellercontact/{requestId:Guid}")]
+        public async Task<SellerProfileModel> GetSellerContact([FromRoute] Guid requestId)
+        {
+            var result = await sellerService.GetSellerContact(requestId);
+            return result;
         }
     }
 }

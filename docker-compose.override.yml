@@ -1,44 +1,44 @@
 version: '3.4'
 
 services:
-  # practiceproject_postgresql:
-  #    environment:
-  #     - POSTGRES_NAME=postgres
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=Passw0rd
-  #    ports:
-  #     - "5432:5432"
-  #    networks:
-  #     - shared_practice
-  #    volumes:      
-  #     - ~/.docker-conf/postgresql/data/:/var/lib/postgresql/data
+  practiceproject_postgresql:
+     environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Passw0rd
+     ports:
+      - "5432:5432"
+     networks:
+      - shared_practice
+     volumes:      
+      - ~/.docker-conf/postgresql/data/:/var/lib/postgresql/data
 
 
-  # practiceproject_rabbitMQ:
-  #   ports:
-  #     - "5672:5672"
-  #     - "5673:5673"
-  #     - "15672:15672" 
-  #   networks:
-  #     - shared_practice
-  #   volumes:      
-  #     - ./rabbitmq:/var/lib/rabbitmq
+  practiceproject_rabbitMQ:
+    ports:
+      - "5672:5672"
+      - "5673:5673"
+      - "15672:15672" 
+    networks:
+      - shared_practice
+    volumes:      
+      - ./rabbitmq:/var/lib/rabbitmq
 
-  # practiceproject_worker:
-  #   networks:
-  #     - shared_practice
-  #   ports:
-  #     - "10001:8080"
-  #   env_file:
-  #     - env.worker
+  practiceproject_worker:
+    networks:
+      - shared_practice
+    ports:
+      - "10001:8080"
+    env_file:
+      - env.worker
 
-  # practiceproject_worker_1:
-  #   networks:
-  #     - shared_practice
-  #   ports:
-  #     - "10002:8080"
-  #   env_file:
-  #     - env.worker
+  practiceproject_worker_1:
+    networks:
+      - shared_practice
+    ports:
+      - "10002:8080"
+    env_file:
+      - env.worker
   
   practiceproject_api:
     ports:
@@ -49,13 +49,13 @@ services:
       - env.api
 
 
-  # practiceproject_identity:
-  #   networks:
-  #     - shared_practice
-  #   ports:
-  #     - "10003:8080"
-  #   env_file:
-  #     - env.identity
+  practiceproject_identity:
+    networks:
+      - shared_practice
+    ports:
+      - "10003:8080"
+    env_file:
+      - env.identity
  
   practiceproject_web:
    networks:

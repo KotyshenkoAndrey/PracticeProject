@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components.Authorization;
+using PracticeProject.Web.Cars.Models;
 using PracticeProject.Web.ViewRequest.Models;
 
 namespace PracticeProject.Web.Pages.ViewRequest.Services;
@@ -56,5 +57,18 @@ public class ViewRequestService : IViewRequestService
         var response = await httpClient.GetAsync("/getcountnewrequest/");
         var content = await response.Content.ReadAsStringAsync();
         return Convert.ToInt32(content);
+    }
+    public async Task<SellerProfileModel> GetSellerContact(Guid requestId)
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var response = await httpClient.GetAsync($"/getsellercontact/{requestId}");
+        return await response.Content.ReadFromJsonAsync<SellerProfileModel>() ?? new SellerProfileModel();
+    }
+
+    public async Task<SellerProfileModel> GetUserProfile()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var response = await httpClient.GetAsync("/getuserprofile/");
+        return await response.Content.ReadFromJsonAsync<SellerProfileModel>() ?? new SellerProfileModel();
     }
 }

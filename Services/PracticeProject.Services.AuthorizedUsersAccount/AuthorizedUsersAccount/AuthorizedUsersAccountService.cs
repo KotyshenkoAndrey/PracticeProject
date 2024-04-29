@@ -65,7 +65,7 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
             UserName = model.Email.Split("@")[0],
             Email = model.Email,
             EmailConfirmed = false,
-            PhoneNumber = null,
+            PhoneNumber = model.PhoneNumber,
             PhoneNumberConfirmed = false,
             idConfrirmEmail = idConfirmEmail,
         };
@@ -131,7 +131,8 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
                 Uid = Guid.NewGuid(),
                 Username = userToConfirm.UserName,
                 Email  = userToConfirm.Email,
-                FullName = userToConfirm.FullName
+                FullName = userToConfirm.FullName,
+                PhoneNumber = userToConfirm.PhoneNumber
             });
             await context.SaveChangesAsync();
             List<string> email = [userToConfirm.Email];

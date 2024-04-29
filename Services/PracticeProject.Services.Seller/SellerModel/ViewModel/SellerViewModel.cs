@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PracticeProject.Context.Entities;
 using PracticeProject.Context;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 namespace PracticeProject.Services.Sellers;
 
     public class SellerViewModel

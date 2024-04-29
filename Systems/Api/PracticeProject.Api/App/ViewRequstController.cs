@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PracticeProject.Services.AuthorizedUsersAccount;
 using PracticeProject.Services.Logger;
+using PracticeProject.Services.Sellers;
 using PracticeProject.Services.ViewingRequests;
 using PracticeProject.Services.ViewingRequests.Models;
 using PracticeProject.Services.ViewRequest.BusinessModels;
@@ -56,7 +57,7 @@ namespace PracticeProject.Api.App
             return result;
         }
 
-        [HttpGet("/getoutgoingrequest")]
+        [HttpGet("/getoutgoingrequests")]
         public async Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests(Guid sellerId)//Guid for compatibility with swagger
         {          
             ClaimsPrincipal currentUser = User;

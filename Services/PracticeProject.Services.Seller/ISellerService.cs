@@ -11,6 +11,8 @@ public interface ISellerService
     Task<SellerViewModel> Create(CreateSellerViewModel model);
     Task Update(Guid id, UpdateSellerViewModel model);
     Task Delete(Guid id);
+    Task<SellerProfileModel> GetUserProfile(Guid userUid);
+    Task<SellerProfileModel> GetSellerContact(Guid requestId);
 
 }
 
