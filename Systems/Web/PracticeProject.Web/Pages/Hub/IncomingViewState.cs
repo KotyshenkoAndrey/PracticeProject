@@ -1,6 +1,6 @@
 ﻿namespace PracticeProject.Web.Pages.Hub
 {
-    public class AppState
+    public class IncomingViewState
     {
         public event Action OnChange;
 

@@ -12,7 +12,7 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject SignalRService signalRService
-@inject AppState appState
+@inject CarState carState
 
 @attribute [Authorize]
 @layout MainLayout
@@ -107,7 +107,7 @@
             Snackbar.Add(ex.Message, Severity.Error);
         }
 
-        appState.OnChange += NeedUpdate;
+        carState.OnChange += NeedUpdate;
 
         if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
         { 

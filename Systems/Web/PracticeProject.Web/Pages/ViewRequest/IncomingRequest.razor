@@ -12,7 +12,7 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject SignalRService signalRService
-@inject AppState appState
+@inject IncomingViewState incomingViewState
 
 @attribute [Authorize]
 @layout MainLayout
@@ -43,7 +43,7 @@
             <HeaderContent>
                 <MudTh>CarModel</MudTh>
                 <MudTh>Year</MudTh>
-                <MudTh>Seller fullname</MudTh>
+                <MudTh>Sender fullname</MudTh>
                 <MudTh>RequestDate</MudTh>
                 <MudTh>State request</MudTh>
                 <MudTh></MudTh>
@@ -51,7 +51,7 @@
             <RowTemplate>
                 <MudTd>@context.Model</MudTd>
                 <MudTd>@(context.Year == 0 ? "Не указан" : context.Year.ToString())</MudTd>
-                <MudTd>@context.SellerFullName</MudTd>
+                <MudTd>@context.SenderFullName</MudTd>
                 <MudTd>@context.RequestDate.ToShortDateString()</MudTd>
                 <MudTd>@context.StateConfirmed</MudTd>
                 <MudTd>
@@ -92,7 +92,7 @@
             Snackbar.Add(ex.Message, Severity.Error);
         }
 
-        appState.OnChange += NeedUpdate;
+        incomingViewState.OnChange += NeedUpdate;
 
         if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
         { 

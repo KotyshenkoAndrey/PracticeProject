@@ -6,18 +6,23 @@ namespace PracticeProject.Web.Pages.Hub;
 public class SignalRService
 {
     private HubConnection hubConnection;
-    private AppState appState;
-    public SignalRService(NavigationManager navigationManager, AppState appState)
+    private CarState carState;
+    private IncomingViewState incomingViewState;
+    public SignalRService(NavigationManager navigationManager, CarState carState, IncomingViewState incomingViewState)
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(navigationManager.ToAbsoluteUri(Settings.ApiRoot + "/carHub"))
+            .WithUrl(navigationManager.ToAbsoluteUri(Settings.ApiRoot + "/appHub"))
             .Build();
-        this.appState = appState;
+        this.carState = carState;
         hubConnection.On<string>("ReceiveCarUpdate", (message) =>
         {
-            this.appState.AddMessage(message);
+            this.carState.AddMessage(message);
         });
-        
+        this.incomingViewState = incomingViewState;
+        hubConnection.On<string>("ReceiveIncomeRequestUpdate", (message) =>
+        {
+            this.incomingViewState.AddMessage(message);
+        });
     }
 
     public async Task StartConnection()

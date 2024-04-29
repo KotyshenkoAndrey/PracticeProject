@@ -13,6 +13,7 @@ namespace PracticeProject.Services.ViewingRequests.Models;
     public string Model { get; set; }
     public int Year { get; set; }
     public int SenderId { get; set; }
+    public string SenderFullName { get; set; }
     public string SellerFullName { get; set; }
     public StatusConfirm StateConfirmed { get; set; }
     public DateTime RequestDate { get; set; }
@@ -51,6 +52,7 @@ public class ViewingRequestViewModelProfile : Profile
             destination.RequestDate = request.RequestDate;
             destination.LastModifedDate = request.LastModifedDate;
             destination.SellerFullName = request.Car.Seller.FullName;
+            destination.SenderFullName = request.Sender.FullName;
         }
     }
 }

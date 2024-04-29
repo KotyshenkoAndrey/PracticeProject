@@ -18,7 +18,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(Settings.ApiRoot) });
-builder.Services.AddSingleton<AppState>();
+builder.Services.AddSingleton<CarState>();
+builder.Services.AddSingleton<IncomingViewState>();
 builder.Services.AddScoped<SignalRService>();
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();

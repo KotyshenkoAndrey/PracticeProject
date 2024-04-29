@@ -1,39 +1,22 @@
 version: '3.4'
 
-services:
-  practiceproject_postgresql:
-    image: postgres:14.1
-  
+services: 
   practiceproject_api:
     image: ${DOCKER_REGISTRY-}practiceprojectapi
     build:
       context: .
       dockerfile: Systems/Api/PracticeProject.Api/Dockerfile
-    depends_on:
-      - practiceproject_postgresql
-      - practiceproject_rabbitMQ
-
-  practiceproject_rabbitMQ:
-    image: rabbitmq:management
-  
-  practiceproject_worker:
-    image: ${DOCKER_REGISTRY-}practiceprojectworker
-    build:
-      context: .
-      dockerfile: Systems/Worker/PracticeProject.Worker/Dockerfile
-    depends_on:
-      - practiceproject_postgresql
-      - practiceproject_rabbitMQ
-      - practiceproject_api
+    # # # # # depends_on:
+    # # # # #   - practiceproject_postgresql
    
-  practiceproject_identity:
-    image: ${DOCKER_REGISTRY-}practiceprojectidentity
-    build:
-      context: .
-      dockerfile: Systems/Identity/PracticeProject.Identity/Dockerfile
-    depends_on:
-      - practiceproject_postgresql
-      - practiceproject_api
+  # practiceproject_identity:
+  #   image: ${DOCKER_REGISTRY-}practiceprojectidentity
+  #   build:
+  #     context: .
+  #     dockerfile: Systems/Identity/PracticeProject.Identity/Dockerfile
+   # # # # depends_on:
+      # # # # - practiceproject_postgresql
+      # # # # - practiceproject_api
  
   practiceproject_web:
     image: ${DOCKER_REGISTRY-}practiceprojectweb
@@ -44,6 +27,23 @@ services:
     # # #   - practiceproject_postgresql
     # # #   - practiceproject_rabbitMQ
     # # #   - practiceproject_api
+
+      # practiceproject_rabbitMQ:
+  #   image: rabbitmq:management
+  
+  # practiceproject_worker:
+  #   image: ${DOCKER_REGISTRY-}practiceprojectworker
+  #   build:
+  #     context: .
+  #     dockerfile: Systems/Worker/PracticeProject.Worker/Dockerfile
+  #   depends_on:
+  #     - practiceproject_postgresql
+  #     - practiceproject_rabbitMQ
+  #     - practiceproject_api
+
+    # practiceproject_postgresql:
+  #   image: postgres:14.1
+
 
   # practiceproject_worker_1:
   #   image: ${DOCKER_REGISTRY-}practiceprojectworker

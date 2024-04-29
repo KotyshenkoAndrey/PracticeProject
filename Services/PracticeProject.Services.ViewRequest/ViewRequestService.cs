@@ -35,17 +35,23 @@ public class ViewRequestService : IViewRequest
         
 
         var request = mapper.Map<ViewingRequest>(model);
+        var ownerCar = context.Cars
+                                .Where(c => c.Id == request.CarId)
+                                .Select(c => c.Seller.Uid)
+                                .FirstOrDefault();
+        if (model.SenderId == ownerCar) { return new OkObjectResult("You cannot create a request to view your cars"); }
+
         var chckDuplicate = await context.ViewingRequests
                                          .FirstOrDefaultAsync(vr => vr.CarId == request.CarId &&
                                                               vr.SenderId == request.SenderId &&
-                                                              vr.StateConfirmed == StatusConfirm.Wait);
+                                                              vr.StateConfirmed != StatusConfirm.Rejected);
         if (chckDuplicate != null) { return new OkObjectResult("There is already a viewing request for this car"); }
         await context.ViewingRequests.AddAsync(request);        
         
         int savedChanges = await context.SaveChangesAsync();
         if (savedChanges > 0)
         {
-            //            await SendCommandForUpdateData();
+            await SendCommandForUpdateData();
             var ownerEmail = context.Cars
                 .Where(c => c.Id == request.CarId)
                 .Select(c => c.Seller.Email)
@@ -103,7 +109,33 @@ public class ViewRequestService : IViewRequest
 
         var viewingRequests = await context.ViewingRequests.FirstOrDefaultAsync(s => s.Uid == idRequest);
         viewingRequests.StateConfirmed = state;
-        await context.SaveChangesAsync();
+        viewingRequests.LastModifedDate = DateTime.UtcNow;
+
+        int savedChanges = await context.SaveChangesAsync();
+        if (savedChanges > 0)
+        {
+            await SendCommandForUpdateData();
+            var ownerEmail = context.Sellers
+                .Where(c => c.Id == viewingRequests.SenderId)
+                .Select(c => c.Email)
+                .FirstOrDefault();
+            var carModel = context.Cars
+                .Where(c => c.Id == viewingRequests.CarId)
+                .Select(c => c.Model)
+                .FirstOrDefault();
+            var emailList = new List<string> { ownerEmail };
+            await action.SendMail(new EmailSendModel()
+            {
+                Receiver = emailList,
+                Subject = state == StatusConfirm.Approve ? $"Request to view the car {carModel} confirmed" :
+                                                           $"Request to view the car {carModel} rejected",
+                Body =state == StatusConfirm.Approve ?$"The seller has confirmed your request to view the car." +
+                $"                                      \r\nThe seller's contact details are available for viewing." :
+
+                                                        "The seller declined your request to view the car." +
+                                                        "\r\nYou can request the seller's details again."
+            });
+        }
     }
     public async Task<int> getCountNewRequest(Guid sellerUid)
     {
