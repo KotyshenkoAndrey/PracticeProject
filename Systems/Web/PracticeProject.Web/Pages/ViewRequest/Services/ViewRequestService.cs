@@ -49,5 +49,12 @@ public class ViewRequestService : IViewRequestService
         var response = await httpClient.PostAsync("/changestatusrequest/", requestContent);
 
         return response.IsSuccessStatusCode;
-    }   
+    }
+    public async Task<int> GetCountNewRequest()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var response = await httpClient.GetAsync("/getcountnewrequest/");
+        var content = await response.Content.ReadAsStringAsync();
+        return Convert.ToInt32(content);
+    }
 }

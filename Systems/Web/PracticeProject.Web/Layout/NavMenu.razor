@@ -1,8 +1,60 @@
-﻿<MudNavMenu>
+﻿@using PracticeProject.Web.Pages.Car.Services
+@using PracticeProject.Web.Cars.Models
+@using PracticeProject.Web.Components
+@using Microsoft.AspNetCore.Authorization
+@using PracticeProject.Web.Pages.Hub
+@using PracticeProject.Web.Pages.ViewRequest.Services
+@using PracticeProject.Web.ViewRequest.Models
+@attribute [Authorize]
+
+@inject ICarService CarService
+@inject IViewRequestService ViewRequestService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject SignalRService signalRService
+@inject IncomingViewState incomingViewState
+
+<MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Main page</MudNavLink>
     <MudNavLink Href="/mycar" Match="NavLinkMatch.Prefix">My car</MudNavLink>
     <MudNavLink Href="/allcar" Match="NavLinkMatch.Prefix">All car</MudNavLink>
-    <MudNavLink Href="/incomingrequest" Match="NavLinkMatch.Prefix">Incoming request</MudNavLink>
+    <MudNavLink Href="/incomingrequest" Match="NavLinkMatch.Prefix">
+        <span>Incoming request</span><span style="color: red;">(@countNewRequest new request</span>
+    </MudNavLink>
     <MudNavLink Href="/outgoingrequests" Match="NavLinkMatch.Prefix">OutgoingRequests</MudNavLink>
 
 </MudNavMenu>
+
+@code {
+    int countNewRequest = 0;
+
+    private async Task ReloadData()
+    {
+        countNewRequest = await ViewRequestService.GetCountNewRequest();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+
+        incomingViewState.OnChange += NeedUpdate;
+
+        if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+        { 
+            await signalRService.StartConnection();
+        }        
+    }
+
+    private async void NeedUpdate()
+    {
+        await ReloadData();
+        StateHasChanged();
+    }
+    }
