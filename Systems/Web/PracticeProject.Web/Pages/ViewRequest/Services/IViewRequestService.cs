@@ -7,5 +7,5 @@ public interface IViewRequestService
     Task<string> CreateViewingRequest(CreateViewingRequestViewModel model);
     Task<IEnumerable<ViewingRequestViewModel>> GetIncomingRequests();
     Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests();
-    Task ChangeStatusRequest(Guid idRequest, StatusConfirm state);
+    Task<bool> ChangeStatusRequest(SendEditStateModel model);
 }

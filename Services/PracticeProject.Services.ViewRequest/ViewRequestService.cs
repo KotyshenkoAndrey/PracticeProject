@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PracticeProject.Services.Actions;
-using PracticeProject.Common.Exceptions;
-using PracticeProject.Common.Validator;
 using PracticeProject.Context;
 using PracticeProject.Context.Entities;
 using PracticeProject.Services.ViewingRequests.Models;
 using Microsoft.AspNetCore.SignalR;
 using PracticeProject.Services.AppCarHub;
-using Castle.Core.Smtp;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PracticeProject.Services.ViewingRequests;
@@ -108,7 +105,23 @@ public class ViewRequestService : IViewRequest
         viewingRequests.StateConfirmed = state;
         await context.SaveChangesAsync();
     }
+    public async Task<int> getCountNewRequest(Guid sellerUid)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
 
+        var seller = await context.Sellers.FirstOrDefaultAsync(c => c.Uid == sellerUid);
+        var cars = await context.Cars
+                                .Include(s => s.Seller)
+                                .Include(s => s.ViewingRequestsCar)
+                                .Where(s => s.Seller.Uid == sellerUid)
+                                .ToListAsync();
+        var carsIds = cars.Select(c => c.Id).ToList();
+        var viewingRequestsCount = await context.ViewingRequests
+            .Include(vr => vr.Car)
+            .Where(vr => carsIds.Contains(vr.CarId) && vr.StateConfirmed == StatusConfirm.Wait)
+            .CountAsync();
+        return viewingRequestsCount;
+    }
 
     public async Task SendCommandForUpdateData()
     {

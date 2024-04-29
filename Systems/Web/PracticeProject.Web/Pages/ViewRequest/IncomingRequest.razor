@@ -54,6 +54,13 @@
                 <MudTd>@context.SellerFullName</MudTd>
                 <MudTd>@context.RequestDate.ToShortDateString()</MudTd>
                 <MudTd>@context.StateConfirmed</MudTd>
+                <MudTd>
+                    @if (context.StateConfirmed == StatusConfirm.Wait)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => ChangeStatusRequest(context.RequestId, true))">Approve</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(() => ChangeStatusRequest(context.RequestId, false))">Reject</MudButton>
+                    }
+                </MudTd>
             </RowTemplate>
         </MudTable>
     </MudItem>
@@ -125,7 +132,7 @@
                 (isApproveSelected && c.StateConfirmed == StatusConfirm.Approve) ||
                 (isRejectedSelected && c.StateConfirmed == StatusConfirm.Rejected)).ToList();
         }
-
+        StateHasChanged();
     }
 
     private void ResetFilter()
@@ -136,4 +143,17 @@
         ApplyFilter();
     }
 
+    private async Task ChangeStatusRequest(Guid requestId, bool status)
+    {
+        StatusConfirm state;
+        state = status ? StatusConfirm.Approve : StatusConfirm.Rejected;
+
+        var sendModel = new SendEditStateModel()
+        {
+            idRequest = requestId,
+            state = state
+        };
+        bool result = await ViewRequestService.ChangeStatusRequest(sendModel);
+        ReloadData();
+    }
 }

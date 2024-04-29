@@ -43,22 +43,11 @@ public class ViewRequestService : IViewRequestService
         return await response.Content.ReadFromJsonAsync<IEnumerable<ViewingRequestViewModel>>() ?? new List<ViewingRequestViewModel>();
     }
 
-    public async Task ChangeStatusRequest(Guid idRequest, StatusConfirm state)
+    public async Task<bool> ChangeStatusRequest(SendEditStateModel model)
     {
-        var request = new HttpRequestMessage(HttpMethod.Put, "changestatusrequest");
-        request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-        {
-            { "idRequest", idRequest.ToString() },
-            { "state", state.ToString() }
-        });
+        var requestContent = JsonContent.Create(model);
+        var response = await httpClient.PostAsync("/changestatusrequest/", requestContent);
 
-        var response = await httpClient.SendAsync(request);
-
-        var content = await response.Content.ReadAsStringAsync();
-
-        if (!response.IsSuccessStatusCode)
-        {
-            throw new Exception(content);
-        }
+        return response.IsSuccessStatusCode;
     }   
 }

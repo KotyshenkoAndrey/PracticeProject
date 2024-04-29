@@ -10,6 +10,7 @@ using PracticeProject.Services.Logger;
 using PracticeProject.Services.Sellers;
 using PracticeProject.Services.ViewingRequests;
 using PracticeProject.Services.ViewingRequests.Models;
+using PracticeProject.Services.ViewRequest.BusinessModels;
 using System.Security.Claims;
 
 namespace PracticeProject.Api.App
@@ -74,10 +75,10 @@ namespace PracticeProject.Api.App
             return result;
         }
 
-        [HttpPut("changestatusrequest")]
-        public async Task ChangeStatusRequest(Guid idRequest, StatusConfirm state)
+        [HttpPost("/changestatusrequest")]
+        public async Task ChangeStatusRequest(SendEditStateModel model)
         {
-            await viewRequestService.ChangeStatusRequest(idRequest, state);
+            await viewRequestService.ChangeStatusRequest(model.idRequest, model.state);
         }
     }
 }
