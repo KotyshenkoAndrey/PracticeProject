@@ -9,6 +9,7 @@ using PracticeProject.Services.ViewingRequests.Models;
 using Microsoft.AspNetCore.SignalR;
 using PracticeProject.Services.AppCarHub;
 using Castle.Core.Smtp;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PracticeProject.Services.ViewingRequests;
 
@@ -31,35 +32,38 @@ public class ViewRequestService : IViewRequest
         this.hubContext = hubContext;
         this.action = action;
     }
-   public async Task<ViewingRequestViewModel> CreateViewingRequest(CreateViewingRequestViewModel model)
+   public async Task<IActionResult> CreateViewingRequest(CreateViewingRequestViewModel model)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
+        
 
         var request = mapper.Map<ViewingRequest>(model);
-
-        await context.ViewingRequests.AddAsync(request);
-
+        var chckDuplicate = await context.ViewingRequests
+                                         .FirstOrDefaultAsync(vr => vr.CarId == request.CarId &&
+                                                              vr.SenderId == request.SenderId &&
+                                                              vr.StateConfirmed == StatusConfirm.Wait);
+        if (chckDuplicate != null) { return new OkObjectResult("There is already a viewing request for this car"); }
+        await context.ViewingRequests.AddAsync(request);        
+        
         int savedChanges = await context.SaveChangesAsync();
         if (savedChanges > 0)
         {
             //            await SendCommandForUpdateData();
             var ownerEmail = context.Cars
-                .Where(c => c.Id == request.Id)
+                .Where(c => c.Id == request.CarId)
                 .Select(c => c.Seller.Email)
                 .FirstOrDefault();
-            //await action.SendMail(new EmailSendModel()
-            //{
-            //    Receiver = sellersEmail,
-            //    Subject = "A new car sale announcement has been published",
-            //    Body = $"A new car has been published on the service. Its characteristics:" +
-            //    $"\r\nModel:" + (string.IsNullOrEmpty(car.Model) ? "Not specified" : car.Model) +
-            //    $"\r\nYear:" + (string.IsNullOrEmpty(car.Year.ToString()) ? "Not specified" : car.Year.ToString()) +
-            //    $"\r\nColor:" + (string.IsNullOrEmpty(car.Color) ? "Not specified" : car.Color) +
-            //    $"\r\nFull name of the seller:" + (string.IsNullOrEmpty(sellerFullName) ? "Not specified" : sellerFullName)
-            //});
-
+            var senderFullName = context.Sellers.Where(c => c.Id == request.SenderId).Select(c => c.FullName).FirstOrDefault();
+            var carModel = context.Cars.Where(c => c.Id == request.CarId).Select(c => c.Model).FirstOrDefault();
+            var emailList = new List<string> { ownerEmail };
+            await action.SendMail(new EmailSendModel()
+            {
+                Receiver = emailList,
+                Subject = "A new car sale announcement has been published",
+                Body = $"A new request has been received to view the car {carModel} from the user {senderFullName}."
+            });
         }
-        return mapper.Map<ViewingRequestViewModel>(request);
+        return new OkObjectResult("Request to view the car has been successful"); ;
     }
 
     public async Task<IEnumerable<ViewingRequestViewModel>> GetIncomingRequests(Guid sellerUid)
@@ -82,8 +86,6 @@ public class ViewRequestService : IViewRequest
         return res;
 
     }
-
-
     public async Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests(Guid sellerId)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
@@ -105,13 +107,12 @@ public class ViewRequestService : IViewRequest
         var viewingRequests = await context.ViewingRequests.FirstOrDefaultAsync(s => s.Uid == idRequest);
         viewingRequests.StateConfirmed = state;
         await context.SaveChangesAsync();
-
     }
 
 
     public async Task SendCommandForUpdateData()
     {
-        await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","555");
+        await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","update");
     }
 }
 

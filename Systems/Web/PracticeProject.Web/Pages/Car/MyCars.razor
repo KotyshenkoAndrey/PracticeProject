@@ -131,7 +131,7 @@
         myfilteredCars = allMyCars;
         if (!string.IsNullOrEmpty(searchString))
         {
-            myfilteredCars = myfilteredCars.Where(c => c.Model.Contains(searchString)).ToList();
+            myfilteredCars = myfilteredCars.Where(c => c.Model.ToLower().Contains(searchString.ToLower())).ToList();
         }
         if (dateRange.Start != null)
         {

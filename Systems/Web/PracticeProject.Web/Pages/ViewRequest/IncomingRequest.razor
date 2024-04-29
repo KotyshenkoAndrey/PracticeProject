@@ -1,0 +1,139 @@
+﻿@page "/incomingrequest"
+@using PracticeProject.Web.Pages.Car.Services
+@using PracticeProject.Web.Cars.Models
+@using PracticeProject.Web.Components
+@using Microsoft.AspNetCore.Authorization
+@using PracticeProject.Web.Pages.Hub
+@using PracticeProject.Web.Pages.ViewRequest.Services
+@using PracticeProject.Web.ViewRequest.Models
+
+@inject ICarService CarService
+@inject IViewRequestService ViewRequestService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject SignalRService signalRService
+@inject AppState appState
+
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>Incoming request</PageTitle>
+
+<div class="text-center">
+    <MudText Typo="Typo.h4" Class="ma-8">Incoming request</MudText>
+</div>
+
+<MudGrid Justify="Justify.Center" Class="mr-50" >
+    <MudItem xs="2" sm="3" Class="mr-50">
+        <hr style="height: 35px; border: none; background-color: transparent; margin: 0px 0;" />
+        <MudText Typo="Typo.h5">Filter by status</MudText>
+        <hr style="height: 15px; border: none; background-color: transparent; margin: 0px 0;" />
+        <MudCheckBox @bind-Checked="isWaitSelected" Label="Wait" Color="Color.Primary" />
+        <MudCheckBox @bind-Checked="isApproveSelected" Label="Approve" Color="Color.Primary"/>
+        <MudCheckBox @bind-Checked="isRejectedSelected" Label="Rejected" Color="Color.Primary"/>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" Size="Size.Large" OnClick="ApplyFilter">Apply filter</MudButton>
+        <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Large" OnClick="ResetFilter">Clear filter</MudButton>
+    </MudItem>
+    <MudItem xs="5" sm="9">
+        <MudTable Items="@filteredRequest" Class="ma-2">
+            <ToolBarContent>
+                <MudTextField @bind-Value="searchString" Placeholder="Search by model" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" OnKeyUp="HandleSearchInput" OnBlur="HandleBlur"></MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>CarModel</MudTh>
+                <MudTh>Year</MudTh>
+                <MudTh>Seller fullname</MudTh>
+                <MudTh>RequestDate</MudTh>
+                <MudTh>State request</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.Model</MudTd>
+                <MudTd>@(context.Year == 0 ? "Не указан" : context.Year.ToString())</MudTd>
+                <MudTd>@context.SellerFullName</MudTd>
+                <MudTd>@context.RequestDate.ToShortDateString()</MudTd>
+                <MudTd>@context.StateConfirmed</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>
+
+@code {
+    StatusConfirm selectedStatus;
+    private IEnumerable<ViewingRequestViewModel> allRequest = new List<ViewingRequestViewModel>();
+    private IEnumerable<ViewingRequestViewModel> filteredRequest = new List<ViewingRequestViewModel>();
+    private string searchString = string.Empty;
+    private bool isWaitSelected;
+    private bool isApproveSelected;
+    private bool isRejectedSelected;
+
+    private async Task ReloadData()
+    {
+        allRequest = await ViewRequestService.GetIncomingRequests();
+        ApplyFilter();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadData();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Error);
+        }
+
+        appState.OnChange += NeedUpdate;
+
+        if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+        { 
+            await signalRService.StartConnection();
+        }        
+    }
+
+    private async void NeedUpdate()
+    {
+        await ReloadData();
+        StateHasChanged();
+    }
+
+    private async Task HandleSearchInput(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            ApplyFilter();
+        }        
+    }
+
+    private void HandleBlur(FocusEventArgs e)
+    {
+        ApplyFilter();
+    }
+    private void ApplyFilter()
+    {
+        filteredRequest = allRequest;
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            filteredRequest = filteredRequest.Where(c => c.Model.ToLower().Contains(searchString.ToLower())).ToList();
+        }
+        if (isWaitSelected || isApproveSelected || isRejectedSelected)
+        {
+            filteredRequest = filteredRequest.Where(c =>
+                (isWaitSelected && c.StateConfirmed == StatusConfirm.Wait) ||
+                (isApproveSelected && c.StateConfirmed == StatusConfirm.Approve) ||
+                (isRejectedSelected && c.StateConfirmed == StatusConfirm.Rejected)).ToList();
+        }
+
+    }
+
+    private void ResetFilter()
+    {
+        isWaitSelected = false;
+        isApproveSelected = false;
+        isRejectedSelected = false;
+        ApplyFilter();
+    }
+
+}

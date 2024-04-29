@@ -8,6 +8,7 @@ using PracticeProject.Web;
 using PracticeProject.Web.Pages.Auth.Services;
 using PracticeProject.Web.Pages.Car.Services;
 using PracticeProject.Web.Pages.Hub;
+using PracticeProject.Web.Pages.ViewRequest.Services;
 using PracticeProject.Web.Providers;
 using PracticeProject.Web.Services;
 
@@ -22,8 +23,9 @@ builder.Services.AddScoped<SignalRService>();
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ICarService, CarService>();
+builder.Services.AddScoped<IViewRequestService, ViewRequestService>();
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
-builder.Services.AddScoped<ICarService, CarService>();
+
 
 builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();

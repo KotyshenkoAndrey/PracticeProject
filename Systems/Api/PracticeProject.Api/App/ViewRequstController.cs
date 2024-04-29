@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PracticeProject.Common.Security;
 using PracticeProject.Context.Entities;
+using PracticeProject.Services.AuthorizedUsersAccount;
 using PracticeProject.Services.Cars;
 using PracticeProject.Services.Logger;
 using PracticeProject.Services.Sellers;
 using PracticeProject.Services.ViewingRequests;
 using PracticeProject.Services.ViewingRequests.Models;
+using System.Security.Claims;
 
 namespace PracticeProject.Api.App
 {
@@ -21,38 +23,58 @@ namespace PracticeProject.Api.App
     {
         private readonly IAppLogger logger;
         private readonly IViewRequest viewRequestService;
+        private readonly IAuthorizedUsersAccountService userAccountService;
 
-        public ViewRequestController(IAppLogger logger, IViewRequest viewRequestService)
+        public ViewRequestController(IAppLogger logger
+            , IViewRequest viewRequestService
+            , IAuthorizedUsersAccountService userAccountService)
         {
             this.logger = logger;
             this.viewRequestService = viewRequestService;
+            this.userAccountService = userAccountService;
         }
         //        [Authorize(AppScopes.AccessRead)]
-        [HttpPut("/createviewrequest")]
-        public async Task<ViewingRequestViewModel> CreateViewingRequest(CreateViewingRequestViewModel model)
+        [HttpPost("/createviewrequest")]
+        public async Task<IActionResult> CreateViewingRequest(CreateViewingRequestViewModel model)
         {
-            var result = await viewRequestService.CreateViewingRequest(model);
-
-            return result;
+            ClaimsPrincipal currentUser = User;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                var userGuid = await userAccountService.GetGuidUser(currentUser);
+                model.SenderId = userGuid;
+                var result = await viewRequestService.CreateViewingRequest(model);
+                return result;
+            }
+            return BadRequest("Error");
         }
 
         [HttpGet("/getincommingrequest")]
         public async Task<IEnumerable<ViewingRequestViewModel>> GetIncomingRequests(Guid sellerId)
         {
+            ClaimsPrincipal currentUser = User;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                var userGuid = await userAccountService.GetGuidUser(currentUser);
+                sellerId = userGuid;
+            }
             var result = await viewRequestService.GetIncomingRequests(sellerId);
-
             return result;
         }
 
         [HttpGet("/getoutgoingrequest")]
         public async Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests(Guid sellerId)
-        {
+        {          
+            ClaimsPrincipal currentUser = User;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                var userGuid = await userAccountService.GetGuidUser(currentUser);
+                sellerId = userGuid;
+            }
             var result = await viewRequestService.GetOutgoingRequests(sellerId);
-
             return result;
         }
 
-        [HttpPost("changestatusrequest")]
+        [HttpPut("changestatusrequest")]
         public async Task ChangeStatusRequest(Guid idRequest, StatusConfirm state)
         {
             await viewRequestService.ChangeStatusRequest(idRequest, state);

@@ -21,13 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Pages\Car\AllCars.razor" />
+      <None Include="Pages\ViewRequest\IncomingRequest.razor" />
       <None Include="Pages\Car\CarDialog.razor" />
       <None Include="Pages\Car\MyCars.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Pages\ViewRequest\" />
     </ItemGroup>
 
 </Project>

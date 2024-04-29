@@ -10,7 +10,10 @@ namespace PracticeProject.Services.ViewingRequests.Models;
 {
     public Guid RequestId { get; set; }
     public int CarId { get; set; }
+    public string Model { get; set; }
+    public int Year { get; set; }
     public int SenderId { get; set; }
+    public string SellerFullName { get; set; }
     public StatusConfirm StateConfirmed { get; set; }
     public DateTime RequestDate { get; set; }
     public DateTime? LastModifedDate { get; set; }
@@ -42,9 +45,12 @@ public class ViewingRequestViewModelProfile : Profile
             destination.RequestId = request.Uid;
             destination.CarId = request.Car.Id;
             destination.SenderId = request.Sender.Id;
+            destination.Model = request.Car.Model;
+            destination.Year = request.Car.Year ?? 0;
             destination.StateConfirmed = request.StateConfirmed;
             destination.RequestDate = request.RequestDate;
             destination.LastModifedDate = request.LastModifedDate;
+            destination.SellerFullName = request.Car.Seller.FullName;
         }
     }
 }

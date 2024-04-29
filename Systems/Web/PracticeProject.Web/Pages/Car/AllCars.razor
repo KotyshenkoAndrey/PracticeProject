@@ -4,8 +4,11 @@
 @using PracticeProject.Web.Components
 @using Microsoft.AspNetCore.Authorization
 @using PracticeProject.Web.Pages.Hub
+@using PracticeProject.Web.Pages.ViewRequest.Services
+@using PracticeProject.Web.ViewRequest.Models
 
 @inject ICarService CarService
+@inject IViewRequestService ViewRequestService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject SignalRService signalRService
@@ -70,7 +73,7 @@
                 <MudTd>@context.Color</MudTd>
                 <MudTd>@context.DatePosted.ToShortDateString()</MudTd>
                 <MudTd>
-                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => SendViewRequest()"></MudIconButton>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" OnClick="() => SendViewRequest(context.CarId)"></MudIconButton>
                 </MudTd>
             </RowTemplate>
         </MudTable>
@@ -135,7 +138,7 @@
         filteredCars = allCars;
         if (!string.IsNullOrEmpty(searchString))
         {
-            filteredCars = filteredCars.Where(c => c.Model.Contains(searchString)).ToList();
+            filteredCars = filteredCars.Where(c => c.Model.ToLower().Contains(searchString.ToLower())).ToList();
         }
         if (dateRange.Start != null)
         {
@@ -182,7 +185,7 @@
         filteredCars = allCars;
         ApplyFilter();
     }
-    private async void SendViewRequest()
+    private async void SendViewRequest(Guid carId)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Do you want to send a request to view the car?");
@@ -196,14 +199,17 @@
 
         if (result.Canceled)
             return;
+        var createModel = new CreateViewingRequestViewModel() {CarId = carId};
+        string message = await ViewRequestService.CreateViewingRequest(createModel);
+        
         var parametersInfo = new DialogParameters();
-        parametersInfo.Add("ContentText", "Request to view the car has been successful");
+        parametersInfo.Add("ContentText", message);
         parametersInfo.Add("Color", Color.Info);
 
         var optionsInfo = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
         var dialogInfo = await DialogService.ShowAsync<InformationDialog>("Information", parametersInfo, optionsInfo);
         var resultInfo = await dialogInfo.Result;
-//        await CarService.DeleteCar(carId);
+        
     }
 }
