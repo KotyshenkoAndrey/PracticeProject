@@ -1,13 +1,7 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PracticeProject.Common.Security;
-using PracticeProject.Context.Entities;
 using PracticeProject.Services.AuthorizedUsersAccount;
-using PracticeProject.Services.Cars;
 using PracticeProject.Services.Logger;
-using PracticeProject.Services.Sellers;
 using PracticeProject.Services.ViewingRequests;
 using PracticeProject.Services.ViewingRequests.Models;
 using PracticeProject.Services.ViewRequest.BusinessModels;
@@ -50,7 +44,7 @@ namespace PracticeProject.Api.App
         }
 
         [HttpGet("/getincommingrequest")]
-        public async Task<IEnumerable<ViewingRequestViewModel>> GetIncomingRequests(Guid sellerId)
+        public async Task<IEnumerable<ViewingRequestViewModel>> GetIncomingRequests(Guid sellerId)//Guid for compatibility with swagger
         {
             ClaimsPrincipal currentUser = User;
             if (currentUser != null && currentUser.Identity.IsAuthenticated)
@@ -63,7 +57,7 @@ namespace PracticeProject.Api.App
         }
 
         [HttpGet("/getoutgoingrequest")]
-        public async Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests(Guid sellerId)
+        public async Task<IEnumerable<ViewingRequestViewModel>> GetOutgoingRequests(Guid sellerId)//Guid for compatibility with swagger
         {          
             ClaimsPrincipal currentUser = User;
             if (currentUser != null && currentUser.Identity.IsAuthenticated)
@@ -79,6 +73,19 @@ namespace PracticeProject.Api.App
         public async Task ChangeStatusRequest(SendEditStateModel model)
         {
             await viewRequestService.ChangeStatusRequest(model.idRequest, model.state);
+        }
+
+        [HttpGet("/getcountnewrequest")]
+        public async Task<int> GetCountNewRequest(Guid sellerId)//Guid for compatibility with swagger
+        {
+            ClaimsPrincipal currentUser = User;
+            if (currentUser != null && currentUser.Identity.IsAuthenticated)
+            {
+                var userGuid = await userAccountService.GetGuidUser(currentUser);
+                sellerId = userGuid;
+            }
+            var result = await viewRequestService.getCountNewRequest(sellerId);
+            return result;
         }
     }
 }

@@ -7,7 +7,7 @@ using PracticeProject.Context;
 using PracticeProject.Context.Entities;
 using PracticeProject.Services.Cars.Models;
 using Microsoft.AspNetCore.SignalR;
-using PracticeProject.Services.AppCarHub;
+using PracticeProject.Services.AppHubs;
 
 namespace PracticeProject.Services.Cars;
 
@@ -19,13 +19,13 @@ public class CarService : ICarService
     private readonly IMapper mapper;
     private readonly IModelValidator<CreateCarViewModel> createCarModelValidator;
     private readonly IModelValidator<UpdateCarViewModel> updateCarModelValidator;
-    private readonly IHubContext<CarHub> hubContext;
+    private readonly IHubContext<AppHub> hubContext;
     private readonly IAction action;
 
     public CarService(IDbContextFactory<MainDbContext> dbContextFactory, IMapper mapper
         ,IModelValidator<CreateCarViewModel> createCarModelValidator
         ,IModelValidator<UpdateCarViewModel> updateCarModelValidator
-        ,IHubContext<CarHub> hubContext
+        ,IHubContext<AppHub> hubContext
         ,IAction action
         )
     {
@@ -143,7 +143,7 @@ public class CarService : ICarService
 
     public async Task SendCommandForUpdateData()
     {
-        await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","555");
+        await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","update");
     }
 }
 

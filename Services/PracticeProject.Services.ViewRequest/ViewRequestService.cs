@@ -5,8 +5,8 @@ using PracticeProject.Context;
 using PracticeProject.Context.Entities;
 using PracticeProject.Services.ViewingRequests.Models;
 using Microsoft.AspNetCore.SignalR;
-using PracticeProject.Services.AppCarHub;
 using Microsoft.AspNetCore.Mvc;
+using PracticeProject.Services.AppHubs;
 
 namespace PracticeProject.Services.ViewingRequests;
 
@@ -16,11 +16,11 @@ public class ViewRequestService : IViewRequest
 {
     private readonly IDbContextFactory<MainDbContext> dbContextFactory;
     private readonly IMapper mapper;
-    private readonly IHubContext<CarHub> hubContext;
+    private readonly IHubContext<AppHub> hubContext;
     private readonly IAction action;
 
     public ViewRequestService(IDbContextFactory<MainDbContext> dbContextFactory, IMapper mapper
-        ,IHubContext<CarHub> hubContext
+        ,IHubContext<AppHub> hubContext
         ,IAction action
         )
     {
@@ -125,7 +125,7 @@ public class ViewRequestService : IViewRequest
 
     public async Task SendCommandForUpdateData()
     {
-        await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","update");
+        await hubContext.Clients.All.SendAsync("ReceiveIncomeRequestUpdate", "update");
     }
 }
 

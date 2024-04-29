@@ -1,18 +1,14 @@
-﻿namespace PracticeProject.Services.AppCarHub;
+﻿namespace PracticeProject.Services.AppHubs;
 
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 
-public class CarHub : Hub
+public class AppHub : Hub
 {
     public override async Task OnConnectedAsync()
     {
         // Как только клиент подключается к хабу
         await base.OnConnectedAsync();
-    }
-    public async Task SendCarUpdateNotification()
-    {
-        await Clients.All.SendAsync("ReceiveCarUpdate");
     }
 }
