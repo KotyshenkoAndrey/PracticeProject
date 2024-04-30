@@ -121,5 +121,18 @@ public class AuthService : IAuthService
         var responseContent = await response.Content.ReadAsStringAsync();
         return responseContent;
     }
-
+    public async Task<string> ForgotPassword(ForgotPasswordModel model)
+    {
+        var requestContent = JsonContent.Create(model);
+        var response = await _httpClient.PostAsync("/forgotpassword/", requestContent);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return responseContent;
+    }
+    public async Task<string> SetNewPassword(NewPasswordModel model)
+    {
+        var requestContent = JsonContent.Create(model);
+        var response = await _httpClient.PostAsync("/setnewpassword/", requestContent);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return responseContent;
+    }
 }

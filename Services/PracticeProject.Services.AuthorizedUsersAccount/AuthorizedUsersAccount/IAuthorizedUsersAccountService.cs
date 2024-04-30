@@ -12,4 +12,6 @@ public interface IAuthorizedUsersAccountService
     Task<Guid> GetGuidUser(ClaimsPrincipal claimsPrincipal);
     Task<IActionResult> ConfirmEmail(int id);
     Task<bool> IsConfirmMail(string username);
+    Task<IActionResult> ForgotPassword(ForgotPasswordModel model);
+    Task<IActionResult> SetNewPassword(NewPasswordModel model);
 }

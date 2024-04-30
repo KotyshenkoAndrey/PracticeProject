@@ -9,4 +9,6 @@ public interface IAuthService
     Task<string> GetUserName();
     Task<bool> IsConfirmMail(string username);
     Task<string> Registration(RegisterAuthorizedUsersAccountModel registrationModel);
+    Task<string> ForgotPassword(ForgotPasswordModel model);
+    Task<string> SetNewPassword(NewPasswordModel model);
 }

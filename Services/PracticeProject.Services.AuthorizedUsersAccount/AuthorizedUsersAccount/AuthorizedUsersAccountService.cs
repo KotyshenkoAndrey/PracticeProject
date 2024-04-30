@@ -71,7 +71,7 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
             EmailConfirmed = false,
             PhoneNumber = model.PhoneNumber,
             PhoneNumberConfirmed = false,
-            idConfrirmEmail = idConfirmEmail,
+            idConfirmEmail = idConfirmEmail,
         };
 
         var result = await userManager.CreateAsync(user, model.Password);
@@ -128,7 +128,7 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
     {
         using var context = await dbContextFactory.CreateDbContextAsync();
 
-        var userToConfirm = await context.AuthorizedUsers.FirstOrDefaultAsync(s => s.idConfrirmEmail == id);
+        var userToConfirm = await context.AuthorizedUsers.FirstOrDefaultAsync(s => s.idConfirmEmail == id);
         if (userToConfirm != null)
         {
             userToConfirm.EmailConfirmed = true;
@@ -151,5 +151,50 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
             return new OkObjectResult("Email was confirmed");
         }
         return new OkObjectResult("Error confirming the mail");
+    }
+
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+        var registrationUser = await context.AuthorizedUsers.FirstOrDefaultAsync(c=>c.Email == model.Email);
+        if (registrationUser != null)
+        {
+            Random rnd = new Random();
+            int idConfirmEmail = rnd.Next(100, 1007483647);
+            registrationUser.idConfirmEmail = idConfirmEmail;
+            List<string> email = new List<string>();
+            email.Add(model.Email);
+            await action.SendMail(new EmailSendModel()
+            {
+                Receiver = email,
+                Subject = "Password recovery",
+                Body = $"Dear {registrationUser.FullName}" +
+           $"\r\nYour password can be reset by clicking the link below. If you did not request a new password, please ignore this email." +
+           $"\r\nPassword reset link: {settings.WebClientUrl}/resetpassword/{idConfirmEmail}"
+            });
+
+            var count =await context.SaveChangesAsync();
+            return new OkObjectResult("The link to reset the password has been sent to the mail");
+        }
+        return new OkObjectResult("The entered email is not linked to any account");
+    }
+
+    public async Task<IActionResult> SetNewPassword(NewPasswordModel model)
+    {
+        using var context = await dbContextFactory.CreateDbContextAsync();
+        var user = await context.AuthorizedUsers.FirstOrDefaultAsync(c=>c.idConfirmEmail == Convert.ToInt32(model.Code));
+
+        var autorizationUser = await userManager.FindByEmailAsync(user.Email);
+        if (autorizationUser != null)
+        {
+            var token = await userManager.GeneratePasswordResetTokenAsync(autorizationUser);
+
+            var result = await userManager.ResetPasswordAsync(autorizationUser, token, model.Password);
+            if(result.Succeeded)
+            {
+                return new OkObjectResult("The password has been successfully changed");
+            }           
+        }
+        return new OkObjectResult("The password could not be reset");
     }
 }

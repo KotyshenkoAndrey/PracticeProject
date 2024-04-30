@@ -57,4 +57,18 @@ public class AccountsController : ControllerBase
         var result = await userAccountService.IsConfirmMail(username);
         return result;
     }
+
+    [HttpPost("/forgotpassword/")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
+    {
+        var result = await userAccountService.ForgotPassword(model);
+        return result;
+    }
+
+    [HttpPost("/setnewpassword/")]
+    public async Task<IActionResult> SetNewPassword(NewPasswordModel model)
+    {
+        var result = await userAccountService.SetNewPassword(model);
+        return result;
+    }
 }

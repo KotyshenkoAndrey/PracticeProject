@@ -6,4 +6,5 @@ public class MainSettings
     public string InternalUrl { get; private set; }
     public string AllowedOrigins { get; private set; }
     public int UploadFileSizeLimit { get; private set; } = 20971520;
+    public string WebClientUrl { get; private set; }
 }
