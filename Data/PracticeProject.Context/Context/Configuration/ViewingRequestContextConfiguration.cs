@@ -11,7 +11,7 @@ namespace PracticeProject.Context.Entities
             modelBuilder.Entity<ViewingRequest>()
                         .Property(e => e.RequestDate)
                         .HasConversion(v => v.ToUniversalTime(), v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
-            modelBuilder.Entity<ViewingRequest>().HasOne(x => x.Car).WithMany(s => s.ViewingRequestsCar).HasForeignKey(x => x.CarId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ViewingRequest>().HasOne(x => x.Car).WithMany(s => s.ViewingRequestsCar).HasForeignKey(x => x.CarId).OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<ViewingRequest>().HasOne(x => x.Sender).WithMany(s => s.ViewingRequestsUser).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.Restrict);
         }
     }

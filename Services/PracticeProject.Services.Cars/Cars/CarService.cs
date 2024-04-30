@@ -144,6 +144,7 @@ public class CarService : ICarService
     public async Task SendCommandForUpdateData()
     {
         await hubContext.Clients.All.SendAsync("ReceiveCarUpdate","update");
+        await hubContext.Clients.All.SendAsync("ReceiveIncomeRequestUpdate", "update");
     }
 }
 
