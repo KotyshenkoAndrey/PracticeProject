@@ -52,9 +52,13 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
 
         // Find user by email
         var user = await userManager.FindByEmailAsync(model.Email);
+        string message;
         if (user != null)
-            throw new ProcessException($"User account with email {model.Email} already exist.");
-        
+        {
+            message = $"User account with email {model.Email} already exist.";
+            message += !user.EmailConfirmed ? " The mail has not been confirmed." : "";
+            return new OkObjectResult(message);
+        }        
         Random rnd = new Random();       
         int idConfirmEmail = rnd.Next(100, 1007483647);
         // Create user account
@@ -75,25 +79,27 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
             throw new ProcessException($"Creating user account is wrong. {string.Join(", ", result.Errors.Select(s => s.Description))}");
         
         var registrationUser = await userManager.FindByEmailAsync(model.Email);
-        List<string> email = new List<string>();
-        email.Add(model.Email);
-        await action.SendMail(new EmailSendModel()
+        if(registrationUser != null && registrationUser.Email != "admin@test.ru") 
         {
-            Receiver = email,
-            Subject = "Confirm email",
-            Body = $"Dear {registrationUser.FullName}, welcome to the service!" +
-                   $"\r\nYou have registered with the car sales service." +
-                   $" To activate your account, you need to confirm your email address." +
-                   $" After confirmation, you will be able to log in to the site using your personal username and password." +
-                   $"\r\n" +
-                   $"\r\nYour login details:"+
-                   $"\r\nYour username: {registrationUser.UserName}" +
-                   $"\r\nYour password: {model.Password}" +
-                   $"\r\nThe link to confirm the mail: {settings.PublicUrl}/confirmemail/{idConfirmEmail}" +
-                   $"\r\n" +
-                   $"\r\nIf you have not registered with the service, just ignore this email."
-        });
-
+            List<string> email = new List<string>();
+            email.Add(model.Email);
+            await action.SendMail(new EmailSendModel()
+            {
+                Receiver = email,
+                Subject = "Confirm email",
+                Body = $"Dear {registrationUser.FullName}, welcome to the service!" +
+                       $"\r\nYou have registered with the car sales service." +
+                       $" To activate your account, you need to confirm your email address." +
+                       $" After confirmation, you will be able to log in to the site using your personal username and password." +
+                       $"\r\n" +
+                       $"\r\nYour login details:" +
+                       $"\r\nYour username: {registrationUser.UserName}" +
+                       $"\r\nYour password: {model.Password}" +
+                       $"\r\nThe link to confirm the mail: {settings.PublicUrl}/confirmemail/{idConfirmEmail}" +
+                       $"\r\n" +
+                       $"\r\nIf you have not registered with the service, just ignore this email."
+            });
+        }        
         return new OkObjectResult("Email confirmation request created");
     }
 
@@ -123,14 +129,14 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
         using var context = await dbContextFactory.CreateDbContextAsync();
 
         var userToConfirm = await context.AuthorizedUsers.FirstOrDefaultAsync(s => s.idConfrirmEmail == id);
-        if(userToConfirm != null)
+        if (userToConfirm != null)
         {
             userToConfirm.EmailConfirmed = true;
             await context.Sellers.AddAsync(new Context.Entities.Seller()
             {
                 Uid = Guid.NewGuid(),
                 Username = userToConfirm.UserName,
-                Email  = userToConfirm.Email,
+                Email = userToConfirm.Email,
                 FullName = userToConfirm.FullName,
                 PhoneNumber = userToConfirm.PhoneNumber
             });

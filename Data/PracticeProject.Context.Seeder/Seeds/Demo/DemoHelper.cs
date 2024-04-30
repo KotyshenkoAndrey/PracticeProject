@@ -15,24 +15,10 @@ public class DemoHelper
             Seller = new Seller()
             {
                 Uid = Guid.NewGuid(),
-                Username = "Andrey",  
-                Email = "andrey@test.ru",
-                FullName = "andrey andrey"
+                Username = "admin",  
+                Email = "admin@test.ru",
+                FullName = "Administrator"
             },            
-        },
-        new Car()
-        {
-            Uid = Guid.NewGuid(),
-            Model = "Volkswagen Passat",
-            Price = 1000000,
-            DatePosted = DateTime.Now,
-            Seller = new Seller()
-            {
-                Uid = Guid.NewGuid(),
-                Username = "Victor",
-                Email = "victor@test.ru",
-                FullName = "victor victor"
-            },
         },
     };
 }

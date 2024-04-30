@@ -93,10 +93,10 @@
 
         incomingViewState.OnChange += NeedUpdate;
 
-        if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
-        {
-            await signalRService.StartConnection();
-        }
+         if (signalRService.GetStateConnection() != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
+         {
+             await signalRService.StartConnection();
+         }
     }
 
     private async void NeedUpdate()

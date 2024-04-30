@@ -43,14 +43,13 @@
                 <MudTextField @bind-Value="model.PhoneNumber" For="@(() => model.PhoneNumber)"
                               Label="Phone number"
                               HelperText="Input your phone number"
-                              Adornment="Adornment.End"
-                              Required="true"
-                              RequiredError="Phone number is required!" />
+                              Adornment="Adornment.End"/>
                 <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Primary"
                            Size="Size.Large"
                            ButtonType="ButtonType.Submit">Registration</MudButton>
+                <DataAnnotationsValidator />              
             </EditForm>
         </MudPaper>
     </MudItem>
@@ -64,13 +63,19 @@
     private string Error;
     private string ErrorDetail;
     private RegisterAuthorizedUsersAccountModel model = new RegisterAuthorizedUsersAccountModel();
+    private EditContext editContext;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(model);
+    }
 
     private async Task OnValidSubmit()
     {
         var result = await AuthService.Registration(model);
-        string message = result ? "Registration successful. Confirm your email" : "Registration failed";
+        string message = result;
         await ShowMessageDialog(message);
-        NavigationManager.NavigateTo("/login");
+        if (message.Contains("Email confirmation request created")) { NavigationManager.NavigateTo("/login"); }
     }
 
     private async Task ShowMessageDialog(string message)

@@ -114,11 +114,12 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<bool> Registration(RegisterAuthorizedUsersAccountModel registrationModel)
+    public async Task<string> Registration(RegisterAuthorizedUsersAccountModel registrationModel)
     {
         var requestContent = JsonContent.Create(registrationModel);
-        var response = await _httpClient.PostAsync("/createaccount/", requestContent);    
-        return response.IsSuccessStatusCode;
+        var response = await _httpClient.PostAsync("/createaccount/", requestContent);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return responseContent;
     }
 
 }

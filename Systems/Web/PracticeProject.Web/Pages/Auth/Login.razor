@@ -46,6 +46,7 @@
                            Size="Size.Large"
                            ButtonType="ButtonType.Submit">Sign In</MudButton>
                 <MudLink Href="/registration">&nbsp;&nbsp;Register</MudLink>
+                <DataAnnotationsValidator />
             </EditForm>
         </MudPaper>
     </MudItem>
@@ -56,10 +57,11 @@
     MudForm form;
 
     private LoginModel model = new LoginModel()
-    {
-        UserName = "kotyshenko25",
-        Password = "1234"
-    };
+    // {
+    //     UserName = "admin",
+    //     Password = "123456"
+    // }
+    ;
 
     bool PasswordVisibility;
     InputType PasswordInput = InputType.Password;

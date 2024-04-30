@@ -69,7 +69,12 @@ public static class DbSeeder
         });
 
         await using var context = DbContext(serviceProvider);
-
+        var adminUser = await context.AuthorizedUsers.FirstOrDefaultAsync(c=>c.Email == settings.Init.Administrator.Email);
+        if (adminUser != null)
+        {
+            adminUser.EmailConfirmed = true;
+        }
+        await context.SaveChangesAsync();
         if (await context.Cars.AnyAsync())
             return;
 

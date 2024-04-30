@@ -8,5 +8,5 @@ public interface IAuthService
     Task Logout();
     Task<string> GetUserName();
     Task<bool> IsConfirmMail(string username);
-    Task<bool> Registration(RegisterAuthorizedUsersAccountModel registrationModel);
+    Task<string> Registration(RegisterAuthorizedUsersAccountModel registrationModel);
 }
