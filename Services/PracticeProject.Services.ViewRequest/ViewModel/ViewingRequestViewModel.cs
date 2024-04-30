@@ -8,15 +8,54 @@ namespace PracticeProject.Services.ViewingRequests.Models;
 
     public class ViewingRequestViewModel
 {
+    /// <summary>
+    /// Unique identifier of the request
+    /// </summary>
     public Guid RequestId { get; set; }
+
+    /// <summary>
+    /// Identifier of the car
+    /// </summary>
     public int CarId { get; set; }
+
+    /// <summary>
+    /// Car model
+    /// </summary>
     public string Model { get; set; }
+
+    /// <summary>
+    /// Year of the car
+    /// </summary>
     public int Year { get; set; }
+
+    /// <summary>
+    /// Identifier of the sender
+    /// </summary>
     public int SenderId { get; set; }
+
+    /// <summary>
+    /// Full name of the sender
+    /// </summary>
     public string SenderFullName { get; set; }
+
+    /// <summary>
+    /// Full name of the seller
+    /// </summary>
     public string SellerFullName { get; set; }
+
+    /// <summary>
+    /// Confirmation status of the request
+    /// </summary>
     public StatusConfirm StateConfirmed { get; set; }
+
+    /// <summary>
+    /// Date of the request
+    /// </summary>
     public DateTime RequestDate { get; set; }
+
+    /// <summary>
+    /// Date of the last modification
+    /// </summary>
     public DateTime? LastModifedDate { get; set; }
 }
 

@@ -9,7 +9,13 @@ namespace PracticeProject.Services.ViewingRequests.Models;
 
 public class CreateViewingRequestViewModel
 {
+    /// <summary>
+    /// Guid car
+    /// </summary>
     public Guid CarId { get; set; }
+    /// <summary>
+    /// Guid sender user
+    /// </summary>
     public Guid SenderId { get; set; }
 }
 

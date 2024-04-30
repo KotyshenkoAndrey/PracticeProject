@@ -5,8 +5,17 @@ using PracticeProject.Context.Entities.Identity;
 
 public class AuthorizedUsersAccountModel
 {
+    /// <summary>
+    /// Guid User
+    /// </summary>
     public Guid Id { get; set; }
+    /// <summary>
+    /// Full name user
+    /// </summary>
     public string Name { get; set; }
+    /// <summary>
+    /// User's email
+    /// </summary>
     public string Email { get; set; }
 }
 

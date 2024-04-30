@@ -11,6 +11,9 @@ using System.Security.Claims;
 
 namespace PracticeProject.Api.App
 {
+    /// <summary>
+    /// Controller for get, create, update, delete car
+    /// </summary>
 //    [Authorize]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
@@ -22,6 +25,12 @@ namespace PracticeProject.Api.App
         private readonly ICarService carService;
         private readonly IAuthorizedUsersAccountService userAccountService;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="carService"></param>
+        /// <param name="userAccountService"></param>
         public CarController(IAppLogger logger
             , ICarService carService
             , IAuthorizedUsersAccountService userAccountService)
@@ -30,6 +39,10 @@ namespace PracticeProject.Api.App
             this.carService = carService;
             this.userAccountService = userAccountService;
         }
+        /// <summary>
+        /// Getting all the cars of all the sellers
+        /// </summary>
+        /// <response code="200">Enumerable all car</response>
         [AllowAnonymous]
         [HttpGet("/getallcars")]
         public async Task<IEnumerable<CarViewModel>> GetAll()
@@ -38,7 +51,11 @@ namespace PracticeProject.Api.App
 
             return result;
         }
-
+        /// <summary>
+        /// Get car by Id
+        /// </summary>
+        /// <param name="id">Guid car</param>
+        /// <returns></returns>
         [HttpGet("/getcarbyid/{id:Guid}")]
         public async Task<IActionResult> Get([FromRoute] Guid id)
         {
@@ -49,7 +66,11 @@ namespace PracticeProject.Api.App
 
             return Ok(result);
         }
-
+        /// <summary>
+        /// Create new car
+        /// </summary>
+        /// <param name="request">Model for create car</param>
+        ///  <response code="200">Created car model</response>
         [AllowAnonymous]
         [HttpPost("/addcar/")]
         public async Task<CarViewModel> Create(CreateCarViewModel request)
@@ -66,18 +87,33 @@ namespace PracticeProject.Api.App
             return result;
         }
 
+        /// <summary>
+        /// Update car by Id
+        /// </summary>
+        /// <param name="id">Id for update car</param>
+        /// <param name="request">Model for update car</param>
+        /// <returns></returns>
         [HttpPut("/editcar/{id:Guid}")]
         public async Task Update([FromRoute] Guid id, UpdateCarViewModel request)
         {
             await carService.Update(id, request);
         }
 
+        /// <summary>
+        /// Delete car by Id
+        /// </summary>
+        /// <param name="id">Id car for delete</param>
+        /// <returns></returns>
         [HttpDelete("/deletecar/{id:Guid}")]
         public async Task Delete([FromRoute] Guid id)
         {
             await carService.Delete(id);
         }
 
+        /// <summary>
+        /// Get all the cars of the current user
+        /// </summary>
+        ///  <response code="200">Enumerable all car for current user</response>
         [HttpGet("/getmycars/")]
         public async Task<IEnumerable<CarViewModel>> GetMyCars()
         {

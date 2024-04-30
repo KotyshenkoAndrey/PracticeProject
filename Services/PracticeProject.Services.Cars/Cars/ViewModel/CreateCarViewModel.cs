@@ -10,11 +10,34 @@ namespace PracticeProject.Services.Cars.Models;
 
 public class CreateCarViewModel
 {
+    /// <summary>
+    /// Seller Guid
+    /// </summary>
     public Guid SellerId { get; set; }
+
+    /// <summary>
+    /// Car model
+    /// </summary>
     public string Model { get; set; }
+
+    /// <summary>
+    /// Year of the car
+    /// </summary>
     public int? Year { get; set; }
+
+    /// <summary>
+    /// Price of the car
+    /// </summary>
     public decimal Price { get; set; }
+
+    /// <summary>
+    /// Description of the car
+    /// </summary>
     public string? Description { get; set; }
+
+    /// <summary>
+    /// Color of the car
+    /// </summary>
     public string? Color { get; set; }
 }
 

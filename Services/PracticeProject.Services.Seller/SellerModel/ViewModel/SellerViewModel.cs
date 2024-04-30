@@ -7,12 +7,31 @@ namespace PracticeProject.Services.Sellers;
 
     public class SellerViewModel
     {
-        public Guid Id { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
-        public string? PhoneNumber { get; set; }
-    }
+    /// <summary>
+    /// Unique identifier
+    /// </summary>
+    public Guid Id { get; set; }
+
+    /// <summary>
+    /// User's username
+    /// </summary>
+    public string Username { get; set; }
+
+    /// <summary>
+    /// User's email address
+    /// </summary>
+    public string Email { get; set; }
+
+    /// <summary>
+    /// User's full name
+    /// </summary>
+    public string FullName { get; set; }
+
+    /// <summary>
+    /// User's phone number
+    /// </summary>
+    public string? PhoneNumber { get; set; }
+}
 
 public class SellerViewModelProfile : Profile
 {

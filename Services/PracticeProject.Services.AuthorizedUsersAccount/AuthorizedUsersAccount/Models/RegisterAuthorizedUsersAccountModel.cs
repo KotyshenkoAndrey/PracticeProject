@@ -4,9 +4,21 @@ using FluentValidation;
 
 public class RegisterAuthorizedUsersAccountModel
 {
+    /// <summary>
+    /// User's full name
+    /// </summary>
     public string Name { get; set; }
+    /// <summary>
+    /// User's email
+    /// </summary>
     public string Email { get; set; }
+    /// <summary>
+    /// User's password
+    /// </summary>
     public string Password { get; set; }
+    /// <summary>
+    /// User's phone number
+    /// </summary>
     public string? PhoneNumber { get; set; }
 }
 

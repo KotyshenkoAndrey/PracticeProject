@@ -4,6 +4,223 @@
         <name>PracticeProject.Api</name>
     </assembly>
     <members>
+        <member name="T:PracticeProject.API.Controllers.AccountsController">
+            <summary>
+            Controller for workaround with user accounts. Such as registration, login, password reset
+            </summary>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.#ctor(AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{PracticeProject.API.Controllers.AccountsController},PracticeProject.Services.AuthorizedUsersAccount.IAuthorizedUsersAccountService)">
+            <summary>
+            Main constructor
+            </summary>
+            <param name="mapper"></param>
+            <param name="logger"></param>
+            <param name="userAccountService"></param>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.Register(PracticeProject.Services.AuthorizedUsersAccount.RegisterAuthorizedUsersAccountModel)">
+            <summary>
+            User registration
+            </summary>
+            <param name="request">model for registration user</param>
+            <returns>Result request</returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.GetCurrentUserName">
+            <summary>
+            Get current user login(username)
+            </summary>
+            <returns>username</returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.ConfirmEmail(System.Int32)">
+            <summary>
+            Confirm email
+            </summary>
+            <param name="id">Id for confirm email</param>
+            <returns>Result request</returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.IsConfirmEmail(System.String)">
+            <summary>
+            Check confirm email
+            </summary>
+            <param name="username">user's username(login)</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.ForgotPassword(PracticeProject.Services.AuthorizedUsersAccount.ForgotPasswordModel)">
+            <summary>
+            Method for password reset
+            </summary>
+            <param name="model">model for password reset</param>
+            <returns>Result request</returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.SetNewPassword(PracticeProject.Services.AuthorizedUsersAccount.NewPasswordModel)">
+            <summary>
+            Set new password
+            </summary>
+            <param name="model">model for set new password</param>
+            <returns></returns>
+        </member>
+        <member name="T:PracticeProject.Api.App.CarController">
+            <summary>
+            Controller for get, create, update, delete car
+            </summary>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.#ctor(PracticeProject.Services.Logger.IAppLogger,PracticeProject.Services.Cars.ICarService,PracticeProject.Services.AuthorizedUsersAccount.IAuthorizedUsersAccountService)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="logger"></param>
+            <param name="carService"></param>
+            <param name="userAccountService"></param>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.GetAll">
+            <summary>
+            Getting all the cars of all the sellers
+            </summary>
+            <response code="200">Enumerable all car</response>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.Get(System.Guid)">
+            <summary>
+            Get car by Id
+            </summary>
+            <param name="id">Guid car</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.Create(PracticeProject.Services.Cars.Models.CreateCarViewModel)">
+            <summary>
+            Create new car
+            </summary>
+            <param name="request">Model for create car</param>
+             <response code="200">Created car model</response>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.Update(System.Guid,PracticeProject.Services.Cars.Models.UpdateCarViewModel)">
+            <summary>
+            Update car by Id
+            </summary>
+            <param name="id">Id for update car</param>
+            <param name="request">Model for update car</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.Delete(System.Guid)">
+            <summary>
+            Delete car by Id
+            </summary>
+            <param name="id">Id car for delete</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.CarController.GetMyCars">
+            <summary>
+            Get all the cars of the current user
+            </summary>
+             <response code="200">Enumerable all car for current user</response>
+        </member>
+        <member name="T:PracticeProject.Api.App.SellerController">
+            <summary>
+            Controller for get update, delete seller
+            </summary>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.#ctor(PracticeProject.Services.Logger.IAppLogger,PracticeProject.Services.Sellers.ISellerService,PracticeProject.Services.AuthorizedUsersAccount.IAuthorizedUsersAccountService)">
+            <summary>
+            Constructor for seller
+            </summary>
+            <param name="logger"></param>
+            <param name="sellerService"></param>
+            <param name="userAccountService"></param>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.GetAllSellers">
+            <summary>
+            Get all seller
+            </summary>
+            <response code="200">Enumerable seller model</response>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.Get(System.Guid)">
+            <summary>
+            Get seller by Guid(not used)
+            </summary>
+            <param name="id">Guid seller</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.Create(PracticeProject.Services.Sellers.CreateSellerViewModel)">
+            <summary>
+            Create seller(not used)
+            </summary>
+            <param name="request">Create model new seller</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.Update(System.Guid,PracticeProject.Services.Sellers.UpdateSellerViewModel)">
+            <summary>
+            Update seller by Guid(not used)
+            </summary>
+            <param name="id">Guid seller</param>
+            <param name="request">Update model seller</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.Delete(System.Guid)">
+            <summary>
+            Delete seller by Guid(not used)
+            </summary>
+            <param name="id">Guid seller</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.GetUserProfile">
+            <summary>
+            Get info about seller
+            </summary>
+            <response code="200">Seller model by profile</response>
+        </member>
+        <member name="M:PracticeProject.Api.App.SellerController.GetSellerContact(System.Guid)">
+            <summary>
+            Get seller contact by request
+            </summary>
+            <param name="requestId">Guid view request</param>
+            <response code="200">Seller model</response>
+        </member>
+        <member name="T:PracticeProject.Api.App.ViewRequestController">
+            <summary>
+            Controller by view request
+            </summary>
+        </member>
+        <member name="M:PracticeProject.Api.App.ViewRequestController.#ctor(PracticeProject.Services.Logger.IAppLogger,PracticeProject.Services.ViewingRequests.IViewRequest,PracticeProject.Services.AuthorizedUsersAccount.IAuthorizedUsersAccountService)">
+            <summary>
+            Constructor controller
+            </summary>
+            <param name="logger"></param>
+            <param name="viewRequestService"></param>
+            <param name="userAccountService"></param>
+        </member>
+        <member name="M:PracticeProject.Api.App.ViewRequestController.CreateViewingRequest(PracticeProject.Services.ViewingRequests.Models.CreateViewingRequestViewModel)">
+            <summary>
+            Create view request
+            </summary>
+            <param name="model">Model for create view request</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.ViewRequestController.GetIncomingRequests(System.Guid)">
+            <summary>
+            Get incomming request
+            </summary>
+            <param name="sellerId"> Guid seller for Swagger</param>
+            <response code="200">Enumerable request model</response>
+        </member>
+        <member name="M:PracticeProject.Api.App.ViewRequestController.GetOutgoingRequests(System.Guid)">
+            <summary>
+            Get outgoing request
+            </summary>
+            <param name="sellerId"> Guid seller for Swagger</param>
+            <response code="200">Enumerable request model</response>
+        </member>
+        <member name="M:PracticeProject.Api.App.ViewRequestController.ChangeStatusRequest(PracticeProject.Services.ViewRequest.BusinessModels.SendEditStateModel)">
+            <summary>
+            Confirm or Reject view request
+            </summary>
+            <param name="model">Model for change state request</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.Api.App.ViewRequestController.GetCountNewRequest(System.Guid)">
+            <summary>
+            Get count new request(status wait)
+            </summary>
+            <param name="sellerId">Guid seller for swagger</param>
+            <returns>count new request</returns>
+        </member>
         <member name="T:PracticeProject.Api.Configuration.AutoMapperConfiguration">
             <summary>
             AutoMapper configuration

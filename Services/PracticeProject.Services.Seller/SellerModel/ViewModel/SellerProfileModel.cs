@@ -7,8 +7,17 @@ namespace PracticeProject.Services.Sellers;
 
 public class SellerProfileModel
 {
+    /// <summary>
+    /// User's email
+    /// </summary>
     public string Email { get; set; }
+    /// <summary>
+    /// User's full name
+    /// </summary>
     public string FullName { get; set; }
+    /// <summary>
+    /// User's phone number
+    /// </summary>
     public string? PhoneNumber { get; set; }
 }
 

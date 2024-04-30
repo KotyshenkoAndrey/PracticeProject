@@ -10,8 +10,13 @@ namespace PracticeProject.Services.ViewingRequests.Models;
 
 public class UpdateViewingRequestViewModel
 {
-
+    /// <summary>
+    /// State view request
+    /// </summary>
     public StatusConfirm StateConfirmed { get; set; }
+    /// <summary>
+    /// Last modifed date
+    /// </summary>
     public DateTime LastModifedDate { get; set; }
 }
 

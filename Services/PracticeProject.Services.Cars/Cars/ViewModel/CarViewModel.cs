@@ -8,17 +8,56 @@ namespace PracticeProject.Services.Cars.Models;
 
     public class CarViewModel
     {
-        public Guid CarId { get; set; }
-        public string Model { get; set; }
-        public int? Year { get; set; }
-        public decimal Price { get; set; }
-        public string? Description { get; set; }
-        public string? Color { get; set; }
-        public Guid SellerId { get; set; }
-        public string SellerFullName { get; set; }
-        public DateTime DatePosted { get; set; }
-        public virtual ICollection<string>? ViewingRequestsCar { get; set; }
-    }
+    /// <summary>
+    /// Car Guid
+    /// </summary>
+    public Guid CarId { get; set; }
+
+    /// <summary>
+    /// Car model
+    /// </summary>
+    public string Model { get; set; }
+
+    /// <summary>
+    /// Year of the car
+    /// </summary>
+    public int? Year { get; set; }
+
+    /// <summary>
+    /// Price of the car
+    /// </summary>
+    public decimal Price { get; set; }
+
+    /// <summary>
+    /// Description of the car
+    /// </summary>
+    public string? Description { get; set; }
+
+    /// <summary>
+    /// Color of the car
+    /// </summary>
+    public string? Color { get; set; }
+
+    /// <summary>
+    /// Seller Guid
+    /// </summary>
+    public Guid SellerId { get; set; }
+
+    /// <summary>
+    /// Full name of the seller
+    /// </summary>
+    public string SellerFullName { get; set; }
+
+    /// <summary>
+    /// Date when the car was posted
+    /// </summary>
+    public DateTime DatePosted { get; set; }
+
+    /// <summary>
+    /// Collection of viewing requests for the car
+    /// </summary>
+    public virtual ICollection<string>? ViewingRequestsCar { get; set; }
+}
 
 public class CarViewModelProfile : Profile
 {

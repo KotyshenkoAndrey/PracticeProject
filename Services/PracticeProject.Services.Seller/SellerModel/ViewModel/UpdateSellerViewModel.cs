@@ -6,9 +6,24 @@ namespace PracticeProject.Services.Sellers;
 
 public class UpdateSellerViewModel
 {
+    /// <summary>
+    /// User's username
+    /// </summary>
     public string Username { get; set; }
+
+    /// <summary>
+    /// User's email address
+    /// </summary>
     public string Email { get; set; }
+
+    /// <summary>
+    /// User's full name
+    /// </summary>
     public string FullName { get; set; }
+
+    /// <summary>
+    /// User's phone number
+    /// </summary>
     public string? PhoneNumber { get; set; }
 }
 public class UpdateSellerViewModelProfile : Profile
