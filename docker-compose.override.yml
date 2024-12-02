@@ -63,6 +63,14 @@ services:
    ports:
       - "10005:8080"
 
+  practiceproject_redis:
+   networks:
+      - shared_practice
+   ports:
+      - "6379:6379"
+   volumes:      
+      - ~/.docker-conf/redis/data/:/data
+
 networks:
   shared_practice:
     name: practice

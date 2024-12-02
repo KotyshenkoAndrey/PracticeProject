@@ -36,6 +36,7 @@
     <ProjectReference Include="..\..\..\Services\Practice.Services.RabbitMq\PracticeProject.Services.RabbitMq.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Service.Settings\PracticeProject.Service.Settings.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.AuthorizedUsersAccount\PracticeProject.Services.AuthorizedUsersAccount.csproj" />
+    <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Cache\PracticeProject.Services.Cache.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Cars\PracticeProject.Services.Cars.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Hub\PracticeProject.Services.Hub.csproj" />
     <ProjectReference Include="..\..\..\Services\PracticeProject.Services.Logger\PracticeProject.Services.Logger.csproj" />

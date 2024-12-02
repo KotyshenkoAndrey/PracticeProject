@@ -43,7 +43,9 @@ services:
 
   practiceproject_postgresql:
     image: postgres:14.1
-
+  
+  practiceproject_redis:
+    image: redis
 
   practiceproject_worker_1:
     image: ${DOCKER_REGISTRY-}practiceprojectworker

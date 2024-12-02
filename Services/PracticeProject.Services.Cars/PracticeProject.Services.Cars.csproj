@@ -8,12 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\PracticeProject.Context\PracticeProject.Context.csproj" />
     <ProjectReference Include="..\Practice.Services.Actions\PracticeProject.Services.Actions.csproj" />
+    <ProjectReference Include="..\PracticeProject.Services.Cache\PracticeProject.Services.Cache.csproj" />
     <ProjectReference Include="..\PracticeProject.Services.Hub\PracticeProject.Services.Hub.csproj" />
   </ItemGroup>
 

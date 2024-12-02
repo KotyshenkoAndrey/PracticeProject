@@ -9,6 +9,7 @@ using PracticeProject.Services.RabbitMq;
 using PracticeProject.Services.Actions;
 using PracticeProject.Services.AuthorizedUsers;
 using PracticeProject.Services.ViewingRequests;
+using PracticeProject.Services.Cache;
 
 public static class Bootstrapper
 {
@@ -29,6 +30,7 @@ public static class Bootstrapper
             .AddRabbitMq()
             .AddActions()
             .AddAuthorizedUsersAccountService()
+            .AddCache()
             ;
 
         return services;
