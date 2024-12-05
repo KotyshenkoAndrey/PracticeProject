@@ -11,5 +11,10 @@ public class LoginModel
     [StringLength(20, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 20 characters")]
     public string Password { get; set; }
 
+    [StringLength(6)]
+    public string TOTPCode { get; set; }
+
     public bool RememberMe { get; set; }
+
+    public bool isTwoFactorAuthenticator { get; set; }
 }

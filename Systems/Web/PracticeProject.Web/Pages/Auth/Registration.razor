@@ -44,6 +44,12 @@
                               Label="Phone number"
                               HelperText="Input your phone number"
                               Adornment="Adornment.End"/>
+                <MudCheckBox @bind-Checked="EnableTOTP" Label="Enable TOTP" />
+                @if (model.EnableTOTP)
+                {
+                    <MudText>Your TOTP code</MudText>
+                    <MudImage Src="@imageUrl" Alt="TOTP Image" />
+                }
                 <hr style="height: 2px; border: none; background-color: transparent; margin: 5px 0;" />
                 <MudButton Variant="Variant.Filled"
                            Color="Color.Primary"
@@ -59,6 +65,21 @@
     bool success;
     MudForm form;
 
+    private bool _enableTOTP;
+    string UserKey = string.Empty;
+    string SecretKey = string.Empty;
+    string imageUrl = string.Empty;
+    public bool EnableTOTP
+    {
+        get => _enableTOTP;
+        set 
+        {
+            _enableTOTP = value;
+            model.EnableTOTP = value;
+            ShowQRCode(value);            
+        }
+    }
+
     private bool ShowErrors;
     private string Error;
     private string ErrorDetail;
@@ -72,11 +93,24 @@
 
     private async Task OnValidSubmit()
     {
+        model.KeyForTOTP = SecretKey;
         var result = await AuthService.Registration(model);
         string message = result;
         await ShowMessageDialog(message);
         if (message.Contains("Email confirmation request created")) { NavigationManager.NavigateTo("/login"); }
     }
+
+    private async void ShowQRCode(bool isChecked)
+    {
+        if (!isChecked)
+            return;
+
+        var model = await AuthService.GetQrAndManualKey();
+        imageUrl = model.QrCodeSetupImageUrl ?? string.Empty;
+        SecretKey = model.SecretKey ?? string.Empty;
+        StateHasChanged();
+    }
+
 
     private async Task ShowMessageDialog(string message)
     {

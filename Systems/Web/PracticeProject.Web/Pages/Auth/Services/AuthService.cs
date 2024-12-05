@@ -9,10 +9,7 @@ using PracticeProject.Web.Providers;
 namespace PracticeProject.Web.Pages.Auth.Services;
 
 public class AuthService : IAuthService
-{
-    private const string LocalStorageAuthTokenKey = "authToken";
-    private const string LocalStorageRefreshTokenKey = "refreshToken";
-    
+{  
     private readonly HttpClient _httpClient;
     private readonly AuthenticationStateProvider _authenticationStateProvider;
     private readonly ILocalStorageService _localStorage;
@@ -59,27 +56,29 @@ public class AuthService : IAuthService
             loginResult.Error = "The mail has not been confirmed";
             return loginResult;
         }
-        if (loginModel.RememberMe)
+
+        var isTwoFactorAuthenticatorEnable = await IsTwoFactorAuthenticator(loginModel.UserName);
+
+        if (isTwoFactorAuthenticatorEnable)
         {
-            await _localStorage.SetItemAsync(LocalStorageAuthTokenKey, loginResult.AccessToken);
-            await _localStorage.SetItemAsync(LocalStorageRefreshTokenKey, loginResult.RefreshToken);
+            loginResult.Successful = true;
+            loginResult.isTwoFactorAuthenticator = true;
+            return loginResult;
         }
 
-        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginModel.UserName!);
-
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.AccessToken);
-
+        await Authenticating(loginModel, loginResult);
+       
         return loginResult;
+    }
+
+    public async Task Authenticating(LoginModel loginModel, LoginResult loginResult)
+    {
+        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginModel, loginResult);
     }
 
     public async Task Logout()
     {
-        await _localStorage.RemoveItemAsync(LocalStorageAuthTokenKey);
-        await _localStorage.RemoveItemAsync(LocalStorageRefreshTokenKey);
-
-        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
-
-        _httpClient.DefaultRequestHeaders.Authorization = null;
+        ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();        
     }
     public async Task<string> GetUserName()
     {
@@ -92,6 +91,42 @@ public class AuthService : IAuthService
         }
         var contents = await response.Content.ReadAsStringAsync();
         return contents;
+    }
+
+    public async Task<bool> IsTwoFactorAuthenticator(string username)
+    {
+        var response = await _httpClient.GetAsync($"/isTwoFactorAuthenticator/?username={username}");
+        if (!response.IsSuccessStatusCode)
+        {
+            var contents = await response.Content.ReadAsStringAsync();
+            throw new Exception(contents);
+        }
+        var content = await response.Content.ReadAsStringAsync();
+        bool result;
+        if (bool.TryParse(content, out result))
+        {
+            return result;
+        }
+        else
+        {
+            throw new Exception("Некорректный формат ответа");
+        }
+    }
+
+    public async Task<bool> IsValidTOTPcode(LoginModel model)
+    {
+        var requestContent = JsonContent.Create(model);
+        var response = await _httpClient.PostAsync("/isValidTOTPcode/", requestContent);
+        var content = await response.Content.ReadAsStringAsync();
+        bool result;
+        if (bool.TryParse(content, out result))
+        {
+            return result;
+        }
+        else
+        {
+            throw new Exception("Некорректный формат ответа");
+        }
     }
 
     public async Task<bool> IsConfirmMail(string username)
@@ -112,6 +147,12 @@ public class AuthService : IAuthService
         {
             throw new Exception("Некорректный формат ответа");
         }
+    }
+
+    public async Task<TwoFactorAuthenticatorModel> GetQrAndManualKey()
+    {
+        var response = await _httpClient.GetAsync($"/getQrAndManualKey/");
+        return await response.Content.ReadFromJsonAsync<TwoFactorAuthenticatorModel>() ?? new();
     }
 
     public async Task<string> Registration(RegisterAuthorizedUsersAccountModel registrationModel)

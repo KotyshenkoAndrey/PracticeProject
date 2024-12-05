@@ -20,4 +20,7 @@ public class RegisterAuthorizedUsersAccountModel
     [Phone(ErrorMessage = "Invalid phone number")]
     [StringLength(40, ErrorMessage = "Phone number must be no more than 40 characters")]
     public string PhoneNumber { get; set; }
+
+    public bool EnableTOTP {  get; set; }
+    public string? KeyForTOTP { get; set; }
 }

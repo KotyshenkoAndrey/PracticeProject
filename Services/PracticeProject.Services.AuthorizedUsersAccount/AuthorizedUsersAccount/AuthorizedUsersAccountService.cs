@@ -12,6 +12,8 @@ using PracticeProject.Services.Actions;
 using Microsoft.AspNetCore.Mvc;
 using PracticeProject.Context;
 using PracticeProject.Services.Settings;
+using Google.Authenticator;
+using PracticeProject.Services.AuthorizedUsersAccount.AuthorizedUsersAccount.Models;
 
 public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
 {
@@ -72,6 +74,8 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
             PhoneNumber = model.PhoneNumber,
             PhoneNumberConfirmed = false,
             idConfirmEmail = idConfirmEmail,
+            TwoFactorEnabled = !string.IsNullOrEmpty(model.KeyForTOTP),
+            keyForTOTP = model.KeyForTOTP
         };
 
         var result = await userManager.CreateAsync(user, model.Password);
@@ -124,6 +128,37 @@ public class AuthorizedUsersAccountService : IAuthorizedUsersAccountService
         
         return false;
     }
+
+    public async Task<bool> IsTwoFactorAuthenticator(string username)
+    {
+        var user = await userManager.FindByNameAsync(username);
+        if (user != null) return user.TwoFactorEnabled;
+
+        return false;
+    }
+
+    public async Task<bool> IsValidTOTPcode(LoginModel loginModel)
+    {
+        var user = await userManager.FindByNameAsync(loginModel.UserName);
+        
+        if (user != null)
+        {
+            return loginModel.TOTPCode == string.Join(Environment.NewLine, new TwoFactorAuthenticator(HashType.SHA256).GetCurrentPIN(user.keyForTOTP));           
+        }
+
+        return false;
+    }
+
+    public async Task<TwoFactorAuthenticatorModel> GetQrAndManualKey()
+    {
+        string privateKey = Guid.NewGuid().ToString().Replace("-", "");
+        var tfA = new TwoFactorAuthenticator(HashType.SHA256);
+
+        var setupCode = tfA.GenerateSetupCode(issuer: "CarSales", accountTitleNoSpaces: "CarSales", privateKey, false, 3);
+        return new TwoFactorAuthenticatorModel { QrCodeSetupImageUrl = setupCode.QrCodeSetupImageUrl, ManualKey = setupCode.ManualEntryKey
+                                                ,SecretKey = privateKey};
+    }
+
     public async Task<IActionResult> ConfirmEmail(int id)
     {
         using var context = await dbContextFactory.CreateDbContextAsync();

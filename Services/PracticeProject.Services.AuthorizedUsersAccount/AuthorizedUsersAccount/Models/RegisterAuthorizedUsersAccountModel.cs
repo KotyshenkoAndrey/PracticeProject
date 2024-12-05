@@ -20,6 +20,10 @@ public class RegisterAuthorizedUsersAccountModel
     /// User's phone number
     /// </summary>
     public string? PhoneNumber { get; set; }
+    /// <summary>
+    /// User's code TOTP
+    /// </summary>
+    public string? KeyForTOTP { get; set; }
 }
 
 public class RegisterUserAccountModelValidator : AbstractValidator<RegisterAuthorizedUsersAccountModel>

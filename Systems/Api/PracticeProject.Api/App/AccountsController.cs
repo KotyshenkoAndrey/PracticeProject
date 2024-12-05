@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using PracticeProject.Services.AuthorizedUsersAccount.AuthorizedUsersAccount.Models;
 
 /// <summary>
 /// Controller for workaround with user accounts. Such as registration, login, password reset
@@ -83,6 +84,31 @@ public class AccountsController : ControllerBase
         var result = await userAccountService.IsConfirmMail(username);
         return result;
     }
+
+    /// <summary>
+    /// Check enable Two-Factor Authenticator
+    /// </summary>
+    /// <param name="username">user's username(login)</param>
+    /// <returns></returns>
+    [HttpGet("/isTwoFactorAuthenticator/")]
+    public async Task<bool> IsTwoFactorAuthenticator(string username)
+    {
+        var result = await userAccountService.IsTwoFactorAuthenticator(username);
+        return result;
+    }
+
+    /// <summary>
+    /// Check valid TOTP code
+    /// </summary>
+    /// <param name="username">user's login model</param>
+    /// <returns></returns>
+    [HttpPost("/isValidTOTPcode/")]
+    public async Task<bool> IsValidTOTPcode(LoginModel username)
+    {
+        var result = await userAccountService.IsValidTOTPcode(username);
+        return result;
+    }
+
     /// <summary>
     /// Method for password reset
     /// </summary>
@@ -92,6 +118,18 @@ public class AccountsController : ControllerBase
     public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
     {
         var result = await userAccountService.ForgotPassword(model);
+        return result;
+    }
+
+    /// <summary>
+    /// get Qr code And ManualKey
+    /// </summary>
+    /// <param name="model">Model For TOTP</param>
+    /// <returns>Model for display QR code</returns>
+    [HttpGet("/getQrAndManualKey/")]
+    public async Task<TwoFactorAuthenticatorModel> GetQrAndManualKey()
+    {
+        var result = await userAccountService.GetQrAndManualKey();
         return result;
     }
     /// <summary>

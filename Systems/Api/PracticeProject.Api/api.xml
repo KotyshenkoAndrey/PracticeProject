@@ -44,12 +44,33 @@
             <param name="username">user's username(login)</param>
             <returns></returns>
         </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.IsTwoFactorAuthenticator(System.String)">
+            <summary>
+            Check enable Two-Factor Authenticator
+            </summary>
+            <param name="username">user's username(login)</param>
+            <returns></returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.IsValidTOTPcode(PracticeProject.Services.AuthorizedUsersAccount.AuthorizedUsersAccount.Models.LoginModel)">
+            <summary>
+            Check valid TOTP code
+            </summary>
+            <param name="username">user's login model</param>
+            <returns></returns>
+        </member>
         <member name="M:PracticeProject.API.Controllers.AccountsController.ForgotPassword(PracticeProject.Services.AuthorizedUsersAccount.ForgotPasswordModel)">
             <summary>
             Method for password reset
             </summary>
             <param name="model">model for password reset</param>
             <returns>Result request</returns>
+        </member>
+        <member name="M:PracticeProject.API.Controllers.AccountsController.GetQrAndManualKey">
+            <summary>
+            get Qr code And ManualKey
+            </summary>
+            <param name="model">Model For TOTP</param>
+            <returns>Model for display QR code</returns>
         </member>
         <member name="M:PracticeProject.API.Controllers.AccountsController.SetNewPassword(PracticeProject.Services.AuthorizedUsersAccount.NewPasswordModel)">
             <summary>

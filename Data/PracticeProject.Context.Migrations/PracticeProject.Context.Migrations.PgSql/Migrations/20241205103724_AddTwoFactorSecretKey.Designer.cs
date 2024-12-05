@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PracticeProject.Context;
@@ -11,9 +12,11 @@ using PracticeProject.Context;
 namespace PracticeProject.Context.Migrations.PgSql.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241205103724_AddTwoFactorSecretKey")]
+    partial class AddTwoFactorSecretKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,6 +225,7 @@ namespace PracticeProject.Context.Migrations.PgSql.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
@@ -264,6 +268,7 @@ namespace PracticeProject.Context.Migrations.PgSql.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("keyForTOTP")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

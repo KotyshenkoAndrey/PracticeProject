@@ -1,0 +1,67 @@
+﻿@using PracticeProject.Web.Pages.Auth.Models
+@using PracticeProject.Web.Pages.Auth.Services
+@using System.ComponentModel.DataAnnotations
+@inherits MudComponentBase
+
+@inject IAuthService AuthService
+
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="AuthModel" @ref="form">
+            <MudGrid>
+                    <MudAlert Severity="Severity.Error" Class="@(ShowErrors ? "mb-3 d-block" : "d-none")">
+                        @Error
+                    </MudAlert>
+                <MudTextField T="string"
+                              @bind-Value="AuthModel.TOTPCode" For="@(() => AuthModel.TOTPCode)"
+                              Label="Code"
+                              Required="true"
+                              RequiredError="Code is required!"
+                              HelperText="Input your TOTP code" />
+
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public LoginModel AuthModel { get; set; }
+
+    private MudForm form = default!;
+    private bool ShowErrors;
+    private string Error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ShowErrors = false;
+        Error = "";
+    }
+
+    async Task Submit()
+    {
+        ShowErrors = false;
+        Error = "";
+
+        var isValid = await AuthService.IsValidTOTPcode(AuthModel);
+
+        if (isValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        else
+        {
+            ShowErrors = true;
+            Error = "Ivalid TOTP code";
+            AuthModel.TOTPCode = string.Empty;
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

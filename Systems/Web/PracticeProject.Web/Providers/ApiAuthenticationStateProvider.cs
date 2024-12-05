@@ -3,11 +3,14 @@ using System.Security.Claims;
 using System.Text.Json;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using PracticeProject.Web.Pages.Auth.Models;
 
 namespace PracticeProject.Web.Providers;
 
 public class ApiAuthenticationStateProvider : AuthenticationStateProvider
 {
+    private const string LocalStorageAuthTokenKey = "authToken";
+    private const string LocalStorageRefreshTokenKey = "refreshToken";
     private readonly HttpClient _httpClient;
     private readonly ILocalStorageService _localStorage;
 
@@ -30,18 +33,28 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(savedToken), "jwt")));
     }
 
-    public void MarkUserAsAuthenticated(string email)
+    public async void MarkUserAsAuthenticated(LoginModel loginModel, LoginResult loginResult)
     {
-        var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
+        if (loginModel.RememberMe)
+        {
+            await _localStorage.SetItemAsync(LocalStorageAuthTokenKey, loginResult.AccessToken);
+            await _localStorage.SetItemAsync(LocalStorageRefreshTokenKey, loginResult.RefreshToken);
+        }
+        var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity([new Claim(ClaimTypes.Name, loginModel.UserName)], "apiauth"));
         var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
         NotifyAuthenticationStateChanged(authState);
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", loginResult.AccessToken);
     }
 
-    public void MarkUserAsLoggedOut()
+    public async void MarkUserAsLoggedOut()
     {
+        await _localStorage.RemoveItemAsync(LocalStorageAuthTokenKey);
+        await _localStorage.RemoveItemAsync(LocalStorageRefreshTokenKey);
+
         var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
         var authState = Task.FromResult(new AuthenticationState(anonymousUser));
         NotifyAuthenticationStateChanged(authState);
+        _httpClient.DefaultRequestHeaders.Authorization = null;
     }
 
     private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)

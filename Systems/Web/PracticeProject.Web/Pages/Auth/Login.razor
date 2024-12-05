@@ -5,6 +5,8 @@
 @layout SimpleLayout
 
 @inject IAuthService AuthService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
 <MudGrid Justify="Justify.Center" Class="pa-10">
@@ -57,11 +59,10 @@
     MudForm form;
 
     private LoginModel model = new LoginModel()
-    // {
-    //     UserName = "admin",
-    //     Password = "123456"
-    // }
-    ;
+    {
+        UserName = "admin",
+        Password = "123456"
+    };
 
     bool PasswordVisibility;
     InputType PasswordInput = InputType.Password;
@@ -92,17 +93,31 @@
         ShowErrors = false;
         Error = "";
         ErrorDetail = "";
-        
-        var result = await AuthService.Login(model);
 
-        if (result.Successful)
+        var loginResult = await AuthService.Login(model);
+
+        if (loginResult.Successful)
         {
+            if (loginResult.isTwoFactorAuthenticator)
+            {
+                var parameters = new DialogParameters();
+                parameters.Add("AuthModel", model);
+                var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+                var dialog = DialogService.Show<TwoFactorAuthenticatorDialog>("Enter TOTP code", parameters, options);
+                var resultFromForm = await dialog.Result;
+
+                if (resultFromForm.Canceled)
+                    return;
+                var loginModel = ((TwoFactorAuthenticatorDialog)dialog.Dialog).AuthModel;
+                await AuthService.Authenticating(loginModel, loginResult);
+            }
+
             NavigationManager.NavigateTo("/");
         }
         else
         {
-            Error = result.Error;
-            ErrorDetail = result.ErrorDescription;
+            Error = loginResult.Error;
+            ErrorDetail = loginResult.ErrorDescription;
             ShowErrors = true;
         }
     }

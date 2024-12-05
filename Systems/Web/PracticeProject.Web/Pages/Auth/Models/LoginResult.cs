@@ -5,7 +5,9 @@ namespace PracticeProject.Web.Pages.Auth.Models;
 public class LoginResult
 {
     public bool Successful { get; set; }
-    
+
+    public bool isTwoFactorAuthenticator { get; set; }
+
     [JsonPropertyName("scope")]
     public string Scope { get; set; }
 

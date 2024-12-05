@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.Hu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.ViewRequest", "Services\PracticeProject.Services.ViewRequest\PracticeProject.Services.ViewRequest.csproj", "{8AEC315C-9147-47BD-B205-812D70E86742}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeProject.Services.Cache", "Services\PracticeProject.Services.Cache\PracticeProject.Services.Cache.csproj", "{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.Cache", "Services\PracticeProject.Services.Cache\PracticeProject.Services.Cache.csproj", "{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
