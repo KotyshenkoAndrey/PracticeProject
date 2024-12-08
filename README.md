@@ -1,5 +1,3 @@
-# DsrPractic2024
-
 ## To launch the application
 
 Before starting using applications you need to do next steps:

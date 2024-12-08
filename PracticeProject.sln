@@ -71,6 +71,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PracticeProject.Services.Cache", "Services\PracticeProject.Services.Cache\PracticeProject.Services.Cache.csproj", "{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeProject.Test.Api", "Test\PracticeProject.Test.Api\PracticeProject.Test.Api.csproj", "{2F8C993A-BF77-4354-947A-96D3114E0085}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F8C993A-BF77-4354-947A-96D3114E0085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F8C993A-BF77-4354-947A-96D3114E0085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F8C993A-BF77-4354-947A-96D3114E0085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F8C993A-BF77-4354-947A-96D3114E0085}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +212,7 @@ Global
 		{C70814AF-1AC5-4EFB-8586-8C1F25C52A3A} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{8AEC315C-9147-47BD-B205-812D70E86742} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
 		{9BCE1D14-48F7-451B-B8E2-A0665A0E06FF} = {B7EF7CF9-63FC-49A5-882E-3242A5FDD876}
+		{2F8C993A-BF77-4354-947A-96D3114E0085} = {0396C3B7-51A5-4A29-BB2C-9446451E50B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C23B43B4-0755-4456-86E9-CCE397812FB7}

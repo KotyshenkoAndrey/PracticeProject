@@ -58,7 +58,11 @@ public class CarService : ICarService
 
         var carModels = mapper.Map<IEnumerable<CarViewModel>>(cars);
 
-        await cacheService.Put(cacheKeyForAllCar, carModels, TimeSpan.FromMinutes(5));
+        try
+        {
+            await cacheService.Put(cacheKeyForAllCar, carModels, TimeSpan.FromMinutes(5));
+        }
+        catch (Exception ex) { /* TODO записать в логи, что не удалось записать в кэш*/}
 
         return carModels;
     }
@@ -134,7 +138,7 @@ public class CarService : ICarService
         }
         catch (Exception ex)
         {
-
+            //TODO записать в логи ошибку
         }
         return null;
     }
@@ -193,7 +197,11 @@ public class CarService : ICarService
 
         var carModels = mapper.Map<IEnumerable<CarViewModel>>(cars);
 
-        await cacheService.Put($"{cacheKeyForUser}/{username}", carModels, TimeSpan.FromMinutes(5));
+        try
+        {
+            await cacheService.Put($"{cacheKeyForUser}/{username}", carModels, TimeSpan.FromMinutes(5));
+        }
+        catch (Exception ex) { /*TODO Записать в логи информацию об ошибке*/}
 
         return carModels;
         
